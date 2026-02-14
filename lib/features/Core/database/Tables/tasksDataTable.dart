@@ -1,0 +1,26 @@
+import 'package:sqflite/sqflite.dart';
+
+class Tasksdatatable {
+  static const String tableName = 'tasks';
+  static const String id = 'id';
+  static const String title = 'title';
+  static const String description = 'description';
+  static const String isDone = 'isDone';
+  static const String date = 'date';
+
+  Future<void> createTasksTable(Database db) async {
+    await db.execute(createTasksTableQuery());
+  }
+
+  static String createTasksTableQuery() {
+    return '''
+    CREATE TABLE $Tasksdatatable (
+      $Tasksdatatable INTEGER PRIMARY KEY AUTOINCREMENT,
+      $Tasksdatatable TEXT NOT NULL,
+      $Tasksdatatable TEXT NOT NULL,
+      $Tasksdatatable INTEGER NOT NULL,
+      $Tasksdatatable TEXT NOT NULL
+    )
+  ''';
+  }
+}
