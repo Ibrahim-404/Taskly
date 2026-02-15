@@ -10,13 +10,10 @@ class DatabaseHelper {
     return _database!;
   }
 }
+
 Future<Database> _initDatabase() async {
   String path = await join(await getDatabasesPath(), 'tasks_manager.db');
-  return await openDatabase(
-    path,
-    version: 1,
-    onCreate: _onCreate,
-  );
+  return await openDatabase(path, version: 1, onCreate: _onCreate);
 }
 
 Future<void> _onCreate(Database db, int version) async {

@@ -2,7 +2,7 @@ class TaskEntity {
   final int id;
   final String title;
   final String description;
-  final String date;
+  final DateTime date;
   final bool isDone;
 
   const TaskEntity({
