@@ -14,12 +14,12 @@ class Tasksdatatable {
 
   static String createTasksTableQuery() {
     return '''
-    CREATE TABLE $Tasksdatatable (
-      $Tasksdatatable INTEGER PRIMARY KEY AUTOINCREMENT,
-      $Tasksdatatable TEXT NOT NULL,
-      $Tasksdatatable TEXT NOT NULL,
-      $Tasksdatatable INTEGER NOT NULL,
-      $Tasksdatatable TEXT NOT NULL
+    CREATE TABLE $tableName (
+      $id INTEGER PRIMARY KEY AUTOINCREMENT,
+      $title TEXT NOT NULL,
+      $description TEXT NOT NULL,
+      $isDone INTEGER NOT NULL,
+      $date TEXT NOT NULL
     )
   ''';
   }
