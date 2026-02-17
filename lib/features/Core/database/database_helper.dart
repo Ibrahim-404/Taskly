@@ -1,5 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:tasks_manager/features/Core/database/Tables/category_of_task.dart';
 import 'package:tasks_manager/features/Core/database/Tables/tasksDataTable.dart';
 
 class DatabaseHelper {
@@ -18,4 +19,5 @@ Future<Database> _initDatabase() async {
 
 Future<void> _onCreate(Database db, int version) async {
   await Tasksdatatable().createTasksTable(db);
+  await CategoryOfTask().addANewCategory(db);
 }
