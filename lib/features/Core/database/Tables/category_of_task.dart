@@ -13,7 +13,7 @@ class CategoryOfTask {
     return '''
       CREATE TABLE $tableName (
         $id INTEGER PRIMARY KEY AUTOINCREMENT,
-        $categoryName TEXT NOT NULL
+        $categoryName TEXT NOT NULL UNIQUE
       )
     ''';
   }

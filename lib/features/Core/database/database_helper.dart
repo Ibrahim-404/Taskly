@@ -18,6 +18,6 @@ Future<Database> _initDatabase() async {
 }
 
 Future<void> _onCreate(Database db, int version) async {
-  await Tasksdatatable().createTasksTable(db);
   await CategoryOfTask().addANewCategory(db);
+  await Tasksdatatable().createTasksTable(db);
 }
