@@ -51,4 +51,24 @@ class TaskRepoImp implements TaskRepo {
       return Left(DatabaseFailure('Failed to update task: ${e.toString()}'));
     }
   }
+
+  @override
+  Future<Either<Failure, Unit>> addCategory(String category) {
+    // TODO: implement addCategory
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<String>>> getCategories() {
+    // TODO: implement getCategories
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<TaskEntity>>> getTasksByCategory(
+    String category,
+  ) {
+    // TODO: implement getTasksByCategory
+    throw UnimplementedError();
+  }
 }

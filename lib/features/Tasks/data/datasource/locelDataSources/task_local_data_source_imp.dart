@@ -26,7 +26,7 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
     await db.insert(
       'tasks',
       task.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      conflictAlgorithm: ConflictAlgorithm.ignore,
     );
   }
 
@@ -39,5 +39,35 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
       where: 'id = ?',
       whereArgs: [task.id],
     );
+  }
+
+  @override
+  Future<void> addCategory(String category) async {
+    final db = await databaseHelper.database;
+    await db.insert('category_of_task', {
+      'category_name': category,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getCategories() async {
+    final db = await databaseHelper.database;
+    final maps = await db.query('category_of_task');
+    return maps;
+  }
+
+  @override
+  Future<List<TaskModel>> getTasksByCategory(String category) async {
+    final db = await databaseHelper.database;
+    final maps = await db.rawQuery(
+      '''
+      SELECT tasks.* FROM tasks
+      INNER JOIN category_of_task ON tasks.category_id = category_of_task.id
+      WHERE category_of_task.category_name = ?
+    ''',
+      [category],
+    );
+
+    return maps.map((task) => TaskModel.fromMap(task)).toList();
   }
 }
