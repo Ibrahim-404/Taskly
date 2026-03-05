@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:tasks_manager/features/Core/controller/base%20controller.dart';
 import 'package:tasks_manager/features/Tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/Tasks/domain/usecases/add_category.dart';
 import 'package:tasks_manager/features/Tasks/domain/usecases/add_task.dart';
@@ -6,7 +7,7 @@ import 'package:tasks_manager/features/Tasks/domain/usecases/get_categories.dart
 import 'package:tasks_manager/features/Tasks/domain/usecases/get_task_by_category.dart';
 import 'package:tasks_manager/features/Tasks/domain/usecases/get_tasks.dart';
 
-class TaskController extends GetxController {
+class TaskController extends BaseController {
   GetCategories getCategories;
   GetTasksByCategoryUseCase getTasksByCategoryUseCase;
   GetTasks getTasks;
