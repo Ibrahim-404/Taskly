@@ -4,8 +4,14 @@ import 'package:tasks_manager/Core/enums/view_state.dart';
 class BaseController extends GetxController {
   @override
   final _state = ViewState.idle.obs;
+  final _errorMessage = ''.obs;
   
-  get state => _state.value;
+  ViewState get state => _state.value;
+  String get errorMessage => _errorMessage.value;
+  setState(ViewState viewState, {String errorMessage = ''}) {
+    this._errorMessage.value = errorMessage;
+  _state.value = viewState;
   
-  setState(ViewState viewState) => _state.value = viewState;
+  } 
+    
 }
