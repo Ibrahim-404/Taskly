@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/Core/injection_container.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/task_main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await init();
+  // await init();
   runApp(const Taskly());
 }
 

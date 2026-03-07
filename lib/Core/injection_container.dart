@@ -1,18 +1,30 @@
-import 'package:get_it/get_it.dart';
+import 'package:get/get.dart';
 import 'package:tasks_manager/Core/database/base_locel_data_sources.dart';
 import 'package:tasks_manager/Core/database/database_helper.dart';
 
-import 'package:tasks_manager/features/Tasks/data/datasource/locelDataSources/task_local_data_source.dart';
-import 'package:tasks_manager/features/Tasks/data/datasource/locelDataSources/task_local_data_source_imp.dart';
+class InjectionContainer extends Bindings {
+  @override
+  void dependencies() {
+    //external dependencies
+    Get.lazyPut<DatabaseHelper>(() => DatabaseHelper());
 
-final sl = GetIt.instance;
-Future<void> init() async {
-  //core
-  sl.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
-  sl.registerLazySingleton<BaseLocalDataSource>(
-    () => BaseLocalDataSource(databaseHelper: sl()),
-  );
-  sl.registerLazySingleton<TaskLocalDataSource>(
-    () => TaskLocalDataSourceImp(databaseHelper: sl()),
-  );
+    // data sources
+  Get.lazyPut<BaseLocalDataSource>(
+      () => BaseLocalDataSource(
+        databaseHelper: Get.find<DatabaseHelper>(),
+      ),
+    );
+    // repositories
+
+    // use cases
+
+    // controllers
+  }
 }
+
+
+    //external dependencies
+    // data sources
+    // repositories
+    // use cases
+    // controllers
