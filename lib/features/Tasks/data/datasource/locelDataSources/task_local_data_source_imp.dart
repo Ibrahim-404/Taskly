@@ -1,5 +1,5 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:tasks_manager/features/Core/database/base_locel_data_sources.dart';
+import 'package:tasks_manager/Core/database/base_locel_data_sources.dart';
 import 'package:tasks_manager/features/Tasks/data/datasource/locelDataSources/task_local_data_source.dart';
 import 'package:tasks_manager/features/Tasks/data/models/task_model.dart';
 

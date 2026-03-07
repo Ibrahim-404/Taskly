@@ -15,7 +15,7 @@ class _TaskCompositionState extends State<TaskComposition> {
         Row(
           children: [
             ListView.builder(
-              itemCount: ,
+              // itemCount: ,
               itemBuilder: (context, index) {
                 return CategoryWidget(categoryName: "Category $index");
                 
