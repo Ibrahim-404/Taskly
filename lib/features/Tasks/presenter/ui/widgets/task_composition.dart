@@ -18,7 +18,6 @@ class _TaskCompositionState extends State<TaskComposition> {
               // itemCount: ,
               itemBuilder: (context, index) {
                 return CategoryWidget(categoryName: "Category $index");
-                
               },
             ),
           ],
@@ -27,34 +26,30 @@ class _TaskCompositionState extends State<TaskComposition> {
     );
   }
 }
+
 class CategoryWidget extends StatelessWidget {
- final String categoryName;
+  final String categoryName;
   const CategoryWidget({super.key, required this.categoryName});
   @override
   Widget build(BuildContext context) {
-    return    GestureDetector(
-                  onTap: () {
-                  
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(
-                            0,
-                            3,
-                          ), 
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(12),
-                      shape: BoxShape.rectangle,
-                      border: Border.all(color: Colors.black),
-                    ),
-                    child: Text(categoryName),
-                  ),
-                );
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+          borderRadius: BorderRadius.circular(12),
+          shape: BoxShape.rectangle,
+          border: Border.all(color: Colors.black),
+        ),
+        child: Text(categoryName),
+      ),
+    );
   }
 }
