@@ -1,5 +1,5 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:tasks_manager/features/Core/database/database_helper.dart';
+import 'package:tasks_manager/Core/database/database_helper.dart';
 
 class BaseLocalDataSource {
   DatabaseHelper databaseHelper;
