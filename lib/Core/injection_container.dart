@@ -3,6 +3,7 @@ import 'package:tasks_manager/Core/database/base_locel_data_sources.dart';
 import 'package:tasks_manager/Core/database/database_helper.dart';
 import 'package:tasks_manager/features/Tasks/data/repo/task_repo_imp.dart';
 
+import '../features/Tasks/data/datasource/locelDataSources/task_local_data_source_imp.dart';
 import '../features/Tasks/domain/usecases/add_category.dart';
 import '../features/Tasks/domain/usecases/add_task.dart';
 import '../features/Tasks/domain/usecases/delete_task.dart';
@@ -20,7 +21,7 @@ class InjectionContainer extends Bindings {
 
     // data sources
     Get.lazyPut<BaseLocalDataSource>(
-      () => BaseLocalDataSource(databaseHelper: Get.find<DatabaseHelper>()),
+      () => TaskLocalDataSourceImp(databaseHelper: Get.find<DatabaseHelper>()),
     );
     // repositories --> repositories depend on data sources
     Get.lazyPut<TaskRepoImp>(
