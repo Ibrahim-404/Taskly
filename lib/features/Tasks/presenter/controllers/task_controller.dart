@@ -37,10 +37,17 @@ class TaskController extends GetxController {
   }
 
   Future<void> fetchCategories() async {
+    isCategoriesLoading.value = true;
     final result = await getCategories();
     result.fold(
-      (failure) => categoryErrorMessage.value = failure.message,
-      (categories) => this.categories.value = categories,
+      (failure) {
+        categoryErrorMessage.value = failure.message;
+        isCategoriesLoading.value = false;
+      },
+      (categories) {
+        this.categories.value = categories;
+        isCategoriesLoading.value = false;
+      },
     );
   }
 
@@ -53,6 +60,7 @@ class TaskController extends GetxController {
   }
 
   Future<void> addANewCategory(String category) async {
+    isCategoriesLoading.value = true;
     final result = await addCategory(category);
     result.fold(
       (failure) => categoryErrorMessage.value = failure.message,

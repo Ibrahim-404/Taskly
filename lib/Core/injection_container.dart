@@ -2,7 +2,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:tasks_manager/Core/database/base_locel_data_sources.dart';
 import 'package:tasks_manager/Core/database/database_helper.dart';
+import 'package:tasks_manager/features/Tasks/data/datasource/locelDataSources/task_local_data_source.dart';
 import 'package:tasks_manager/features/Tasks/data/repo/task_repo_imp.dart';
+import 'package:tasks_manager/features/Tasks/domain/repo/task_repo.dart';
 
 import '../features/Tasks/data/datasource/locelDataSources/task_local_data_source_imp.dart';
 import '../features/Tasks/domain/usecases/add_category.dart';
@@ -25,10 +27,8 @@ class InjectionContainer extends Bindings {
       () => TaskLocalDataSourceImp(databaseHelper: Get.find<DatabaseHelper>()),
     );
     // repositories --> repositories depend on data sources
-    Get.lazyPut<TaskRepoImp>(
-      () => TaskRepoImp(taskLocalDataSource: Get.find()),
-    );
-
+    Get.lazyPut<TaskRepo>(() => TaskRepoImp(taskLocalDataSource: Get.find()));
+Get.lazyPut<TaskLocalDataSource>(() => TaskLocalDataSourceImp(databaseHelper: Get.find()));
     // use cases
     Get.lazyPut<AddCategory>(() => AddCategory(Get.find()));
     Get.lazyPut<AddTask>(() => AddTask(Get.find()));
