@@ -19,26 +19,32 @@ import '../features/Tasks/presenter/controllers/task_controller.dart';
 class InjectionContainer extends Bindings {
   @override
   void dependencies() {
-    //external dependencies
-    Get.lazyPut<DatabaseHelper>(() => DatabaseHelper());
+    // external dependencies
+    Get.lazyPut<DatabaseHelper>(() => DatabaseHelper(), fenix: true);
 
     // data sources
-    Get.lazyPut<BaseLocalDataSource>(
+    Get.lazyPut<TaskLocalDataSource>(
       () => TaskLocalDataSourceImp(databaseHelper: Get.find<DatabaseHelper>()),
+      fenix: true,
     );
+
     // repositories --> repositories depend on data sources
-    Get.lazyPut<TaskRepo>(() => TaskRepoImp(taskLocalDataSource: Get.find()));
-Get.lazyPut<TaskLocalDataSource>(() => TaskLocalDataSourceImp(databaseHelper: Get.find()));
+    Get.lazyPut<TaskRepo>(
+      () => TaskRepoImp(taskLocalDataSource: Get.find()),
+      fenix: true,
+    );
+
     // use cases
-    Get.lazyPut<AddCategory>(() => AddCategory(Get.find()));
-    Get.lazyPut<AddTask>(() => AddTask(Get.find()));
-    Get.lazyPut<DeleteTask>(() => DeleteTask(Get.find()));
-    Get.lazyPut<GetCategories>(() => GetCategories(Get.find()));
+    Get.lazyPut<AddCategory>(() => AddCategory(Get.find()), fenix: true);
+    Get.lazyPut<AddTask>(() => AddTask(Get.find()), fenix: true);
+    Get.lazyPut<DeleteTask>(() => DeleteTask(Get.find()), fenix: true);
+    Get.lazyPut<GetCategories>(() => GetCategories(Get.find()), fenix: true);
     Get.lazyPut<GetTasksByCategoryUseCase>(
       () => GetTasksByCategoryUseCase(Get.find()),
+      fenix: true,
     );
-    Get.lazyPut<GetTasks>(() => GetTasks(Get.find()));
-    Get.lazyPut<UpdateTask>(() => UpdateTask(Get.find()));
+    Get.lazyPut<GetTasks>(() => GetTasks(Get.find()), fenix: true);
+    Get.lazyPut<UpdateTask>(() => UpdateTask(Get.find()), fenix: true);
 
     // controllers
     Get.lazyPut<TaskController>(
@@ -49,6 +55,7 @@ Get.lazyPut<TaskLocalDataSource>(() => TaskLocalDataSourceImp(databaseHelper: Ge
         addTask: Get.find(),
         addCategory: Get.find(),
       ),
+      fenix: true,
     );
   }
 }

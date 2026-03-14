@@ -14,85 +14,96 @@ class _TaskCompositionState extends State<TaskComposition> {
   final TaskController taskController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-      SizedBox(
-        height: 100,
-        child: Row(
-          children: [
-            Obx(
-              () => ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: taskController.categories.length + 2,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return const CategoryWidget(categoryName: "life");
-                  } else if (index == taskController.categories.length + 1) {
-                    return GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => Dialog(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Form(
-                                key: widget.formKey,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    TextFormField(
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter a category name';
-                                        }
-                                        return null;
-                                      },
-                                      controller: widget.controller,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: "Category Name",
+    return SafeArea(
+      child: Column(
+        children: [
+          SizedBox(
+            height: 100,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Obx(
+                    () => ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: taskController.categories.length + 2,
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return const CategoryWidget(categoryName: "life");
+                        } else if (index ==
+                            taskController.categories.length + 1) {
+                          return GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => Dialog(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Form(
+                                      key: widget.formKey,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          TextFormField(
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Please enter a category name';
+                                              }
+                                              return null;
+                                            },
+                                            controller: widget.controller,
+                                            decoration: const InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              hintText: "Category Name",
+                                            ),
+                                          ),
+                                          const SizedBox(height: 16),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              if (widget.formKey.currentState!
+                                                  .validate()) {
+                                                taskController.addANewCategory(
+                                                  widget.controller.text,
+                                                );
+                                                Navigator.pop(context);
+                                                widget.controller.clear();
+                                              }
+                                            },
+                                            child: const Text("Add"),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(height: 16),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        if (widget.formKey.currentState!.validate()) {
-                                          taskController.addANewCategory(
-                                            widget.controller.text,
-                                          );
-                                          Navigator.pop(context);
-                                          widget.controller.clear();
-                                        }
-                                      },
-                                      child: const Text("Add"),
-                                    ),
-                                  ],
+                                  ),
                                 ),
+                              );
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 10,
+                              ),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.blue,
+                                child: Icon(Icons.add, color: Colors.white),
                               ),
                             ),
-                          ),
+                          );
+                        }
+                        final category = taskController.categories[index - 1];
+                        return CategoryWidget(
+                          categoryName:
+                              category['category_name'] ?? 'Category $index',
                         );
                       },
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.blue,
-                          child: Icon(Icons.add, color: Colors.white),
-                        ),
-                      ),
-                    );
-                  }
-                  final category = taskController.categories[index - 1];
-                  return CategoryWidget(
-                    categoryName: category['category_name'] ??'Category $index',
-                  );
-                },
-              ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-      ],
     );
   }
 }
@@ -109,6 +120,7 @@ class CategoryWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         alignment: Alignment.center,
         decoration: BoxDecoration(
+          shape: BoxShape.circle,
           color: Colors.white,
           boxShadow: [
             BoxShadow(
@@ -118,7 +130,7 @@ class CategoryWidget extends StatelessWidget {
               offset: const Offset(0, 2),
             ),
           ],
-          borderRadius: BorderRadius.circular(12),
+          // borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.blue.shade200),
         ),
         child: Text(
