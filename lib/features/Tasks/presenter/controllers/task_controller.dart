@@ -1,4 +1,5 @@
-import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:tasks_manager/features/Tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/Tasks/domain/usecases/add_category.dart';
 import 'package:tasks_manager/features/Tasks/domain/usecases/add_task.dart';
@@ -24,7 +25,7 @@ class TaskController extends GetxController {
   final taskErrorMessage = ''.obs;
   final tasks = <TaskEntity>[].obs;
   // categories
-  final categories = <String>[].obs;
+  final categories = <Map<String, dynamic>>[].obs;
   final isCategoriesLoading = false.obs;
   final categoryErrorMessage = ''.obs;
   Future<void> fetchTasks() async {

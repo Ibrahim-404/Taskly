@@ -9,5 +9,5 @@ abstract class TaskRepo {
   Future<Either<Failure, List<TaskEntity>>> getTasks();
   Future<Either<Failure, List<TaskEntity>>> getTasksByCategory(String category);
   Future<Either<Failure, Unit>> addCategory(String category);
-  Future<Either<Failure, List<String>>> getCategories();
+  Future<Either<Failure, List<Map<String, dynamic>>>> getCategories();
 }

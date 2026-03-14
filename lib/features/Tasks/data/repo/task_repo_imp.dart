@@ -54,22 +54,39 @@ class TaskRepoImp implements TaskRepo {
   }
 
   @override
-  Future<Either<Failure, Unit>> addCategory(String category) {
-    // TODO: implement addCategory
-    throw UnimplementedError();
+  Future<Either<Failure, Unit>> addCategory(String category) async {
+    try {
+      await taskLocalDataSource.addCategory(category);
+      return Right(unit);
+    } catch (e) {
+      return Left(StorageFailure('Failed to add category: ${e.toString()}'));
+    }
   }
 
   @override
-  Future<Either<Failure, List<String>>> getCategories() {
-    // TODO: implement getCategories
-    throw UnimplementedError();
+  Future<Either<Failure, List<Map<String, dynamic>>>> getCategories() async {
+    try {
+      final categories = await taskLocalDataSource.getCategories();
+      return Right(categories);
+    } catch (e) {
+      return Left(
+        StorageFailure('Failed to fetch categories: ${e.toString()}'),
+      );
+    }
   }
 
   @override
   Future<Either<Failure, List<TaskEntity>>> getTasksByCategory(
     String category,
-  ) {
-    // TODO: implement getTasksByCategory
-    throw UnimplementedError();
+  ) async {
+    try {
+      final taskModels = await taskLocalDataSource.getTasksByCategory(category);
+      final taskEntities = taskModels.map((model) => model.toEntity()).toList();
+      return Right(taskEntities);
+    } catch (e) {
+      return Left(
+        StorageFailure('Failed to fetch tasks by category: ${e.toString()}'),
+      );
+    }
   }
 }

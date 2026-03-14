@@ -1,4 +1,5 @@
-import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:tasks_manager/Core/database/base_locel_data_sources.dart';
 import 'package:tasks_manager/Core/database/database_helper.dart';
 import 'package:tasks_manager/features/Tasks/data/repo/task_repo_imp.dart';
@@ -40,13 +41,15 @@ class InjectionContainer extends Bindings {
     Get.lazyPut<UpdateTask>(() => UpdateTask(Get.find()));
 
     // controllers
-    Get.lazyPut<TaskController>(()=>TaskController(
-      getCategories: Get.find(),
-      getTasksByCategoryUseCase: Get.find(),
-      getTasks: Get.find(),
-      addTask: Get.find(),
-      addCategory: Get.find(),
-    ));
+    Get.lazyPut<TaskController>(
+      () => TaskController(
+        getCategories: Get.find(),
+        getTasksByCategoryUseCase: Get.find(),
+        getTasks: Get.find(),
+        addTask: Get.find(),
+        addCategory: Get.find(),
+      ),
+    );
   }
 }
 

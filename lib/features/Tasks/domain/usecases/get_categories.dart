@@ -6,7 +6,7 @@ class GetCategories {
   final TaskRepo taskRepo;
   GetCategories(this.taskRepo);
 
-  Future<Either<Failure, List<String>>> call() async {
+  Future<Either<Failure, List<Map<String, dynamic>>>> call() async {
     return await taskRepo.getCategories();
   }
 }
