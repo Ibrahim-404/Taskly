@@ -14,10 +14,11 @@ class DatabaseHelper {
 
 Future<Database> _initDatabase() async {
   String path = await join(await getDatabasesPath(), 'tasks_manager.db');
-  return await openDatabase(path, version: 1, onCreate: _onCreate);
+  return await openDatabase(path, version: 2, onCreate: _onCreate);
 }
 
 Future<void> _onCreate(Database db, int version) async {
   await CategoryOfTask().addANewCategory(db);
   await Tasksdatatable().createTasksTable(db);
+  await db.insert('category_of_task', {'category_name': 'life'});
 }

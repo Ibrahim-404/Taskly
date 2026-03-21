@@ -22,7 +22,7 @@ class Tasksdatatable {
       $description TEXT NOT NULL,
       $isDone INTEGER NOT NULL,
       $date TEXT NOT NULL,
-      $categoryId INTEGER 
+      $categoryId INTEGER ,
       FOREIGN KEY ($categoryId)
       REFERENCES ${CategoryOfTask.tableName}(${CategoryOfTask.id}) 
       ON DELETE SET NULL

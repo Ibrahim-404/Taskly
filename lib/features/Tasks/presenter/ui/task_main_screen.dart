@@ -9,7 +9,9 @@ class TaskMainScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Dialog(child: Column(children: []));
+        },
         child: Icon(Icons.add),
       ),
       body: TaskComposition(),

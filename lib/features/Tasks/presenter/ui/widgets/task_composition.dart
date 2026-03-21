@@ -10,10 +10,16 @@ class TaskComposition extends StatefulWidget {
   final FocusNode focusNode = FocusNode();
   @override
   State<TaskComposition> createState() => _TaskCompositionState();
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 }
 
 class _TaskCompositionState extends State<TaskComposition> {
+  @override
+  void initState() {
+    taskController.fetchCategories();
+    super.initState();
+  }
+
   final TaskController taskController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -32,113 +38,23 @@ class _TaskCompositionState extends State<TaskComposition> {
                       child: Obx(
                         () => ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: taskController.categories.length + 2,
+                          itemCount: taskController.categories.length + 1,
                           itemBuilder: (context, index) {
-                            if (index == 0) {
-                              return const CategoryWidget(categoryName: "life");
-                            } else if (index ==
-                                taskController.categories.length + 1) {
-                              return GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => Dialog(
-                                      child: GestureDetector(
-                                        behavior: HitTestBehavior.opaque,
-                                        onTap: () =>
-                                            FocusScope.of(context).unfocus(),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Form(
-                                            key: widget.formKey,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                TextFormField(
-                                                  validator: (value) {
-                                                    if (value == null ||
-                                                        value.isEmpty) {
-                                                      return 'Please enter a category name';
-                                                    }
-                                                    FocusScope.of(
-                                                      context,
-                                                    ).unfocus();
-                                                    FocusScope.of(
-                                                      context,
-                                                    ).unfocus();
-                                                    return null;
-                                                  },
-                                                  controller: widget.controller,
-                                                  decoration:
-                                                      const InputDecoration(
-                                                        border: OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                color:
-                                                                    Colors.blue,
-                                                              ),
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                Radius.circular(
-                                                                  20,
-                                                                ),
-                                                              ),
-                                                        ),
-                                                        hintText:
-                                                            "Category Name",
-                                                      ),
-                                                ),
-                                                const SizedBox(height: 16),
-                                                ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            Colors.blueAccent,
-                                                      ),
-                                                  onPressed: () {
-                                                    if (widget
-                                                        .formKey
-                                                        .currentState!
-                                                        .validate()) {
-                                                      taskController
-                                                          .addANewCategory(
-                                                            widget
-                                                                .controller
-                                                                .text,
-                                                          );
-                                                      Navigator.pop(context);
-                                                      widget.controller.clear();
-                                                    }
-                                                  },
-                                                  child: const Text("Add"),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 8.0,
-                                    vertical: 10,
-                                  ),
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.blue,
-                                    child: Icon(Icons.add, color: Colors.white),
-                                  ),
-                                ),
+                            final categories = taskController.categories;
+                            print("categories : $categories");
+                            if (index == taskController.categories.length) {
+                              return AddNewCategoryWidget(
+                                widget: widget,
+                                taskController: taskController,
+                              );
+                            } else {
+                              return CategoryWidget(
+                                categoryName:
+                                    categories[index]['category_name']
+                                        as String? ??
+                                    'Category $index',
                               );
                             }
-                            final category =
-                                taskController.categories[index - 1];
-                            return CategoryWidget(
-                              categoryName:
-                                  category['category_name'] ??
-                                  'Category $index',
-                            );
                           },
                         ),
                       ),
@@ -148,6 +64,85 @@ class _TaskCompositionState extends State<TaskComposition> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class AddNewCategoryWidget extends StatelessWidget {
+  const AddNewCategoryWidget({
+    super.key,
+    required this.widget,
+    required this.taskController,
+  });
+
+  final TaskComposition widget;
+  final TaskController taskController;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) => Dialog(
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: widget.formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a category name';
+                          }
+                          FocusScope.of(context).unfocus();
+                          return null;
+                        },
+                        controller: widget.controller,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          hintText: "Category Name",
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueAccent,
+                        ),
+                        onPressed: () {
+                          if (widget.formKey.currentState!.validate()) {
+                            taskController.addANewCategory(
+                              widget.controller.text,
+                            );
+                            Navigator.pop(context);
+                            widget.controller.clear();
+                          }
+                        },
+                        child: const Text("Add"),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+        child: CircleAvatar(
+          backgroundColor: Colors.blue,
+          child: Icon(Icons.add, color: Colors.white),
         ),
       ),
     );
