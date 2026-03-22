@@ -20,7 +20,7 @@ class Taskly extends StatelessWidget {
       title: 'Taskly',
       theme: ThemeData(useMaterial3: true),
       darkTheme: ThemeData.dark(),
-      home: const TaskMainScreen(),
+      home: TaskMainScreen(),
       initialBinding: InjectionContainer(),
     );
   }

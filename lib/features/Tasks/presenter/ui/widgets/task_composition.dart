@@ -41,8 +41,7 @@ class _TaskCompositionState extends State<TaskComposition> {
                           itemCount: taskController.categories.length + 1,
                           itemBuilder: (context, index) {
                             final categories = taskController.categories;
-                            print("categories : $categories");
-                            if (index == taskController.categories.length) {
+                            if (index == categories.length) {
                               return AddNewCategoryWidget(
                                 widget: widget,
                                 taskController: taskController,
@@ -102,7 +101,6 @@ class AddNewCategoryWidget extends StatelessWidget {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a category name';
                           }
-                          FocusScope.of(context).unfocus();
                           return null;
                         },
                         controller: widget.controller,
@@ -172,7 +170,6 @@ class CategoryWidget extends StatelessWidget {
               offset: const Offset(0, 2),
             ),
           ],
-          // borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.blue.shade200),
         ),
         child: Center(
