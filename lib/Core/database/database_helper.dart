@@ -1,6 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:tasks_manager/Core/database/Tables/category_of_task.dart';
+import 'package:tasks_manager/Core/database/Tables/sub_task_table.dart';
 import 'package:tasks_manager/Core/database/Tables/tasksDataTable.dart';
 
 class DatabaseHelper {
@@ -14,11 +15,12 @@ class DatabaseHelper {
 
 Future<Database> _initDatabase() async {
   String path = await join(await getDatabasesPath(), 'tasks_manager.db');
-  return await openDatabase(path, version: 2, onCreate: _onCreate);
+  return await openDatabase(path, version: 3, onCreate: _onCreate);
 }
 
 Future<void> _onCreate(Database db, int version) async {
   await CategoryOfTask().addANewCategory(db);
   await Tasksdatatable().createTasksTable(db);
+  await SubTaskTable().createSubTasksTable(db);
   await db.insert('category_of_task', {'category_name': 'life'});
 }

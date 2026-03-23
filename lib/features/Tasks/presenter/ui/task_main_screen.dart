@@ -17,7 +17,7 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
   final TextEditingController mainDescriptionController =
       TextEditingController();
   final TextEditingController SubTask1Controller = TextEditingController();
-  final TextEditingController SubTask1DescraptionController =
+  final TextEditingController SubTask1descriptionController =
       TextEditingController();
   // TextEditingController SubTask3Controller = TextEditingController();
 
@@ -36,7 +36,10 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
     );
   }
 
-  void CustomShowDialogForAddNewTask(BuildContext context, TaskController taskController) {
+  void CustomShowDialogForAddNewTask(
+    BuildContext context,
+    TaskController taskController,
+  ) {
     showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -46,7 +49,7 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height * 0.7,
           ),
-    
+
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
@@ -77,7 +80,12 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
                     const SizedBox(height: 8),
                     ChoiceDeadline(),
                     ChangeIconBasedOnController(isSubTask: isSubTask),
-                    ControllerOfSubTaskAndDescraption(isSubTask: isSubTask, SubTask1Controller: SubTask1Controller, SubTask1DescraptionController: SubTask1DescraptionController),
+                    ControllerOfSubTaskAnddescription(
+                      isSubTask: isSubTask,
+                      SubTask1Controller: SubTask1Controller,
+                      SubTask1descriptionController:
+                          SubTask1descriptionController,
+                    ),
                     const SizedBox(height: 16),
                     CustomButton(),
                   ],
@@ -92,20 +100,18 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
 
   LottieBuilder CsutomLottieAnimation() {
     return Lottie.asset(
-                    'assets/animation/Order History.json',
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.fill,
-                    repeat: true,
-                    reverse: false,
-                  );
+      'assets/animation/Order History.json',
+      width: 200,
+      height: 200,
+      fit: BoxFit.fill,
+      repeat: true,
+      reverse: false,
+    );
   }
 }
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({
-    super.key,
-  });
+  const CustomButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -119,17 +125,17 @@ class CustomButton extends StatelessWidget {
   }
 }
 
-class ControllerOfSubTaskAndDescraption extends StatelessWidget {
-  const ControllerOfSubTaskAndDescraption({
+class ControllerOfSubTaskAnddescription extends StatelessWidget {
+  const ControllerOfSubTaskAnddescription({
     super.key,
     required this.isSubTask,
     required this.SubTask1Controller,
-    required this.SubTask1DescraptionController,
+    required this.SubTask1descriptionController,
   });
 
   final RxBool isSubTask;
   final TextEditingController SubTask1Controller;
-  final TextEditingController SubTask1DescraptionController;
+  final TextEditingController SubTask1descriptionController;
 
   @override
   Widget build(BuildContext context) {
@@ -142,17 +148,13 @@ class ControllerOfSubTaskAndDescraption extends StatelessWidget {
               begin: const Offset(0, -0.3),
               end: Offset.zero,
             ).animate(animation),
-            child: FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
+            child: FadeTransition(opacity: animation, child: child),
           );
         },
         child: isSubTask.value
             ? CustomRowForSubTask(
                 controller: SubTask1Controller,
-                descraption:
-                    SubTask1DescraptionController,
+                description: SubTask1descriptionController,
               )
             : const SizedBox(key: ValueKey("empty")),
       ),
@@ -161,10 +163,7 @@ class ControllerOfSubTaskAndDescraption extends StatelessWidget {
 }
 
 class ChangeIconBasedOnController extends StatelessWidget {
-  const ChangeIconBasedOnController({
-    super.key,
-    required this.isSubTask,
-  });
+  const ChangeIconBasedOnController({super.key, required this.isSubTask});
 
   final RxBool isSubTask;
 
@@ -174,7 +173,7 @@ class ChangeIconBasedOnController extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text("Add Sub Task "),
-        
+
         Obx(
           () => AnimatedRotation(
             turns: isSubTask.value ? 0.5 : 0.0,
@@ -197,9 +196,7 @@ class ChangeIconBasedOnController extends StatelessWidget {
 }
 
 class ChoiceDeadline extends StatelessWidget {
-  const ChoiceDeadline({
-    super.key,
-  });
+  const ChoiceDeadline({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -250,8 +247,6 @@ class ChoiceDeadline extends StatelessWidget {
   }
 }
 
-
-
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final int maxLines;
@@ -299,12 +294,12 @@ class CustomTextFormField extends StatelessWidget {
 
 class CustomRowForSubTask extends StatelessWidget {
   final TextEditingController controller;
-  final TextEditingController descraption;
+  final TextEditingController description;
 
   CustomRowForSubTask({
     super.key,
     required this.controller,
-    required this.descraption,
+    required this.description,
   });
 
   final RxBool isExpanded = false.obs;
@@ -339,65 +334,63 @@ class CustomRowForSubTask extends StatelessWidget {
           if (isExpanded.value)
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: CustomTextFormField(controller: descraption, maxLines: 3),
+              child: CustomTextFormField(controller: description, maxLines: 3),
             ),
         ],
       ),
     );
   }
 }
+
 class ShowCategoryListAsDropDown extends StatelessWidget {
- final TaskController taskController;
+  final TaskController taskController;
   const ShowCategoryListAsDropDown({super.key, required this.taskController});
 
   @override
   Widget build(BuildContext context) {
     return Row(
-                      children: [
-                        const Expanded(child: Text("Category")),
-                        Expanded(
-                          child: Obx(
-                            () => DropdownButtonFormField<String>(
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.grey.shade100,
-    
-                                contentPadding:
-                                    const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 12,
-                                    ),
-    
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  borderSide: BorderSide.none,
-                                ),
-    
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue.shade300,
-                                    width: 1.5,
-                                  ),
-                                ),
-                              ),
-                              isExpanded: true,
-                              hint: const Text("Select"),
-                              items: taskController.categories.map((cat) {
-                                return DropdownMenuItem<String>(
-                                  value: cat['category_name'].toString(),
-                                  child: Text(
-                                    cat['category_name'].toString(),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                // Handle category selection
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
+      children: [
+        const Expanded(child: Text("Category")),
+        Expanded(
+          child: Obx(
+            () => DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.grey.shade100,
+
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide.none,
+                ),
+
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(
+                    color: Colors.blue.shade300,
+                    width: 1.5,
+                  ),
+                ),
+              ),
+              isExpanded: true,
+              hint: const Text("Select"),
+              items: taskController.categories.map((cat) {
+                return DropdownMenuItem<String>(
+                  value: cat['category_name'].toString(),
+                  child: Text(cat['category_name'].toString()),
+                );
+              }).toList(),
+              onChanged: (value) {
+                // Handle category selection
+              },
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
