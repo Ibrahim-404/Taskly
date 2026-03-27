@@ -12,14 +12,9 @@ class TaskMainScreen extends StatefulWidget {
 }
 
 class _TaskMainScreenState extends State<TaskMainScreen> {
-  final RxBool isSubTask = false.obs;
   final TextEditingController titleController = TextEditingController();
   final TextEditingController mainDescriptionController =
       TextEditingController();
-  final TextEditingController SubTask1Controller = TextEditingController();
-  final TextEditingController SubTask1descriptionController =
-      TextEditingController();
-  // TextEditingController SubTask3Controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -79,13 +74,8 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
                     ShowCategoryListAsDropDown(taskController: taskController),
                     const SizedBox(height: 8),
                     ChoiceDeadline(),
-                    ChangeIconBasedOnController(isSubTask: isSubTask),
-                    ControllerOfSubTaskAnddescription(
-                      isSubTask: isSubTask,
-                      SubTask1Controller: SubTask1Controller,
-                      SubTask1descriptionController:
-                          SubTask1descriptionController,
-                    ),
+                    const SizedBox(height: 16),
+                    DynamicSubTaskSection(taskController: taskController),
                     const SizedBox(height: 16),
                     CustomButton(),
                   ],
@@ -125,75 +115,44 @@ class CustomButton extends StatelessWidget {
   }
 }
 
-class ControllerOfSubTaskAnddescription extends StatelessWidget {
-  const ControllerOfSubTaskAnddescription({
-    super.key,
-    required this.isSubTask,
-    required this.SubTask1Controller,
-    required this.SubTask1descriptionController,
-  });
+// class ControllerOfSubTaskAnddescription extends StatelessWidget {
+//   const ControllerOfSubTaskAnddescription({
+//     super.key,
+//     required this.isSubTask,
+//     required this.SubTask1Controller,
+//     required this.SubTask1descriptionController,
+//   });
 
-  final RxBool isSubTask;
-  final TextEditingController SubTask1Controller;
-  final TextEditingController SubTask1descriptionController;
+//   final RxBool isSubTask;
+//   final TextEditingController SubTask1Controller;
+//   final TextEditingController SubTask1descriptionController;
 
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        transitionBuilder: (child, animation) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, -0.3),
-              end: Offset.zero,
-            ).animate(animation),
-            child: FadeTransition(opacity: animation, child: child),
-          );
-        },
-        child: isSubTask.value
-            ? CustomRowForSubTask(
-                controller: SubTask1Controller,
-                description: SubTask1descriptionController,
-              )
-            : const SizedBox(key: ValueKey("empty")),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Obx(
+//       () => AnimatedSwitcher(
+//         duration: const Duration(milliseconds: 300),
+//         transitionBuilder: (child, animation) {
+//           return SlideTransition(
+//             position: Tween<Offset>(
+//               begin: const Offset(0, -0.3),
+//               end: Offset.zero,
+//             ).animate(animation),
+//             child: FadeTransition(opacity: animation, child: child),
+//           );
+//         },
+//         child: isSubTask.value
+//             ? CustomRowForSubTask(
+//                 controller: SubTask1Controller,
+//                 description: SubTask1descriptionController,
+//               )
+//             : const SizedBox(key: ValueKey("empty")),
+//       ),
+//     );
+//   }
+// }
 
-class ChangeIconBasedOnController extends StatelessWidget {
-  const ChangeIconBasedOnController({super.key, required this.isSubTask});
 
-  final RxBool isSubTask;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text("Add Sub Task "),
-
-        Obx(
-          () => AnimatedRotation(
-            turns: isSubTask.value ? 0.5 : 0.0,
-            duration: Duration(milliseconds: 300),
-            child: IconButton(
-              onPressed: () {
-                isSubTask.value = !isSubTask.value;
-              },
-              icon: Icon(
-                isSubTask.value == true
-                    ? Icons.keyboard_arrow_up_rounded
-                    : Icons.arrow_forward_ios,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 class ChoiceDeadline extends StatelessWidget {
   const ChoiceDeadline({super.key});
@@ -394,3 +353,58 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
     );
   }
 }
+
+class DynamicSubTaskSection extends StatelessWidget {
+  final TaskController taskController;
+  const DynamicSubTaskSection({super.key, required this.taskController});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              "Sub Tasks",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            IconButton(
+              onPressed: () => taskController.addSubTask(),
+              icon: const Icon(Icons.add_circle, color: Colors.blue),
+            ),
+          ],
+        ),
+        Obx(
+          () => ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: taskController.subTasksList.length,
+            itemBuilder: (context, index) {
+              final subTask = taskController.subTasksList[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: CustomRowForSubTask(
+                        controller: subTask.subTaskTextEditingController,
+                        description: subTask.subTaskDescriptionTextEditingController,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.remove_circle_outline, color: Colors.red),
+                      onPressed: () => taskController.removeSubTask(index),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+

@@ -4,11 +4,13 @@ import 'package:tasks_manager/Core/controller/base_controller.dart';
 import 'package:tasks_manager/features/Tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/Tasks/domain/usecases/add_task.dart';
 import 'package:tasks_manager/features/Tasks/domain/usecases/get_categories.dart';
+import 'package:tasks_manager/features/Tasks/presenter/controllers/sub_task_text_edit_controller_model.dart';
 
 class AddtaskCategoryController extends BaseController {
   final GetCategories getCategories;
   final AddTask addTask;
-  AddtaskCategoryController({
+  AddtaskCategoryController(
+    this.subTaskTextEditControllerModel, {
     required this.getCategories,
     required this.addTask,
   });
@@ -16,9 +18,9 @@ class AddtaskCategoryController extends BaseController {
   final taskErrorMessage = ''.obs;
   final taskName = TextEditingController();
   final taskDescription = TextEditingController();
-  final subTaskTitle = TextEditingController();
-  final subtaskDescription = TextEditingController();
-
+  final SubTaskTextEditControllerModel subTaskTextEditControllerModel;
+  final RxList<SubTaskTextEditControllerModel> subTasksList =
+      <SubTaskTextEditControllerModel>[].obs;
   final subTasks = <Map<String, dynamic>>[].obs;
   final taskCategory = <Map<String, dynamic>>[].obs;
 
@@ -36,8 +38,17 @@ class AddtaskCategoryController extends BaseController {
       },
     );
   }
+  Future<void> addNewSubTask() async {
+    subTasksList.add(
+      SubTaskTextEditControllerModel(
+        subTaskTextEditingController: TextEditingController(),
+        subTaskDescriptionTextEditingController: TextEditingController(),
+      ),
+    );
+  } 
 
   Future<void> addANewTask(TaskEntity task) async {
+    LoadingState.value = true;
     final result = await addTask(task);
     result.fold(
       (failure) => taskErrorMessage.value = failure.message,
