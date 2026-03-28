@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:tasks_manager/Core/database/database_helper.dart';
@@ -5,6 +6,7 @@ import 'package:tasks_manager/features/Tasks/data/datasource/locelDataSources/ta
 import 'package:tasks_manager/features/Tasks/data/repo/task_repo_imp.dart';
 import 'package:tasks_manager/features/Tasks/domain/repo/task_repo.dart';
 import 'package:tasks_manager/features/Tasks/presenter/controllers/category_management.dart';
+import 'package:tasks_manager/features/Tasks/presenter/controllers/sub_task_text_edit_controller_model.dart';
 
 import '../features/Tasks/data/datasource/locelDataSources/task_local_data_source_imp.dart';
 import '../features/Tasks/domain/usecases/add_category.dart';
@@ -59,7 +61,10 @@ class InjectionContainer extends Bindings {
     );
     Get.lazyPut<AddtaskCategoryController>(
       () => AddtaskCategoryController(
-        Get.find(),
+        SubTaskTextEditControllerModel(
+          subTaskTextEditingController: TextEditingController(),
+          subTaskDescriptionTextEditingController: TextEditingController(),
+        ),
         getCategories: Get.find(),
         addTask: Get.find(),
       ),

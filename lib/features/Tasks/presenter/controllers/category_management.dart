@@ -15,11 +15,11 @@ class AddtaskCategoryController extends BaseController {
     required this.getCategories,
     required this.addTask,
   });
+    final SubTaskTextEditControllerModel subTaskTextEditControllerModel;
   final loadingState = false.obs;
   final taskErrorMessage = ''.obs;
   final taskName = TextEditingController();
   final taskDescription = TextEditingController();
-  final SubTaskTextEditControllerModel subTaskTextEditControllerModel;
   final RxList<SubTaskTextEditControllerModel> subTasksList =
       <SubTaskTextEditControllerModel>[].obs;
   final subTasks = <Map<String, dynamic>>[].obs;
