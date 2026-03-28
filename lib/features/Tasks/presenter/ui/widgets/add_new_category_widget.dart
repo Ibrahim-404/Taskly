@@ -60,7 +60,7 @@ class AddNewCategoryWidget extends StatelessWidget {
                             widget.controller.clear();
                           }
                         },
-                        child: const Text("Add"),
+                        child: const Text(Strings.add),
                       ),
                     ],
                   ),

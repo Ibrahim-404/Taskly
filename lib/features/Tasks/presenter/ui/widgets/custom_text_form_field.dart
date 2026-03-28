@@ -4,20 +4,25 @@ import 'package:tasks_manager/Core/const/strings.dart';
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final int maxLines;
+  final String? hintText;
+  final String? Function(String?)? validator;
 
   const CustomTextFormField({
     super.key,
     required this.controller,
     this.maxLines = 1,
+    this.hintText,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       maxLines: maxLines,
+      validator: validator,
       decoration: InputDecoration(
-        hintText: Strings.enterTaskName,
+        hintText: hintText ?? Strings.enterTaskName,
 
         filled: true,
         fillColor: Colors.grey.shade100,

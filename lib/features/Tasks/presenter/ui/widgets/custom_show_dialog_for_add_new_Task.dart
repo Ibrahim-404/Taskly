@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tasks_manager/features/Tasks/presenter/controllers/category_management.dart';
 import 'package:tasks_manager/features/Tasks/presenter/controllers/task_controller.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/choice_deadline.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/csutom_lottie_animation.dart';
@@ -10,17 +11,9 @@ import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/show_category_
 import 'package:tasks_manager/Core/const/strings.dart';
 
 class CustomShowDialogForAddNewTask extends StatelessWidget {
-  final TaskController taskController;
-  final TextEditingController titleController;
-  final TextEditingController mainDescriptionController;
-
-  const CustomShowDialogForAddNewTask({
-    required this.taskController,
-    required this.titleController,
-    required this.mainDescriptionController,
-    super.key,
-  });
-
+  CustomShowDialogForAddNewTask({super.key});
+  final AddtaskCategoryController addtaskCategoryController = Get.find();
+  final TaskController taskController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -37,6 +30,7 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Form(
+              key: addtaskCategoryController.formKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -46,20 +40,45 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                   ),
                   CsutomLottieAnimation(),
                   const SizedBox(height: 16),
-                  CustomTextFormField(controller: titleController),
+                  CustomTextFormField(
+                    controller: addtaskCategoryController.taskName,
+                    hintText: Strings.title,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return Strings.titleRequired;
+                      }
+                      return null;
+                    },
+                  ),
                   const SizedBox(height: 8),
                   CustomTextFormField(
-                    controller: mainDescriptionController,
+                    controller: addtaskCategoryController.taskDescription,
                     maxLines: 3,
+                    hintText: Strings.description,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return Strings.descriptionRequired;
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 16),
-                  ShowCategoryListAsDropDown(taskController: taskController),
+                  ShowCategoryListAsDropDown(
+                    taskController: taskController,
+                    addtaskCategoryController: addtaskCategoryController,
+                  ),
                   const SizedBox(height: 8),
-                  ChoiceDeadline(addtaskCategoryController: Get.find()),
+                  ChoiceDeadline(
+                    addtaskCategoryController: addtaskCategoryController,
+                  ),
                   const SizedBox(height: 16),
                   DynamicSubTaskSection(taskController: taskController),
                   const SizedBox(height: 16),
-                  CustomButton(),
+                  CustomButton(
+                    formKey: addtaskCategoryController.formKey,
+                    taskController: taskController,
+                    addtaskCategoryController: addtaskCategoryController,
+                  ),
                 ],
               ),
             ),

@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:tasks_manager/features/Tasks/presenter/controllers/task_controller.dart';
+import 'package:tasks_manager/features/Tasks/presenter/controllers/category_management.dart';
 import 'package:tasks_manager/Core/const/strings.dart';
 
 class ShowCategoryListAsDropDown extends StatelessWidget {
   final TaskController taskController;
-  const ShowCategoryListAsDropDown({super.key, required this.taskController});
+  final AddtaskCategoryController addtaskCategoryController;
+  const ShowCategoryListAsDropDown({
+    super.key,
+    required this.taskController,
+    required this.addtaskCategoryController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +52,9 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
                 );
               }).toList(),
               onChanged: (value) {
-                // Handle category selection
+                if (value != null) {
+                  addtaskCategoryController.setSelectedCategory(value);
+                }
               },
             ),
           ),

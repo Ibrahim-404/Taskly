@@ -24,9 +24,12 @@ class AddtaskCategoryController extends BaseController {
       <SubTaskTextEditControllerModel>[].obs;
   final subTasks = <Map<String, dynamic>>[].obs;
   final taskCategory = <Map<String, dynamic>>[].obs;
-  final Rx<DateTime> selectedtime = DateTime.now().obs;
-  final Rx<TimeOfDay> selectedDate = TimeOfDay.now().obs;
-  final selectedCategoryId = ''.obs;
+  final Rxn<DateTime> selectedDeadline = Rxn<DateTime>();
+  final Rxn<TimeOfDay> selectedTime = Rxn<TimeOfDay>();
+  final selectedCategory = ''.obs;
+  final isDatePicked = false.obs;
+  final isTimePicked = false.obs;
+  final formKey = GlobalKey<FormState>();
 
   Future<void> fetchCategories() async {
     loadingState.value = true;
@@ -59,5 +62,30 @@ class AddtaskCategoryController extends BaseController {
       (failure) => taskErrorMessage.value = failure.message,
       (r) => (),
     );
+    loadingState.value = false;
+  }
+
+  void setSelectedCategory(String category) {
+    selectedCategory.value = category;
+  }
+
+  void setSelectedDeadline(DateTime date) {
+    selectedDeadline.value = date;
+    isDatePicked.value = true;
+  }
+
+  void setSelectedTime(TimeOfDay time) {
+    selectedTime.value = time;
+    isTimePicked.value = true;
+  }
+
+  void clearAll() {
+    taskName.clear();
+    taskDescription.clear();
+    selectedCategory.value = '';
+    selectedDeadline.value = null;
+    selectedTime.value = null;
+    isDatePicked.value = false;
+    isTimePicked.value = false;
   }
 }
