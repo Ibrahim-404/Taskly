@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/Core/strings.dart';
+import 'package:tasks_manager/Core/const/strings.dart';
 
 class CustomSearch extends StatefulWidget {
   final TextEditingController searchController;

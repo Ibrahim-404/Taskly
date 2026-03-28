@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/choice_deadline.dart';
-import 'package:tasks_manager/Core/strings.dart';
+import 'package:tasks_manager/Core/const/strings.dart';
 
 class CustomBottomSheet extends StatefulWidget {
   final TextEditingController titleController;

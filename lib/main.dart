@@ -3,7 +3,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/task_main_screen.dart';
 
 import 'Core/injection_container.dart';
-import 'Core/strings.dart';
+import 'Core/const/strings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

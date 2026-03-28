@@ -7,7 +7,7 @@ import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/custom_button.
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/custom_text_form_field.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/dynamic_sub_task_section.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/show_category_list_as_drop_down.dart';
-import 'package:tasks_manager/Core/strings.dart';
+import 'package:tasks_manager/Core/const/strings.dart';
 
 class CustomShowDialogForAddNewTask extends StatelessWidget {
   final TaskController taskController;

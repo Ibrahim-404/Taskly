@@ -4,7 +4,7 @@ import 'package:tasks_manager/features/Tasks/presenter/controllers/task_controll
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/add_new_category_widget.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/category_widget.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/custom_search.dart';
-import 'package:tasks_manager/Core/strings.dart';
+import 'package:tasks_manager/Core/const/strings.dart';
 
 class TaskComposition extends StatefulWidget {
   TaskComposition({super.key});

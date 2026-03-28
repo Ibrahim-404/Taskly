@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_manager/features/Tasks/presenter/controllers/category_management.dart';
-import 'package:tasks_manager/Core/strings.dart';
+import 'package:tasks_manager/Core/const/strings.dart';
 
 class ChoiceDeadline extends StatelessWidget {
   const ChoiceDeadline({super.key, required this.addtaskCategoryController});
@@ -17,10 +17,13 @@ class ChoiceDeadline extends StatelessWidget {
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2030),
               );
-              // if (date != null) setState(() => selectedDate = date);
             },
             icon: const Icon(Icons.calendar_month),
-            label: Text(Strings.setDate),
+            label: Text(
+              addtaskCategoryController.selectedtime.value != DateTime.now()
+                  ? "${addtaskCategoryController.selectedtime.value.day}/${addtaskCategoryController.selectedtime.value.month}/${addtaskCategoryController.selectedtime.value.year}"
+                  : Strings.setDate,
+            ),
           ),
         ),
 
@@ -33,15 +36,12 @@ class ChoiceDeadline extends StatelessWidget {
                 context: context,
                 initialTime: addtaskCategoryController.selectedDate.value,
               );
-              // if (time != null) setState(() => selectedTime = time);
             },
             icon: const Icon(Icons.access_time),
             label: Text(
-              //   selectedTime == null
-              //       ? "Set Time"
-              //       : selectedTime!.format(context),
-              // ),
-              Strings.setTime,
+              addtaskCategoryController.selectedDate.value != TimeOfDay.now()
+                  ? Strings.setTime
+                  : "${addtaskCategoryController.selectedDate.value.hour}:${addtaskCategoryController.selectedDate.value.minute}",
             ),
           ),
         ),
