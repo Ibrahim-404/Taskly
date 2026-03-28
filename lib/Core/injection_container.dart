@@ -4,6 +4,7 @@ import 'package:tasks_manager/Core/database/database_helper.dart';
 import 'package:tasks_manager/features/Tasks/data/datasource/locelDataSources/task_local_data_source.dart';
 import 'package:tasks_manager/features/Tasks/data/repo/task_repo_imp.dart';
 import 'package:tasks_manager/features/Tasks/domain/repo/task_repo.dart';
+import 'package:tasks_manager/features/Tasks/presenter/controllers/category_management.dart';
 
 import '../features/Tasks/data/datasource/locelDataSources/task_local_data_source_imp.dart';
 import '../features/Tasks/domain/usecases/add_category.dart';
@@ -53,6 +54,14 @@ class InjectionContainer extends Bindings {
         getTasks: Get.find(),
         addTask: Get.find(),
         addCategory: Get.find(),
+      ),
+      fenix: true,
+    );
+    Get.lazyPut<AddtaskCategoryController>(
+      () => AddtaskCategoryController(
+        Get.find(),
+        getCategories: Get.find(),
+        addTask: Get.find(),
       ),
       fenix: true,
     );

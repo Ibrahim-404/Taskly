@@ -3,6 +3,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/task_main_screen.dart';
 
 import 'Core/injection_container.dart';
+import 'Core/strings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +18,7 @@ class Taskly extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Taskly',
+      title: Strings.taskly,
       theme: ThemeData(useMaterial3: true),
       darkTheme: ThemeData.dark(),
       home: TaskMainScreen(),

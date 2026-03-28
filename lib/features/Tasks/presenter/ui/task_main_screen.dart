@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:tasks_manager/features/Tasks/presenter/controllers/task_controller.dart';
+import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/custom_show_dialog_for_add_new_Task.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/task_composition.dart';
 
 class TaskMainScreen extends StatefulWidget {
-  TaskMainScreen({super.key});
+  const TaskMainScreen({super.key});
 
   @override
   State<TaskMainScreen> createState() => _TaskMainScreenState();
@@ -17,394 +17,31 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
       TextEditingController();
 
   @override
+  void dispose() {
+    titleController.dispose();
+    mainDescriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final TaskController taskController = Get.find();
     return Scaffold(
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          CustomShowDialogForAddNewTask(context, taskController);
+          showDialog(
+            context: context,
+            builder: (context) => CustomShowDialogForAddNewTask(
+              taskController: taskController,
+              titleController: titleController,
+              mainDescriptionController: mainDescriptionController,
+            ),
+          );
         },
         child: const Icon(Icons.add),
       ),
       body: TaskComposition(),
     );
   }
-
-  void CustomShowDialogForAddNewTask(
-    BuildContext context,
-    TaskController taskController,
-  ) {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        elevation: 1,
-        clipBehavior: Clip.antiAlias,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.7,
-          ),
-
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      "Add New Task",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    CsutomLottieAnimation(),
-                    const SizedBox(height: 16),
-                    CustomTextFormField(controller: titleController),
-                    const SizedBox(height: 8),
-                    CustomTextFormField(
-                      controller: mainDescriptionController,
-                      maxLines: 3,
-                    ),
-                    const SizedBox(height: 16),
-                    ShowCategoryListAsDropDown(taskController: taskController),
-                    const SizedBox(height: 8),
-                    ChoiceDeadline(),
-                    const SizedBox(height: 16),
-                    DynamicSubTaskSection(taskController: taskController),
-                    const SizedBox(height: 16),
-                    CustomButton(),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  LottieBuilder CsutomLottieAnimation() {
-    return Lottie.asset(
-      'assets/animation/Order History.json',
-      width: 200,
-      height: 200,
-      fit: BoxFit.fill,
-      repeat: true,
-      reverse: false,
-    );
-  }
 }
-
-class CustomButton extends StatelessWidget {
-  const CustomButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        // Logic to add task
-        Navigator.pop(context);
-      },
-      child: const Text("Add Task"),
-    );
-  }
-}
-
-// class ControllerOfSubTaskAnddescription extends StatelessWidget {
-//   const ControllerOfSubTaskAnddescription({
-//     super.key,
-//     required this.isSubTask,
-//     required this.SubTask1Controller,
-//     required this.SubTask1descriptionController,
-//   });
-
-//   final RxBool isSubTask;
-//   final TextEditingController SubTask1Controller;
-//   final TextEditingController SubTask1descriptionController;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Obx(
-//       () => AnimatedSwitcher(
-//         duration: const Duration(milliseconds: 300),
-//         transitionBuilder: (child, animation) {
-//           return SlideTransition(
-//             position: Tween<Offset>(
-//               begin: const Offset(0, -0.3),
-//               end: Offset.zero,
-//             ).animate(animation),
-//             child: FadeTransition(opacity: animation, child: child),
-//           );
-//         },
-//         child: isSubTask.value
-//             ? CustomRowForSubTask(
-//                 controller: SubTask1Controller,
-//                 description: SubTask1descriptionController,
-//               )
-//             : const SizedBox(key: ValueKey("empty")),
-//       ),
-//     );
-//   }
-// }
-
-
-
-class ChoiceDeadline extends StatelessWidget {
-  const ChoiceDeadline({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: OutlinedButton.icon(
-            onPressed: () async {
-              final date = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime.now(),
-                lastDate: DateTime(2100),
-              );
-              // if (date != null) setState(() => selectedDate = date);
-            },
-            icon: const Icon(Icons.calendar_month),
-            label: Text(
-              // selectedDate == null
-              //     ? "Set Date"
-              //     : "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
-              "Set Date",
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: OutlinedButton.icon(
-            onPressed: () async {
-              final time = await showTimePicker(
-                context: context,
-                initialTime: TimeOfDay.now(),
-              );
-              // if (time != null) setState(() => selectedTime = time);
-            },
-            icon: const Icon(Icons.access_time),
-            label: Text(
-              //   selectedTime == null
-              //       ? "Set Time"
-              //       : selectedTime!.format(context),
-              // ),
-              "Set Time",
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class CustomTextFormField extends StatelessWidget {
-  final TextEditingController controller;
-  final int maxLines;
-
-  const CustomTextFormField({
-    super.key,
-    required this.controller,
-    this.maxLines = 1,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      maxLines: maxLines,
-      decoration: InputDecoration(
-        hintText: "Enter Task Name",
-
-        filled: true,
-        fillColor: Colors.grey.shade100,
-
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 14,
-        ),
-
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide.none,
-        ),
-
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide.none,
-        ),
-
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.blue.shade300, width: 1.5),
-        ),
-      ),
-    );
-  }
-}
-
-class CustomRowForSubTask extends StatelessWidget {
-  final TextEditingController controller;
-  final TextEditingController description;
-
-  CustomRowForSubTask({
-    super.key,
-    required this.controller,
-    required this.description,
-  });
-
-  final RxBool isExpanded = false.obs;
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => Column(
-        children: [
-          Row(
-            children: [
-              Expanded(child: CustomTextFormField(controller: controller)),
-              const SizedBox(width: 8),
-              AnimatedRotation(
-                turns: isExpanded.value ? 0.5 : 0.0,
-                duration: const Duration(milliseconds: 300),
-                child: IconButton(
-                  onPressed: () {
-                    isExpanded.value = !isExpanded.value;
-                  },
-                  icon: Icon(
-                    isExpanded.value
-                        ? Icons.keyboard_arrow_up_rounded
-                        : Icons.arrow_forward_ios,
-                  ),
-                ),
-              ),
-            ],
-          ),
-
-          // 👇 Description
-          if (isExpanded.value)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: CustomTextFormField(controller: description, maxLines: 3),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class ShowCategoryListAsDropDown extends StatelessWidget {
-  final TaskController taskController;
-  const ShowCategoryListAsDropDown({super.key, required this.taskController});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Expanded(child: Text("Category")),
-        Expanded(
-          child: Obx(
-            () => DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey.shade100,
-
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide.none,
-                ),
-
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
-                    color: Colors.blue.shade300,
-                    width: 1.5,
-                  ),
-                ),
-              ),
-              isExpanded: true,
-              hint: const Text("Select"),
-              items: taskController.categories.map((cat) {
-                return DropdownMenuItem<String>(
-                  value: cat['category_name'].toString(),
-                  child: Text(cat['category_name'].toString()),
-                );
-              }).toList(),
-              onChanged: (value) {
-                // Handle category selection
-              },
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class DynamicSubTaskSection extends StatelessWidget {
-  final TaskController taskController;
-  const DynamicSubTaskSection({super.key, required this.taskController});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              "Sub Tasks",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            IconButton(
-              onPressed: () => taskController.addSubTask(),
-              icon: const Icon(Icons.add_circle, color: Colors.blue),
-            ),
-          ],
-        ),
-        Obx(
-          () => ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: taskController.subTasksList.length,
-            itemBuilder: (context, index) {
-              final subTask = taskController.subTasksList[index];
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: CustomRowForSubTask(
-                        controller: subTask.subTaskTextEditingController,
-                        description: subTask.subTaskDescriptionTextEditingController,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.remove_circle_outline, color: Colors.red),
-                      onPressed: () => taskController.removeSubTask(index),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
-

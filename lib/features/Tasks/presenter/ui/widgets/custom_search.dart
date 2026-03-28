@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasks_manager/Core/strings.dart';
 
 class CustomSearch extends StatefulWidget {
   final TextEditingController searchController;
@@ -16,7 +17,7 @@ class _CustomSearchState extends State<CustomSearch> {
       onChanged: (value) {},
       controller: widget.searchController,
       decoration: InputDecoration(
-        hintText: 'Search tasks...',
+        hintText: Strings.searchTasks,
         prefixIcon: const Icon(Icons.search),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),

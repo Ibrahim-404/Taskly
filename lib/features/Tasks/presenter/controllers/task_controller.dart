@@ -10,8 +10,6 @@ import 'package:tasks_manager/features/Tasks/domain/usecases/get_tasks.dart';
 import 'package:tasks_manager/features/Tasks/presenter/controllers/sub_task_text_edit_controller_model.dart';
 
 class TaskController extends BaseController {
-
-
   GetCategories getCategories;
   GetTasksByCategoryUseCase getTasksByCategoryUseCase;
   GetTasks getTasks;
@@ -32,6 +30,7 @@ class TaskController extends BaseController {
   final categories = <Map<String, dynamic>>[].obs;
   final isCategoriesLoading = false.obs;
   final categoryErrorMessage = ''.obs;
+
   Future<void> fetchTasks() async {
     final result = await getTasks();
     result.fold(

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:tasks_manager/Core/controller/base_controller.dart';
@@ -14,7 +15,7 @@ class AddtaskCategoryController extends BaseController {
     required this.getCategories,
     required this.addTask,
   });
-  final LoadingState = false.obs;
+  final loadingState = false.obs;
   final taskErrorMessage = ''.obs;
   final taskName = TextEditingController();
   final taskDescription = TextEditingController();
@@ -23,21 +24,25 @@ class AddtaskCategoryController extends BaseController {
       <SubTaskTextEditControllerModel>[].obs;
   final subTasks = <Map<String, dynamic>>[].obs;
   final taskCategory = <Map<String, dynamic>>[].obs;
+  final Rx<DateTime> selectedtime = DateTime.now().obs;
+  final Rx<TimeOfDay> selectedDate = TimeOfDay.now().obs;
+  final selectedCategoryId = ''.obs;
 
   Future<void> fetchCategories() async {
-    LoadingState.value = true;
+    loadingState.value = true;
     final result = await getCategories();
     result.fold(
       (failure) {
         taskErrorMessage.value = failure.message;
-        LoadingState.value = false;
+        loadingState.value = false;
       },
       (categories) {
         this.taskCategory.value = categories;
-        LoadingState.value = false;
+        loadingState.value = false;
       },
     );
   }
+
   Future<void> addNewSubTask() async {
     subTasksList.add(
       SubTaskTextEditControllerModel(
@@ -45,10 +50,10 @@ class AddtaskCategoryController extends BaseController {
         subTaskDescriptionTextEditingController: TextEditingController(),
       ),
     );
-  } 
+  }
 
   Future<void> addANewTask(TaskEntity task) async {
-    LoadingState.value = true;
+    loadingState.value = true;
     final result = await addTask(task);
     result.fold(
       (failure) => taskErrorMessage.value = failure.message,
