@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/custom_show_dialog_for_add_new_Task.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/task_composition.dart';
 
@@ -10,16 +11,8 @@ class TaskMainScreen extends StatefulWidget {
 }
 
 class _TaskMainScreenState extends State<TaskMainScreen> {
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController mainDescriptionController =
-      TextEditingController();
 
-  @override
-  void dispose() {
-    titleController.dispose();
-    mainDescriptionController.dispose();
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +22,7 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
         onPressed: () {
           showDialog(
             context: context,
+
             builder: (context) => CustomShowDialogForAddNewTask(),
           );
         },

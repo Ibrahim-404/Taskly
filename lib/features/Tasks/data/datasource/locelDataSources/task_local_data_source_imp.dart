@@ -3,6 +3,8 @@ import 'package:tasks_manager/Core/database/base_locel_data_sources.dart';
 import 'package:tasks_manager/features/Tasks/data/datasource/locelDataSources/task_local_data_source.dart';
 import 'package:tasks_manager/features/Tasks/data/models/task_model.dart';
 
+import '../../models/sub_task_model.dart';
+
 class TaskLocalDataSourceImp extends BaseLocalDataSource
     implements TaskLocalDataSource {
   TaskLocalDataSourceImp({required super.databaseHelper});
@@ -16,18 +18,53 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
   @override
   Future<List<TaskModel>> getTasks() async {
     final db = await databaseHelper.database;
+    print("Executing getTasks...");
     final maps = await db.query('tasks');
-    return maps.map((task) => TaskModel.fromMap(task)).toList();
+    print("getTasks returned ${maps.length} rows: $maps");
+    final tasksList = maps.map((task) {
+      try {
+        return TaskModel.fromMap(task);
+      } catch (e) {
+        print("Error parsing task fromMap: $e");
+        rethrow;
+      }
+    }).toList();
+    for (var task in tasksList) {
+      final subMaps = await db.query(
+        'sub_tasks',
+        where: 'task_id = ?',
+        whereArgs: [task.id],
+      );
+      task.subTask = subMaps.map((e) => SubTaskModel.fromMap(e)).toList();
+    }
+    return tasksList;
   }
 
   @override
   Future<void> insertTask(TaskModel task) async {
-    final db = await databaseHelper.database;
-    await db.insert(
-      'tasks',
-      task.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.ignore,
-    );
+    print("Attempting to insert task: ${task.toMap()}");
+    try {
+      final db = await databaseHelper.database;
+      final taskId = await db.insert(
+        'tasks',
+        task.toMap(),
+      );
+      print("Successfully inserted task with assigned ID: $taskId");
+      if (task.subTask != null && task.subTask!.isNotEmpty) {
+        print("Inserting ${task.subTask!.length} subtasks for task ID $taskId");
+      for (var sub in task.subTask!) {
+        var subMap = sub.toMap();
+        subMap['task_id'] = taskId;
+        await db.insert(
+          'sub_tasks',
+          subMap,
+        );
+      }
+    }
+    } catch(e) {
+      print("Exception during insertTask: $e");
+      rethrow;
+    }
   }
 
   @override
@@ -68,6 +105,15 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
       [category],
     );
 
-    return maps.map((task) => TaskModel.fromMap(task)).toList();
+    final tasksList = maps.map((task) => TaskModel.fromMap(task)).toList();
+    for (var task in tasksList) {
+      final subMaps = await db.query(
+        'sub_tasks',
+        where: 'task_id = ?',
+        whereArgs: [task.id],
+      );
+      task.subTask = subMaps.map((e) => SubTaskModel.fromMap(e)).toList();
+    }
+    return tasksList;
   }
 }

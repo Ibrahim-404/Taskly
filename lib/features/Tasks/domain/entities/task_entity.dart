@@ -6,6 +6,7 @@ class TaskEntity {
   final String description;
   final DateTime date;
   final bool isDone;
+  final int categoryId;
   final List<SubTaskEntity> subTasks;
 
   const TaskEntity({
@@ -14,6 +15,7 @@ class TaskEntity {
     required this.description,
     required this.date,
     required this.isDone,
+    required this.categoryId,
     this.subTasks = const [],
   });
 }

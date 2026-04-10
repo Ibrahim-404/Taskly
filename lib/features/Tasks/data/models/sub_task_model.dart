@@ -16,17 +16,20 @@ class SubTaskModel {
       id: json['id'],
       title: json['title'],
       description: json['description'],
-      isDone: json['is_completed'],
+      isDone: json['is_completed'] == 1 || json['is_completed'] == true,
       taskId: json['task_id'],
     );
   }
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
+    final map = <String, dynamic>{
       'title': title,
       'description': description,
-      'is_completed': isDone,
+      'is_completed': isDone ? 1 : 0,
       'task_id': taskId,
     };
+    if (id != 0) {
+      map['id'] = id;
+    }
+    return map;
   }
 }

@@ -47,13 +47,16 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
               hint: const Text(Strings.select),
               items: taskController.categories.map((cat) {
                 return DropdownMenuItem<String>(
-                  value: cat['category_name'].toString(),
+                  value: cat['id'].toString(),
                   child: Text(cat['category_name'].toString()),
                 );
               }).toList(),
               onChanged: (value) {
                 if (value != null) {
-                  addtaskCategoryController.setSelectedCategory(value);
+                  final categoryId = int.parse(value);
+                  print("category id : $categoryId");
+                  addtaskCategoryController.pickCategoryId.value = categoryId;
+                  addtaskCategoryController.setSelectedCategory(categoryId);
                 }
               },
             ),

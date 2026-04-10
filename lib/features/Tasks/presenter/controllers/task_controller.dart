@@ -32,11 +32,19 @@ class TaskController extends BaseController {
   final categoryErrorMessage = ''.obs;
 
   Future<void> fetchTasks() async {
+    isTasksLoading.value = true;
+    taskErrorMessage.value = '';
     final result = await getTasks();
     result.fold(
-      (failure) => taskErrorMessage.value = failure.message,
-      (tasks) => this.tasks.value = tasks,
+      (failure) {
+        taskErrorMessage.value = failure.message;
+      },
+      (tasks) {
+        this.tasks.value = tasks;
+        taskErrorMessage.value = '';
+      },
     );
+    isTasksLoading.value = false;
   }
 
   Future<void> fetchCategories() async {
@@ -56,10 +64,16 @@ class TaskController extends BaseController {
 
   Future<void> addANewTask(TaskEntity task) async {
     isTasksLoading.value = true;
+    taskErrorMessage.value = '';
     final result = await addTask(task);
-    result.fold(
-      (failure) => taskErrorMessage.value = failure.message,
-      (_) => fetchTasks(),
+    await result.fold(
+      (failure) async {
+        taskErrorMessage.value = failure.message;
+        isTasksLoading.value = false;
+      },
+      (_) async {
+        await fetchTasks();
+      },
     );
   }
 

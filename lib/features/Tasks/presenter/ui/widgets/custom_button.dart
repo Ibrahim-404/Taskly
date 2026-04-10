@@ -1,5 +1,6 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:tasks_manager/Core/const/strings.dart';
 import 'package:tasks_manager/features/Tasks/domain/entities/sub_task_entity.dart';
 import 'package:tasks_manager/features/Tasks/domain/entities/task_entity.dart';
@@ -23,7 +24,7 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: () async {
         if (formKey.currentState?.validate() ?? false) {
-          if (addtaskCategoryController.selectedCategory.value.isEmpty) {
+          if (addtaskCategoryController.selectedCategory.value == 0) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Please select a category')),
             );
@@ -65,7 +66,9 @@ class CustomButton extends StatelessWidget {
             title: addtaskCategoryController.taskName.text.trim(),
             description: addtaskCategoryController.taskDescription.text.trim(),
             date: taskDateTime,
+            categoryId: addtaskCategoryController.pickCategoryId.value,
             isDone: false,
+
             subTasks: subTasks,
           );
 
@@ -79,6 +82,7 @@ class CustomButton extends StatelessWidget {
               SnackBar(content: Text(taskController.taskErrorMessage.value)),
             );
           } else {
+            log(name: 'Task', "CategoryID:${newTask.categoryId  }\n Task title${newTask.title} \n Task description:${newTask.description} \n Task date:${newTask.date} \n Task deadline:${newTask.isDone} \n Sub Tasks:${newTask.subTasks}");
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Task added successfully')),
             );

@@ -19,8 +19,8 @@ Future<Database> _initDatabase() async {
 }
 
 Future<void> _onCreate(Database db, int version) async {
-  await CategoryOfTask().addANewCategory(db);
   await Tasksdatatable().createTasksTable(db);
+  await CategoryOfTask().addANewCategory(db);
   await SubTaskTable().createSubTasksTable(db);
   await db.insert('category_of_task', {'category_name': 'life'});
 }
