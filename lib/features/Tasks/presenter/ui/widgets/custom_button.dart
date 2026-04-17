@@ -82,7 +82,10 @@ class CustomButton extends StatelessWidget {
               SnackBar(content: Text(taskController.taskErrorMessage.value)),
             );
           } else {
-            log(name: 'Task', "CategoryID:${newTask.categoryId  }\n Task title${newTask.title} \n Task description:${newTask.description} \n Task date:${newTask.date} \n Task deadline:${newTask.isDone} \n Sub Tasks:${newTask.subTasks}");
+            log(
+              name: 'Task',
+              "CategoryID:${newTask.categoryId}\n Task title${newTask.title} \n Task description:${newTask.description} \n Task date:${newTask.date} \n Task deadline:${newTask.isDone} \n Sub Tasks:${newTask.subTasks}",
+            );
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Task added successfully')),
             );

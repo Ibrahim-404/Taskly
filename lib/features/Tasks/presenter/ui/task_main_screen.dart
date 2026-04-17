@@ -11,9 +11,6 @@ class TaskMainScreen extends StatefulWidget {
 }
 
 class _TaskMainScreenState extends State<TaskMainScreen> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

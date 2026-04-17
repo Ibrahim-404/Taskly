@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:tasks_manager/features/Tasks/presenter/ui/task_main_screen.dart';
+// import 'package:tasks_manager/features/Tasks/presenter/ui/task_main_screen.dart';
+import 'package:tasks_manager/main_screen.dart';
 
 import 'Core/injection_container.dart';
 import 'Core/const/strings.dart';
@@ -21,7 +22,7 @@ class Taskly extends StatelessWidget {
       title: Strings.taskly,
       theme: ThemeData(useMaterial3: true),
       darkTheme: ThemeData.dark(),
-      home: TaskMainScreen(),
+      home: MainScreen(),
       initialBinding: InjectionContainer(),
     );
   }

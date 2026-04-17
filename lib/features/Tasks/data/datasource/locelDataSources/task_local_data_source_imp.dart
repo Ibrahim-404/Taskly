@@ -45,23 +45,17 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
     print("Attempting to insert task: ${task.toMap()}");
     try {
       final db = await databaseHelper.database;
-      final taskId = await db.insert(
-        'tasks',
-        task.toMap(),
-      );
+      final taskId = await db.insert('tasks', task.toMap());
       print("Successfully inserted task with assigned ID: $taskId");
       if (task.subTask != null && task.subTask!.isNotEmpty) {
         print("Inserting ${task.subTask!.length} subtasks for task ID $taskId");
-      for (var sub in task.subTask!) {
-        var subMap = sub.toMap();
-        subMap['task_id'] = taskId;
-        await db.insert(
-          'sub_tasks',
-          subMap,
-        );
+        for (var sub in task.subTask!) {
+          var subMap = sub.toMap();
+          subMap['task_id'] = taskId;
+          await db.insert('sub_tasks', subMap);
+        }
       }
-    }
-    } catch(e) {
+    } catch (e) {
       print("Exception during insertTask: $e");
       rethrow;
     }
