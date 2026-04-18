@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/custom_show_dialog_for_add_new_Task.dart';
 import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/task_composition.dart';
 

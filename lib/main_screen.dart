@@ -16,7 +16,7 @@ class MainScreen extends StatelessWidget {
 
       body: Column(
         children: [
-          // CustomHeader(),
+          CustomHeader(),
           SizedBox(height: 40),
           Expanded(
             child: Obx(
@@ -61,34 +61,13 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           right: 16,
           bottom: 16 + MediaQuery.of(context).padding.bottom,
         ),
-        height: 60,
+        height: MediaQuery.of(context).size.height * 0.08,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            IconButton(
-              isSelected: mainScreenController.selectedIndex == 0,
-              onPressed: () {
-                HapticFeedback.lightImpact();
-                mainScreenController.updateSelectedIndex(0);
-              },
-              icon: Icon(Icons.home_outlined, color: Colors.white),
-            ),
-            IconButton(
-              isSelected: mainScreenController.selectedIndex == 1,
-              onPressed: () {
-                HapticFeedback.lightImpact();
-                mainScreenController.updateSelectedIndex(1);
-              },
-              icon: Icon(Icons.search, color: Colors.white),
-            ),
-            IconButton(
-              isSelected: mainScreenController.selectedIndex == 2,
-              onPressed: () {
-                HapticFeedback.lightImpact();
-                mainScreenController.updateSelectedIndex(2);
-              },
-              icon: Icon(Icons.person, color: Colors.white),
-            ),
+            buildItem(0, Icons.home, "Home", mainScreenController),
+            buildItem(1, Icons.search, "Search", mainScreenController),
+            buildItem(2, Icons.person, "Profile", mainScreenController),
           ],
         ),
       ),
@@ -113,20 +92,18 @@ class CustomWavePaint extends CustomPainter {
 
     final path = Path();
 
-    double waveHeight = 20 * animationValue;
-
     path.lineTo(0, size.height - 40);
 
     path.quadraticBezierTo(
       size.width * 0.25,
-      size.height - 40 + waveHeight,
+      size.height + 19,
       size.width * 0.5,
-      size.height - 40,
+      size.height - 25,
     );
 
     path.quadraticBezierTo(
       size.width * 0.75,
-      size.height - 80 - waveHeight,
+      size.height - 90,
       size.width,
       size.height - 40,
     );
@@ -139,7 +116,8 @@ class CustomWavePaint extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomWavePaint oldDelegate) {
-    return oldDelegate.animationValue != animationValue;
+    // return oldDelegate.animationValue != animationValue;
+    return true;
   }
 }
 
@@ -182,30 +160,137 @@ class _CustomHeaderState extends State<CustomHeader>
           ),
 
           Positioned(
-            bottom: -30,
-            child: CircleAvatar(
-              radius: 35,
-              backgroundColor: Colors.white,
-              child: CircleAvatar(
-                radius: 32,
-                backgroundImage: NetworkImage("https://i.pravatar.cc/300"),
-              ),
-            ),
-          ),
+            top: 60,
+            left: 20,
+            right: 20,
+            child: Row(
+              children: [
+                // 👤 Profile Image
+                Container(
+                  width: 55,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.4),
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                    image: DecorationImage(
+                      image: NetworkImage("https://i.pravatar.cc/300"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
 
-          Positioned(
-            top: 50,
-            child: Text(
-              "Welcome Ibrahim 👋",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+                SizedBox(width: 12),
+
+                // 📝 Text
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Welcome back",
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.8),
+                        fontSize: 14,
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      "Ibrahim 👋",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
   }
+}
+
+Widget buildItem(
+  int index,
+  IconData icon,
+  String label,
+  MainScreenController mainScreenController,
+) {
+  final isSelected = mainScreenController.selectedIndex == index;
+
+  return Expanded(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () {
+            HapticFeedback.mediumImpact();
+            mainScreenController.updateSelectedIndex(index);
+          },
+          child: TweenAnimationBuilder(
+            tween: Tween(begin: 0.0, end: isSelected ? 1.0 : 0.0),
+            curve: Curves.easeInOut,
+            duration: Duration(milliseconds: 300),
+            builder: (context, value, child) {
+              final scale = 1 + (0.2 * value);
+              final translateY = -10 * value;
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: [
+                  Transform.translate(
+                    offset: Offset(0, translateY),
+                    child: Transform.scale(
+                      scale: scale,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: isSelected
+                              ? [
+                                  BoxShadow(
+                                    color: Colors.white.withOpacity(0.6),
+                                    blurRadius: 12 * value,
+                                    offset: Offset(0, 4),
+                                    spreadRadius: 1,
+                                  ),
+                                ]
+                              : [],
+                        ),
+                        child: Icon(
+                          icon,
+                          color: isSelected ? Colors.white : Colors.white70,
+                          size: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  AnimatedOpacity(
+                    opacity: isSelected ? 1.0 : 0.0,
+                    duration: Duration(milliseconds: 200),
+                    child: Text(
+                      label,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
+    ),
+  );
 }
