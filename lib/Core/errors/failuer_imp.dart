@@ -1,3 +1,4 @@
+
 import 'package:tasks_manager/Core/errors%20handler/failuer.dart';
 
 class DatabaseFailure extends Failure {

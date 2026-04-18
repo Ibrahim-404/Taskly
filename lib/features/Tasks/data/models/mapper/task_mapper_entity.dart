@@ -1,7 +1,7 @@
-import 'package:tasks_manager/features/Tasks/data/models/sub_task_model.dart';
-import 'package:tasks_manager/features/Tasks/data/models/task_model.dart';
-import 'package:tasks_manager/features/Tasks/domain/entities/sub_task_entity.dart';
-import 'package:tasks_manager/features/Tasks/domain/entities/task_entity.dart';
+import 'package:tasks_manager/features/tasks/data/models/sub_task_model.dart';
+import 'package:tasks_manager/features/tasks/data/models/task_model.dart';
+import 'package:tasks_manager/features/tasks/domain/entities/sub_task_entity.dart';
+import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 
 extension TaskModelMapper on TaskModel {
   TaskEntity toEntity() {

@@ -1,4 +1,4 @@
-import 'package:tasks_manager/features/Tasks/domain/entities/sub_task_entity.dart';
+import 'package:tasks_manager/features/tasks/domain/entities/sub_task_entity.dart';
 
 class TaskEntity {
   final int id;

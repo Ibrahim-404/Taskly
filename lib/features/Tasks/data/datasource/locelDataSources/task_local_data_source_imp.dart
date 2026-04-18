@@ -1,9 +1,8 @@
 import 'package:sqflite/sql.dart';
-import 'package:tasks_manager/Core/database/base_locel_data_sources.dart';
-import 'package:tasks_manager/features/Tasks/data/datasource/locelDataSources/task_local_data_source.dart';
-import 'package:tasks_manager/features/Tasks/data/models/task_model.dart';
-
-import '../../models/sub_task_model.dart';
+import 'package:tasks_manager/core/database/base_locel_data_sources.dart';
+import 'package:tasks_manager/features/tasks/data/datasource/locelDataSources/task_local_data_source.dart';
+import 'package:tasks_manager/features/tasks/data/models/task_model.dart';
+import 'package:tasks_manager/features/tasks/data/models/sub_task_model.dart';
 
 class TaskLocalDataSourceImp extends BaseLocalDataSource
     implements TaskLocalDataSource {

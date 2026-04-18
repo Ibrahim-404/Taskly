@@ -1,13 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get_rx/get_rx.dart';
-import 'package:tasks_manager/Core/controller/base_controller.dart';
-import 'package:tasks_manager/features/Tasks/domain/entities/task_entity.dart';
-import 'package:tasks_manager/features/Tasks/domain/usecases/add_category.dart';
-import 'package:tasks_manager/features/Tasks/domain/usecases/add_task.dart';
-import 'package:tasks_manager/features/Tasks/domain/usecases/get_categories.dart';
-import 'package:tasks_manager/features/Tasks/domain/usecases/get_task_by_category.dart';
-import 'package:tasks_manager/features/Tasks/domain/usecases/get_tasks.dart';
-import 'package:tasks_manager/features/Tasks/presenter/controllers/sub_task_text_edit_controller_model.dart';
+import 'package:tasks_manager/core/controller/base_controller.dart';
+import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
+import 'package:tasks_manager/features/tasks/domain/usecases/add_category.dart';
+import 'package:tasks_manager/features/tasks/domain/usecases/add_task.dart';
+import 'package:tasks_manager/features/tasks/domain/usecases/get_categories.dart';
+import 'package:tasks_manager/features/tasks/domain/usecases/get_task_by_category.dart';
+import 'package:tasks_manager/features/tasks/domain/usecases/get_tasks.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/sub_task_text_edit_controller_model.dart';
 
 class TaskController extends BaseController {
   GetCategories getCategories;
@@ -37,7 +37,7 @@ class TaskController extends BaseController {
     final result = await getTasks();
     result.fold(
       (failure) {
-        taskErrorMessage.value = failure.message;
+        taskErrorMessage.value = failure.toString();
       },
       (tasks) {
         this.tasks.value = tasks;
@@ -52,7 +52,7 @@ class TaskController extends BaseController {
     final result = await getCategories();
     result.fold(
       (failure) {
-        categoryErrorMessage.value = failure.message;
+        categoryErrorMessage.value = failure.toString();
         isCategoriesLoading.value = false;
       },
       (categories) {
@@ -68,7 +68,7 @@ class TaskController extends BaseController {
     final result = await addTask(task);
     await result.fold(
       (failure) async {
-        taskErrorMessage.value = failure.message;
+        taskErrorMessage.value = failure.toString();
         isTasksLoading.value = false;
       },
       (_) async {
@@ -81,7 +81,7 @@ class TaskController extends BaseController {
     isCategoriesLoading.value = true;
     final result = await addCategory(category);
     result.fold(
-      (failure) => categoryErrorMessage.value = failure.message,
+      (failure) => categoryErrorMessage.value = failure.toString(),
       (_) => fetchCategories(),
     );
   }
@@ -89,7 +89,7 @@ class TaskController extends BaseController {
   Future<void> fetchTasksByCategory(String category) async {
     final result = await getTasksByCategoryUseCase(category);
     result.fold(
-      (failure) => taskErrorMessage.value = failure.message,
+      (failure) => taskErrorMessage.value = failure.toString(),
       (tasks) => this.tasks.value = tasks,
     );
   }

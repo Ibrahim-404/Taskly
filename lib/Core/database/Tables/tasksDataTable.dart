@@ -1,5 +1,5 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:tasks_manager/Core/database/Tables/category_of_task.dart';
+import 'package:tasks_manager/core/database/Tables/category_of_task.dart';
 
 class Tasksdatatable {
   static const String tableName = 'tasks';

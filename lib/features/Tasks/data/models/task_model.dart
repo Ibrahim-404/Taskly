@@ -1,4 +1,4 @@
-import 'package:tasks_manager/features/Tasks/data/models/sub_task_model.dart';
+import 'package:tasks_manager/features/tasks/data/models/sub_task_model.dart';
 
 class TaskModel {
   List<SubTaskModel>? subTask;

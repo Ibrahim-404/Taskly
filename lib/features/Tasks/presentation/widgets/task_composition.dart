@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tasks_manager/features/Tasks/presenter/controllers/task_controller.dart';
-import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/add_new_category_widget.dart';
-import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/category_widget.dart';
-import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/custom_search.dart';
-import 'package:tasks_manager/Core/const/strings.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
+import 'package:tasks_manager/features/tasks/presentation/widgets/add_new_category_widget.dart';
+import 'package:tasks_manager/features/tasks/presentation/widgets/category_widget.dart';
+import 'package:tasks_manager/features/tasks/presentation/widgets/custom_search.dart';
+import 'package:tasks_manager/core/const/strings.dart';
 
 class TaskComposition extends StatefulWidget {
   TaskComposition({super.key});

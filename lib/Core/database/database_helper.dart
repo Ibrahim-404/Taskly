@@ -1,8 +1,8 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:tasks_manager/Core/database/Tables/category_of_task.dart';
-import 'package:tasks_manager/Core/database/Tables/sub_task_table.dart';
-import 'package:tasks_manager/Core/database/Tables/tasksDataTable.dart';
+import 'package:tasks_manager/core/database/Tables/category_of_task.dart';
+import 'package:tasks_manager/core/database/Tables/sub_task_table.dart';
+import 'package:tasks_manager/core/database/Tables/tasksDataTable.dart';
 
 class DatabaseHelper {
   static Database? _database;

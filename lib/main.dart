@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-// import 'package:tasks_manager/features/Tasks/presenter/ui/task_main_screen.dart';
-import 'package:tasks_manager/main_screen.dart';
+import 'package:tasks_manager/features/tasks/presentation/screens/main_screen.dart';
 
-import 'Core/injection_container.dart';
-import 'Core/const/strings.dart';
+import 'core/injection_container.dart';
+import 'core/const/strings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

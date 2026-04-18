@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/features/Tasks/presenter/controllers/task_controller.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
 
 class TaskWidget extends StatelessWidget {
   final TaskController taskController;

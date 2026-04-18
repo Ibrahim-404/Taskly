@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:tasks_manager/Core/errors%20handler/failuer.dart';
 import 'package:tasks_manager/Core/errors%20handler/failuer_imp.dart';
 
-import 'package:tasks_manager/features/Tasks/data/datasource/locelDataSources/task_local_data_source.dart';
-import 'package:tasks_manager/features/Tasks/data/models/mapper/task_mapper_entity.dart';
-import 'package:tasks_manager/features/Tasks/data/models/mapper/task_mapper_model.dart';
-import 'package:tasks_manager/features/Tasks/domain/entities/task_entity.dart';
-import 'package:tasks_manager/features/Tasks/domain/repo/task_repo.dart';
+import 'package:tasks_manager/features/tasks/data/datasource/locelDataSources/task_local_data_source.dart';
+import 'package:tasks_manager/features/tasks/data/models/mapper/task_mapper_entity.dart';
+import 'package:tasks_manager/features/tasks/data/models/mapper/task_mapper_model.dart';
+import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
+import 'package:tasks_manager/features/tasks/domain/repo/task_repo.dart';
 
 class TaskRepoImp implements TaskRepo {
   TaskLocalDataSource taskLocalDataSource;

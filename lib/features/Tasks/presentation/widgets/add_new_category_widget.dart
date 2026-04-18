@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/features/Tasks/presenter/controllers/task_controller.dart';
-import 'package:tasks_manager/features/Tasks/presenter/ui/widgets/task_composition.dart';
-import 'package:tasks_manager/Core/const/strings.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
+import 'package:tasks_manager/features/tasks/presentation/widgets/task_composition.dart';
+import 'package:tasks_manager/core/const/strings.dart';
 
 class AddNewCategoryWidget extends StatelessWidget {
   const AddNewCategoryWidget({

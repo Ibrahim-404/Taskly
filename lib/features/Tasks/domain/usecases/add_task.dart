@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:tasks_manager/Core/errors%20handler/failuer.dart';
-import 'package:tasks_manager/features/Tasks/domain/entities/task_entity.dart';
-import 'package:tasks_manager/features/Tasks/domain/repo/task_repo.dart';
+import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
+import 'package:tasks_manager/features/tasks/domain/repo/task_repo.dart';
 
 class AddTask {
   final TaskRepo taskRepo;
