@@ -4,6 +4,8 @@ import 'package:tasks_manager/core/controller/base_controller.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/add_category.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/add_task.dart';
+import 'package:tasks_manager/features/tasks/domain/usecases/complete_sub_task.dart';
+import 'package:tasks_manager/features/tasks/domain/usecases/complete_task.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/get_categories.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/get_task_by_category.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/get_tasks.dart';
@@ -15,12 +17,17 @@ class TaskController extends BaseController {
   GetTasks getTasks;
   AddTask addTask;
   AddCategory addCategory;
+  CompleteSubTask completeSubTask;
+  CompleteTask completeTask;
+
   TaskController({
     required this.getCategories, //Done
     required this.getTasksByCategoryUseCase,
     required this.getTasks, //Done
     required this.addTask, //Done
     required this.addCategory, //Done
+    required this.completeSubTask,
+    required this.completeTask,
   });
   // tasks
   final isTasksLoading = false.obs;
@@ -122,5 +129,21 @@ class TaskController extends BaseController {
       subTask.subTaskDescriptionTextEditingController.dispose();
     }
     subTasksList.clear();
+  }
+
+  void completeSubTaskFun(String taskId) async {
+    final result = await completeSubTask(taskId);
+    result.fold(
+      (failure) => taskErrorMessage.value = failure.toString(),
+      (_) => fetchTasks(),
+    );
+  }
+
+  void completeTaskFun(String taskId) async {
+    final result = await completeTask(taskId);
+    result.fold(
+      (failure) => taskErrorMessage.value = failure.toString(),
+      (_) => fetchTasks(),
+    );
   }
 }

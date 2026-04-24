@@ -91,14 +91,14 @@ class TaskRepoImp implements TaskRepo {
   }
 
   @override
-  Future<Either<Failure, Unit>> completeSubTask(String taskId)async {
+  Future<Either<Failure, Unit>> completeSubTask(String taskId) async {
     await taskLocalDataSource.completeSubTask(taskId);
     return Right(unit);
   }
 
   @override
-  Future<Either<Failure, Unit>> completeTask(String taskId) async{
-   await taskLocalDataSource.completeTask(taskId);
+  Future<Either<Failure, Unit>> completeTask(String taskId) async {
+    await taskLocalDataSource.completeTask(taskId);
     return Right(unit);
   }
 }

@@ -51,6 +51,8 @@ class InjectionContainer extends Bindings {
     // controllers
     Get.lazyPut<TaskController>(
       () => TaskController(
+        completeTask: Get.find(),
+        completeSubTask: Get.find(),
         getCategories: Get.find(),
         getTasksByCategoryUseCase: Get.find(),
         getTasks: Get.find(),
