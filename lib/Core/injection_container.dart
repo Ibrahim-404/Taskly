@@ -7,6 +7,7 @@ import 'package:tasks_manager/features/tasks/data/repo/task_repo_imp.dart';
 import 'package:tasks_manager/features/tasks/domain/repo/task_repo.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/sub_task_text_edit_controller_model.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
 
 import '../features/Tasks/data/datasource/locelDataSources/task_local_data_source_imp.dart';
 import '../features/Tasks/domain/usecases/add_category.dart';
@@ -16,7 +17,6 @@ import '../features/Tasks/domain/usecases/get_categories.dart';
 import '../features/Tasks/domain/usecases/get_task_by_category.dart';
 import '../features/Tasks/domain/usecases/get_tasks.dart';
 import '../features/Tasks/domain/usecases/update_task.dart';
-import '../features/Tasks/presenter/controllers/task_controller.dart';
 
 class InjectionContainer extends Bindings {
   @override

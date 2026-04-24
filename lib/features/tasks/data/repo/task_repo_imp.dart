@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:tasks_manager/Core/errors%20handler/failuer.dart';
-import 'package:tasks_manager/Core/errors%20handler/failuer_imp.dart';
+import 'package:tasks_manager/core/errors/failure.dart';
+import 'package:tasks_manager/core/errors/failure_imp.dart';
 
 import 'package:tasks_manager/features/tasks/data/datasource/locelDataSources/task_local_data_source.dart';
 import 'package:tasks_manager/features/tasks/data/models/mapper/task_mapper_entity.dart';

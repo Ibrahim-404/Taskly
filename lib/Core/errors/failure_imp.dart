@@ -1,5 +1,4 @@
-
-import 'package:tasks_manager/Core/errors%20handler/failuer.dart';
+import 'package:tasks_manager/core/errors/failure.dart';
 
 class DatabaseFailure extends Failure {
   DatabaseFailure(super.message);
