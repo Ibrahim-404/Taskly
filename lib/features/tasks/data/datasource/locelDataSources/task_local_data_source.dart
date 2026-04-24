@@ -1,7 +1,6 @@
 import 'package:tasks_manager/features/tasks/data/models/task_model.dart';
 
 abstract class TaskLocalDataSource {
-  
   Future<void> insertTask(TaskModel task);
 
   Future<List<TaskModel>> getTasks();
@@ -11,4 +10,7 @@ abstract class TaskLocalDataSource {
   Future<void> addCategory(String category);
   Future<List<Map<String, dynamic>>> getCategories();
   Future<List<TaskModel>> getTasksByCategory(String category);
+
+  Future<void> completeTask(String taskId);
+  Future<void> completeSubTask(String taskId);
 }

@@ -30,6 +30,8 @@ class TaskController extends BaseController {
   final categories = <Map<String, dynamic>>[].obs;
   final isCategoriesLoading = false.obs;
   final categoryErrorMessage = ''.obs;
+  // Show task data
+  final isShowTaskData = false.obs;
 
   Future<void> fetchTasks() async {
     isTasksLoading.value = true;

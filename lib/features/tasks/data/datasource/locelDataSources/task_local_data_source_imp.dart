@@ -109,4 +109,26 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
     }
     return tasksList;
   }
+
+  @override
+  Future<void> completeSubTask(String taskId) async {
+    final db = await databaseHelper.database;
+    await db.update(
+      'sub_tasks',
+      {'is_completed': 1},
+      where: 'task_id = ?',
+      whereArgs: [taskId],
+    );
+  }
+
+  @override
+  Future<void> completeTask(String taskId) async {
+    final db = await databaseHelper.database;
+    await db.update(
+      'tasks',
+      {'is_completed': 1},
+      where: 'id = ?',
+      whereArgs: [taskId],
+    );
+  }
 }
