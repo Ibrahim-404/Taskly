@@ -29,6 +29,9 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
       ),
       child: Obx(
         () => DropdownButtonFormField<String>(
+          value: addtaskCategoryController.selectedCategory.value == 0
+              ? null
+              : addtaskCategoryController.selectedCategory.value.toString(),
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.transparent,
@@ -76,8 +79,6 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
           onChanged: (value) {
             if (value != null) {
               final categoryId = int.parse(value);
-              print("category id : $categoryId");
-              addtaskCategoryController.pickCategoryId.value = categoryId;
               addtaskCategoryController.setSelectedCategory(categoryId);
             }
           },

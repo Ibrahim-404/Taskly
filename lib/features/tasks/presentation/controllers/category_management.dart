@@ -68,6 +68,7 @@ class AddtaskCategoryController extends BaseController {
 
   void setSelectedCategory(int categoryId) {
     selectedCategory.value = categoryId;
+    pickCategoryId.value = categoryId;
   }
 
   void setSelectedDeadline(DateTime date) {

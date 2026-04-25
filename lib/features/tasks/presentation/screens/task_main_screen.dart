@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_show_dialog_for_add_new_Task.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task_composition.dart';
 
@@ -16,10 +19,12 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          final TaskController taskController = Get.find();
+          taskController.fetchCategories();
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CustomShowDialogForAddNewTask(),
+              builder: (context) => const CustomShowDialogForAddNewTask(),
             ),
           );
         },
