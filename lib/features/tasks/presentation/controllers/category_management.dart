@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:tasks_manager/core/controller/base_controller.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
@@ -31,6 +30,7 @@ class AddtaskCategoryController extends BaseController {
   final isTimePicked = false.obs;
   final formKey = GlobalKey<FormState>();
   final pickCategoryId = 0.obs;
+  final priorityStatus = 'low'.obs;
 
   Future<void> fetchCategories() async {
     loadingState.value = true;

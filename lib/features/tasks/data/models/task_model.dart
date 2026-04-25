@@ -8,6 +8,7 @@ class TaskModel {
   final bool isDone;
   final int categoryId;
   final DateTime date;
+  final String priorityStatus;
   TaskModel({
     this.subTask = const [],
     required this.id,
@@ -16,6 +17,7 @@ class TaskModel {
     required this.isDone,
     required this.categoryId,
     required this.date,
+    required this.priorityStatus,
   });
 
   factory TaskModel.fromMap(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class TaskModel {
       isDone: json['isDone'] == 1 || json['isDone'] == true,
       date: DateTime.parse(json['date']),
       categoryId: json['category_id'] ?? 0,
+      priorityStatus: json['priority_status'] ?? 'low',
     );
   }
 
@@ -41,6 +44,7 @@ class TaskModel {
       'isDone': isDone ? 1 : 0,
       'category_id': categoryId,
       'date': date.toIso8601String(),
+      'priority_status': priorityStatus,
     };
     if (id != 0) {
       map['id'] = id;

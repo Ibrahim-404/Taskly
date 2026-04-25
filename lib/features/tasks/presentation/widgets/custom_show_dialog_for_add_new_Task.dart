@@ -10,7 +10,7 @@ import 'package:tasks_manager/features/tasks/presentation/widgets/category_widge
 import 'package:tasks_manager/core/const/strings.dart';
 
 class CustomShowDialogForAddNewTask extends StatelessWidget {
-  CustomShowDialogForAddNewTask({super.key});
+  const CustomShowDialogForAddNewTask({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +116,7 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                         "priority",
                       ),
                       const SizedBox(height: 8),
-                      _choicesPriority(),
+                      _choicesPriority(addtaskCategoryController),
                       const SizedBox(height: 24),
                       _buildSectionTitle(Icons.list_alt_rounded, "Sub Tasks"),
                       const SizedBox(height: 8),
@@ -155,6 +155,47 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
       ],
     );
   }
+
+  Widget _choicesPriority(AddtaskCategoryController addtaskCategoryController) {
+    return Obx(
+      () => Row(
+        children: List.generate(priorityLevels.length, (index) {
+          final level = priorityLevels[index]['level'] as String;
+          final color = priorityLevels[index]['color'] as Color;
+          final isSelected =
+              addtaskCategoryController.priorityStatus.value == level;
+          return Expanded(
+            child: GestureDetector(
+              onTap: () {
+                addtaskCategoryController.priorityStatus.value = level;
+              },
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                margin: const EdgeInsets.only(right: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(20),
+                  border: isSelected
+                      ? Border.all(color: color, width: 1.5)
+                      : null,
+                ),
+                child: Center(
+                  child: Text(
+                    level,
+                    style: TextStyle(color: color, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
 }
 
 List<Map<String, dynamic>> priorityLevels = [
@@ -162,33 +203,3 @@ List<Map<String, dynamic>> priorityLevels = [
   {"level": "Medium", "color": Colors.orange},
   {"level": "Low", "color": Colors.green},
 ];
-Widget _choicesPriority() {
-  return Row(
-    children: List.generate(
-      priorityLevels.length,
-      (index) => Expanded(
-        child: GestureDetector(
-          onTap: () {},
-          behavior: HitTestBehavior.opaque,
-          child: Container(
-            margin: const EdgeInsets.only(right: 12),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: priorityLevels[index]['color']!.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Center(
-              child: Text(
-                priorityLevels[index]['level']!,
-                style: TextStyle(
-                  color: priorityLevels[index]['color'],
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
-}

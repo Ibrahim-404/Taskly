@@ -94,6 +94,7 @@ class CustomButton extends StatelessWidget {
                 categoryId: addtaskCategoryController.pickCategoryId.value,
                 isDone: false,
                 subTasks: subTasks,
+                priorityStatus: addtaskCategoryController.priorityStatus.value,
               );
 
               await taskController.addANewTask(newTask);

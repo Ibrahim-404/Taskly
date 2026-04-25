@@ -39,6 +39,7 @@ class TaskController extends BaseController {
   final categoryErrorMessage = ''.obs;
   // Show task data
   final isShowTaskData = false.obs;
+  final priorityStatus = ''.obs;
 
   Future<void> fetchTasks() async {
     isTasksLoading.value = true;

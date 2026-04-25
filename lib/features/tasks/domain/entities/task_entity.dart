@@ -8,6 +8,7 @@ class TaskEntity {
   final bool isDone;
   final int categoryId;
   final List<SubTaskEntity> subTasks;
+  final String priorityStatus;
 
   const TaskEntity({
     required this.id,
@@ -17,5 +18,6 @@ class TaskEntity {
     required this.isDone,
     required this.categoryId,
     this.subTasks = const [],
+    this.priorityStatus = 'low',
   });
 }
