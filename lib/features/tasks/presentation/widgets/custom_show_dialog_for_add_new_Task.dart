@@ -18,26 +18,24 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
     final TaskController taskController = Get.find();
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Color(0xFF1A1A1A),
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   leading: IconButton(
+      //     icon: const Icon(
+      //       Icons.arrow_back_ios_new_rounded,
+      //       color: Color(0xFF1A1A1A),
+      //     ),
+      //     onPressed: () => Navigator.of(context).pop(),
+      //   ),
+      // ),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 10),
-            // Category Selection at the very top
             SizedBox(
-              height: 60,
+              height: 10,
               child: Obx(
                 () => ListView.builder(
                   scrollDirection: Axis.horizontal,

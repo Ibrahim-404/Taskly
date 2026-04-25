@@ -31,7 +31,7 @@ class _CustomHeaderState extends State<CustomHeader>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: 160,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -39,18 +39,17 @@ class _CustomHeaderState extends State<CustomHeader>
             animation: _controller,
             builder: (context, child) {
               return CustomPaint(
-                size: const Size(double.infinity, 200),
+                size: const Size(double.infinity, 160),
                 painter: CustomWavePaint(_controller.value),
               );
             },
           ),
           Positioned(
-            top: 60,
+            top: 40,
             left: 20,
             right: 20,
             child: Row(
               children: [
-                // 👤 Profile Image
                 Container(
                   width: 55,
                   height: 55,
@@ -70,7 +69,6 @@ class _CustomHeaderState extends State<CustomHeader>
                   ),
                 ),
                 const SizedBox(width: 12),
-                // 📝 Text
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
