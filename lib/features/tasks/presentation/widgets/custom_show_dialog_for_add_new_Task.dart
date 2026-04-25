@@ -18,17 +18,6 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
     final TaskController taskController = Get.find();
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   leading: IconButton(
-      //     icon: const Icon(
-      //       Icons.arrow_back_ios_new_rounded,
-      //       color: Color(0xFF1A1A1A),
-      //     ),
-      //     onPressed: () => Navigator.of(context).pop(),
-      //   ),
-      // ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
@@ -62,7 +51,7 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 8),
             const Center(
               child: Text(
                 Strings.addNewTask,
@@ -122,6 +111,13 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                         addtaskCategoryController: addtaskCategoryController,
                       ),
                       const SizedBox(height: 24),
+                      _buildSectionTitle(
+                        Icons.calendar_today_rounded,
+                        "priority",
+                      ),
+                      const SizedBox(height: 8),
+                      _choicesPriority(),
+                      const SizedBox(height: 24),
                       _buildSectionTitle(Icons.list_alt_rounded, "Sub Tasks"),
                       const SizedBox(height: 8),
                       DynamicSubTaskSection(taskController: taskController),
@@ -159,4 +155,40 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
       ],
     );
   }
+}
+
+List<Map<String, dynamic>> priorityLevels = [
+  {"level": "High", "color": Colors.red},
+  {"level": "Medium", "color": Colors.orange},
+  {"level": "Low", "color": Colors.green},
+];
+Widget _choicesPriority() {
+  return Row(
+    children: List.generate(
+      priorityLevels.length,
+      (index) => Expanded(
+        child: GestureDetector(
+          onTap: () {},
+          behavior: HitTestBehavior.opaque,
+          child: Container(
+            margin: const EdgeInsets.only(right: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: priorityLevels[index]['color']!.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Center(
+              child: Text(
+                priorityLevels[index]['level']!,
+                style: TextStyle(
+                  color: priorityLevels[index]['color'],
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }

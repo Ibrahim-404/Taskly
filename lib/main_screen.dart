@@ -18,7 +18,6 @@ class MainScreen extends StatelessWidget {
       body: Column(
         children: [
           const CustomHeader(),
-          const SizedBox(height: 10),
           Expanded(
             child: Obx(
               () => mainScreenController
