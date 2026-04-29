@@ -8,6 +8,7 @@ class Tasksdatatable {
   static const String description = 'description';
   static const String isDone = 'isDone';
   static const String date = 'date';
+  static const String priority = 'priority';
   static const String categoryId = 'category_id';
 
   Future<void> createTasksTable(Database db) async {
@@ -22,6 +23,7 @@ class Tasksdatatable {
       $description TEXT NOT NULL,
       $isDone INTEGER NOT NULL,
       $date TEXT NOT NULL,
+      $priority INTEGER NOT NULL,
       $categoryId INTEGER ,
       FOREIGN KEY ($categoryId)
       REFERENCES ${CategoryOfTask.tableName}(${CategoryOfTask.id}) 

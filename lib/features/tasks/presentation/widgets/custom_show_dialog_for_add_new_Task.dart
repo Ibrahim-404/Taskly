@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tasks_manager/core/enums/priority_enum.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/choice_deadline.dart';
@@ -168,14 +169,15 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
     return Obx(
       () => Row(
         children: List.generate(priorityLevels.length, (index) {
-          final level = priorityLevels[index]['level'] as String;
+          final priority = priorityLevels[index]['priority'] as TaskPriority;
+          final label = priorityLevels[index]['label'] as String;
           final color = priorityLevels[index]['color'] as Color;
           final isSelected =
-              addtaskCategoryController.priorityStatus.value == level;
+              addtaskCategoryController.priorityStatus.value == priority;
           return Expanded(
             child: GestureDetector(
               onTap: () {
-                addtaskCategoryController.priorityStatus.value = level;
+                addtaskCategoryController.priorityStatus.value = priority;
               },
               behavior: HitTestBehavior.opaque,
               child: Container(
@@ -193,7 +195,7 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    level,
+                    label,
                     style: TextStyle(color: color, fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -207,7 +209,7 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
 }
 
 List<Map<String, dynamic>> priorityLevels = [
-  {"level": "High", "color": Colors.red},
-  {"level": "Medium", "color": Colors.orange},
-  {"level": "Low", "color": Colors.green},
+  {"priority": TaskPriority.high, "label": "High", "color": Colors.red},
+  {"priority": TaskPriority.medium, "label": "Medium", "color": Colors.orange},
+  {"priority": TaskPriority.low, "label": "Low", "color": Colors.green},
 ];

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:tasks_manager/core/controller/base_controller.dart';
+import 'package:tasks_manager/core/enums/priority_enum.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/add_task.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/get_categories.dart';
@@ -30,7 +31,7 @@ class AddtaskCategoryController extends BaseController {
   final isTimePicked = false.obs;
   final formKey = GlobalKey<FormState>();
   final pickCategoryId = 0.obs;
-  final priorityStatus = 'low'.obs;
+  final Rx<TaskPriority> priorityStatus = TaskPriority.low.obs;
 
   Future<void> fetchCategories() async {
     loadingState.value = true;

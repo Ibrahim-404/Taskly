@@ -1,4 +1,5 @@
 import 'package:tasks_manager/features/tasks/domain/entities/sub_task_entity.dart';
+import 'package:tasks_manager/core/enums/priority_enum.dart';
 
 class TaskEntity {
   final int id;
@@ -8,7 +9,7 @@ class TaskEntity {
   final bool isDone;
   final int categoryId;
   final List<SubTaskEntity> subTasks;
-  final String priorityStatus;
+  final TaskPriority priorityStatus;
 
   const TaskEntity({
     required this.id,
@@ -18,6 +19,6 @@ class TaskEntity {
     required this.isDone,
     required this.categoryId,
     this.subTasks = const [],
-    this.priorityStatus = 'low',
+    this.priorityStatus = TaskPriority.low,
   });
 }

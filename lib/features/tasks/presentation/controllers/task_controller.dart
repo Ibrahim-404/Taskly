@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:tasks_manager/core/controller/base_controller.dart';
+import 'package:tasks_manager/core/enums/priority_enum.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/add_category.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/add_task.dart';
@@ -39,8 +40,14 @@ class TaskController extends BaseController {
   final categoryErrorMessage = ''.obs;
   // Show task data
   final isShowTaskData = false.obs;
-  final priorityStatus = ''.obs;
+  final Rx<TaskPriority> priorityStatus = TaskPriority.low.obs;
 
+
+onInit() async {
+    super.onInit();
+    await fetchTasks();
+    await fetchCategories();
+  }
   Future<void> fetchTasks() async {
     isTasksLoading.value = true;
     taskErrorMessage.value = '';
