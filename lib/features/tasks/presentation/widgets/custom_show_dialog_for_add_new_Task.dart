@@ -81,7 +81,11 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                     CustomTextFormField(
                       controller: addtaskCategoryController.taskName,
                       hintText: AppLocalizations.of(context)!.title,
-                      validator: (value) => AppValidators.requiredField(context, value, AppLocalizations.of(context)!.titleRequired),
+                      validator: (value) => AppValidators.requiredField(
+                        context,
+                        value,
+                        AppLocalizations.of(context)!.titleRequired,
+                      ),
                     ),
                     const SizedBox(height: 24),
                     TaskSectionTitle(
@@ -93,7 +97,11 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                       controller: addtaskCategoryController.taskDescription,
                       maxLines: 3,
                       hintText: AppLocalizations.of(context)!.description,
-                      validator: (value) => AppValidators.requiredField(context, value, AppLocalizations.of(context)!.descriptionRequired),
+                      validator: (value) => AppValidators.requiredField(
+                        context,
+                        value,
+                        AppLocalizations.of(context)!.descriptionRequired,
+                      ),
                     ),
                     const SizedBox(height: 24),
                     const TaskSectionTitle(

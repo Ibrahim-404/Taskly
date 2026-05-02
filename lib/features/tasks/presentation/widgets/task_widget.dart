@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
+import 'package:tasks_manager/core/const/app_strings.dart';
 
 class TaskWidget extends StatelessWidget {
   final TaskController taskController;
@@ -15,7 +16,7 @@ class TaskWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Task Name: "),
+            Text(AppStrings.taskName),
             SizedBox(width: 20),
             Checkbox(value: false, onChanged: (_) {}),
           ],

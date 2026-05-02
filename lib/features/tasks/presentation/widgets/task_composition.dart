@@ -5,6 +5,7 @@ import 'package:tasks_manager/features/tasks/presentation/widgets/add_new_catego
 import 'package:tasks_manager/features/tasks/presentation/widgets/category_widget.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_search.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task_representer.dart';
+import 'package:tasks_manager/core/const/app_strings.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class TaskComposition extends StatefulWidget {
@@ -82,7 +83,7 @@ class _TaskCompositionState extends State<TaskComposition> {
                 }
 
                 if (taskController.tasks.isEmpty) {
-                  return const Center(child: Text("لا توجد مهام حالياً"));
+                  return const Center(child: Text(AppStrings.noTasks));
                 }
 
                 return ListView.builder(

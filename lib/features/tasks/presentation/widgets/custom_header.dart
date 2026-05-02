@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'custom_wave_paint.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
+import 'package:tasks_manager/core/const/app_strings.dart';
 
 class CustomHeader extends StatefulWidget {
   const CustomHeader({super.key});
@@ -64,7 +65,7 @@ class _CustomHeaderState extends State<CustomHeader>
                       ),
                     ],
                     image: const DecorationImage(
-                      image: NetworkImage("https://i.pravatar.cc/300"),
+                      image: NetworkImage(AppStrings.profileImageUrl),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -74,7 +75,7 @@ class _CustomHeaderState extends State<CustomHeader>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Welcome back",
+                      AppStrings.welcomeBack,
                       style: TextStyle(
                         color: AppColors.white.withOpacity(0.8),
                         fontSize: 14,
@@ -82,7 +83,7 @@ class _CustomHeaderState extends State<CustomHeader>
                     ),
                     const SizedBox(height: 2),
                     const Text(
-                      "Ibrahim 👋",
+                      AppStrings.userName,
                       style: TextStyle(
                         color: AppColors.white,
                         fontSize: 20,

@@ -6,6 +6,7 @@ import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
+import 'package:tasks_manager/core/const/app_strings.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class CustomButton extends StatelessWidget {
@@ -48,7 +49,7 @@ class CustomButton extends StatelessWidget {
             if (formKey.currentState?.validate() ?? false) {
               if (addtaskCategoryController.selectedCategory.value == 0) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Please select a category')),
+                  const SnackBar(content: Text(AppStrings.selectCategory)),
                 );
                 return;
               }
@@ -115,21 +116,21 @@ class CustomButton extends StatelessWidget {
                   "CategoryID:${newTask.categoryId}\n Task title${newTask.title} \n Task description:${newTask.description} \n Task date:${newTask.date} \n Task deadline:${newTask.isDone} \n Sub Tasks:${newTask.subTasks}",
                 );
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Task added successfully')),
+                  const SnackBar(content: Text(AppStrings.taskAdded)),
                 );
                 Navigator.of(context).pop();
               }
             }
           },
-            child: Text(
-              AppLocalizations.of(context)!.addTask,
-              style: const TextStyle(
-                color: AppColors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.5,
-              ),
+          child: Text(
+            AppLocalizations.of(context)!.addTask,
+            style: const TextStyle(
+              color: AppColors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 0.5,
             ),
+          ),
         ),
       ),
     );

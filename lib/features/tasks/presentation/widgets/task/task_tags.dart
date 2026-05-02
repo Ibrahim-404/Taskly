@@ -13,16 +13,33 @@ class TaskTags extends StatelessWidget {
       spacing: 8,
       runSpacing: 8,
       children: [
-        TaskTag(text: 'HIGH', bgColor: AppColors.error, textColor: AppColors.white),
-        TaskTag(text: 'IN PROGRESS', bgColor: AppColors.blue100, textColor: AppColors.blue700),
         TaskTag(
-          text: "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+          text: 'HIGH',
+          bgColor: AppColors.error,
+          textColor: AppColors.white,
+        ),
+        TaskTag(
+          text: 'IN PROGRESS',
+          bgColor: AppColors.blue100,
+          textColor: AppColors.blue700,
+        ),
+        TaskTag(
+          text:
+              "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
           bgColor: AppColors.grey200,
           textColor: AppColors.black87,
           icon: Icons.calendar_today,
         ),
-        TaskTag(text: '#Work', bgColor: AppColors.blue50, textColor: AppColors.blue700),
-        TaskTag(text: '#Important', bgColor: AppColors.orange50, textColor: AppColors.orange700),
+        TaskTag(
+          text: '#Work',
+          bgColor: AppColors.blue50,
+          textColor: AppColors.blue700,
+        ),
+        TaskTag(
+          text: '#Important',
+          bgColor: AppColors.orange50,
+          textColor: AppColors.orange700,
+        ),
       ],
     );
   }

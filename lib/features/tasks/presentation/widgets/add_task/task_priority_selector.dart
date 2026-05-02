@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:tasks_manager/core/enums/priority_enum.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
+import 'package:tasks_manager/core/const/app_strings.dart';
 
 class TaskPrioritySelector extends StatelessWidget {
   final AddtaskCategoryController addtaskCategoryController;
@@ -57,11 +58,19 @@ class TaskPrioritySelector extends StatelessWidget {
 }
 
 final List<Map<String, dynamic>> priorityLevels = [
-  {"priority": TaskPriority.high, "label": "High", "color": AppColors.error},
+  {
+    "priority": TaskPriority.high,
+    "label": AppStrings.high,
+    "color": AppColors.error,
+  },
   {
     "priority": TaskPriority.medium,
-    "label": "Medium",
+    "label": AppStrings.medium,
     "color": AppColors.warning,
   },
-  {"priority": TaskPriority.low, "label": "Low", "color": AppColors.success},
+  {
+    "priority": TaskPriority.low,
+    "label": AppStrings.low,
+    "color": AppColors.success,
+  },
 ];
