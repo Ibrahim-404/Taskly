@@ -4,8 +4,8 @@ import 'package:tasks_manager/features/tasks/presentation/controllers/task_contr
 import 'package:tasks_manager/features/tasks/presentation/widgets/add_new_category_widget.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/category_widget.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_search.dart';
-import 'package:tasks_manager/core/const/strings.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task_representer.dart';
+import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class TaskComposition extends StatefulWidget {
   TaskComposition({super.key});
@@ -56,7 +56,7 @@ class _TaskCompositionState extends State<TaskComposition> {
                               categoryName:
                                   categories[index]['category_name']
                                       as String? ??
-                                  '${Strings.category} $index',
+                                  '${AppLocalizations.of(context)!.category} $index',
                             );
                           }
                         },
@@ -69,7 +69,6 @@ class _TaskCompositionState extends State<TaskComposition> {
 
             const SizedBox(height: 16),
 
-            // هنا قمنا بإضافة القائمة الخاصة بالمهام (TaskRepresenter)
             Expanded(
               child: Obx(() {
                 if (taskController.isTasksLoading.value) {

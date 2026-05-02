@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'custom_wave_paint.dart';
+import 'package:tasks_manager/core/const/app_colors.dart';
 
 class CustomHeader extends StatefulWidget {
   const CustomHeader({super.key});
@@ -57,7 +58,7 @@ class _CustomHeaderState extends State<CustomHeader>
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.white.withOpacity(0.4),
+                        color: AppColors.white.withOpacity(0.4),
                         blurRadius: 10,
                         spreadRadius: 1,
                       ),
@@ -75,7 +76,7 @@ class _CustomHeaderState extends State<CustomHeader>
                     Text(
                       "Welcome back",
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.8),
+                        color: AppColors.white.withOpacity(0.8),
                         fontSize: 14,
                       ),
                     ),
@@ -83,7 +84,7 @@ class _CustomHeaderState extends State<CustomHeader>
                     const Text(
                       "Ibrahim 👋",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),

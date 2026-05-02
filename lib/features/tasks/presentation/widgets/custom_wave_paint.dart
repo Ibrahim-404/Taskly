@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasks_manager/core/const/app_colors.dart';
 
 class CustomWavePaint extends CustomPainter {
   final double animationValue;
@@ -9,7 +10,9 @@ class CustomWavePaint extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint();
 
-    final gradient = const LinearGradient(colors: [Colors.blue, Colors.purple]);
+    final gradient = const LinearGradient(
+      colors: [AppColors.blue, AppColors.purple],
+    );
 
     paint.shader = gradient.createShader(
       Rect.fromLTWH(0, 0, size.width, size.height),

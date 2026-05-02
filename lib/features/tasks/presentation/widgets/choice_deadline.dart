@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
-import 'package:tasks_manager/core/const/strings.dart';
+import 'package:tasks_manager/features/tasks/presentation/widgets/picker_button.dart';
+import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class ChoiceDeadline extends StatelessWidget {
   const ChoiceDeadline({super.key, required this.addtaskCategoryController});
   final AddtaskCategoryController addtaskCategoryController;
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
-          child: _buildPickerButton(
-            context: context,
+          child: PickerButton(
             icon: Icons.calendar_today_rounded,
             label: Obx(
               () => Text(
                 addtaskCategoryController.isDatePicked.value
                     ? "${addtaskCategoryController.selectedDeadline.value!.day}/${addtaskCategoryController.selectedDeadline.value!.month}/${addtaskCategoryController.selectedDeadline.value!.year}"
-                    : Strings.setDate,
+                    : AppLocalizations.of(context)!.setDate,
               ),
             ),
             onTap: () async {
@@ -37,14 +38,13 @@ class ChoiceDeadline extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: _buildPickerButton(
-            context: context,
+          child: PickerButton(
             icon: Icons.access_time_rounded,
             label: Obx(
               () => Text(
                 addtaskCategoryController.isTimePicked.value
                     ? "${addtaskCategoryController.selectedTime.value!.hour}:${addtaskCategoryController.selectedTime.value!.minute.toString().padLeft(2, '0')}"
-                    : Strings.setTime,
+                    : AppLocalizations.of(context)!.setTime,
               ),
             ),
             onTap: () async {
@@ -61,53 +61,6 @@ class ChoiceDeadline extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildPickerButton({
-    required BuildContext context,
-    required IconData icon,
-    required Widget label,
-    required VoidCallback onTap,
-  }) {
-    return Container(
-      height: 55,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(20),
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(icon, size: 20, color: const Color(0xFF6A11CB)),
-                const SizedBox(width: 8),
-                DefaultTextStyle(
-                  style: const TextStyle(
-                    color: Color(0xFF4A4A4A),
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  child: label,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

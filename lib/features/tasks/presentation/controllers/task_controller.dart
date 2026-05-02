@@ -42,12 +42,12 @@ class TaskController extends BaseController {
   final isShowTaskData = false.obs;
   final Rx<TaskPriority> priorityStatus = TaskPriority.low.obs;
 
-
-onInit() async {
+  onInit() async {
     super.onInit();
     await fetchTasks();
     await fetchCategories();
   }
+
   Future<void> fetchTasks() async {
     isTasksLoading.value = true;
     taskErrorMessage.value = '';

@@ -1,0 +1,21 @@
+{
+  "@@locale": "ar",
+  "add": "إضافة",
+  "addNewTask": "إضافة مهمة جديدة",
+  "addTask": "إضافة مهمة",
+  "category": "التصنيف",
+  "categoryName": "اسم التصنيف",
+  "createTask": "إنشاء مهمة",
+  "description": "الوصف",
+  "descriptionRequired": "الوصف مطلوب",
+  "enterTaskName": "أدخل اسم المهمة",
+  "searchTasks": "البحث في المهام...",
+  "select": "تحديد",
+  "setDate": "تحديد التاريخ",
+  "setTime": "تحديد الوقت",
+  "subTasks": "المهام الفرعية",
+  "taskly": "تاسكلي",
+  "title": "العنوان",
+  "pleaseEnterCategoryName": "يرجى إدخال اسم التصنيف",
+  "titleRequired": "العنوان مطلوب"
+}

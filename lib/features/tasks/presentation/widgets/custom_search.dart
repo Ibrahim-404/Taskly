@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/core/const/strings.dart';
+import 'package:tasks_manager/core/const/app_colors.dart';
+import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class CustomSearch extends StatefulWidget {
   final TextEditingController searchController;
@@ -17,14 +18,14 @@ class _CustomSearchState extends State<CustomSearch> {
       onChanged: (value) {},
       controller: widget.searchController,
       decoration: InputDecoration(
-        hintText: Strings.searchTasks,
+        hintText: AppLocalizations.of(context)!.searchTasks,
         prefixIcon: const Icon(Icons.search),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
           borderSide: BorderSide.none,
         ),
         filled: true,
-        fillColor: Colors.grey[200],
+        fillColor: AppColors.grey200,
       ),
     );
   }

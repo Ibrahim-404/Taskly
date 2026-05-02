@@ -1,11 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/core/const/strings.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/sub_task_entity.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
+import 'package:tasks_manager/core/const/app_colors.dart';
+import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class CustomButton extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -26,21 +27,21 @@ class CustomButton extends StatelessWidget {
       height: 55,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF6A11CB), Color(0xFF2575FC)],
+          colors: [AppColors.primary, AppColors.secondary],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF2575FC).withOpacity(0.3),
+            color: AppColors.secondary.withOpacity(0.3),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Material(
-        color: Colors.transparent,
+        color: AppColors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
           onTap: () async {
@@ -120,17 +121,15 @@ class CustomButton extends StatelessWidget {
               }
             }
           },
-          child: const Center(
             child: Text(
-              Strings.addTask,
-              style: TextStyle(
-                color: Colors.white,
+              AppLocalizations.of(context)!.addTask,
+              style: const TextStyle(
+                color: AppColors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.5,
               ),
             ),
-          ),
         ),
       ),
     );

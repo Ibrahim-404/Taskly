@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasks_manager/core/const/app_colors.dart';
 
 class CategoryWidget extends StatelessWidget {
   final String categoryName;
@@ -24,27 +25,27 @@ class CategoryWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           gradient: isSelected
               ? const LinearGradient(
-                  colors: [Color(0xFF6A11CB), Color(0xFF2575FC)],
+                  colors: [AppColors.primary, AppColors.secondary],
                 )
               : null,
-          color: isSelected ? null : Colors.white,
+          color: isSelected ? null : AppColors.white,
           boxShadow: [
             BoxShadow(
               color: isSelected
-                  ? const Color(0xFF2575FC).withOpacity(0.3)
-                  : Colors.black.withOpacity(0.05),
+                  ? AppColors.secondary.withOpacity(0.3)
+                  : AppColors.black.withOpacity(0.05),
               spreadRadius: 1,
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
           ],
-          border: isSelected ? null : Border.all(color: Colors.grey.shade200),
+          border: isSelected ? null : Border.all(color: AppColors.grey200),
         ),
         child: Text(
           categoryName,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: isSelected ? Colors.white : const Color(0xFF4A4A4A),
+            color: isSelected ? AppColors.white : AppColors.textSecondary,
             fontSize: 13,
           ),
         ),

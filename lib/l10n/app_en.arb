@@ -1,0 +1,21 @@
+{
+  "@@locale": "en",
+  "add": "Add",
+  "addNewTask": "Add New Task",
+  "addTask": "Add Task",
+  "category": "Category",
+  "categoryName": "Category Name",
+  "createTask": "Create Task",
+  "description": "Description",
+  "descriptionRequired": "Description is required",
+  "enterTaskName": "Enter Task Name",
+  "searchTasks": "Search tasks...",
+  "select": "Select",
+  "setDate": "Set Date",
+  "setTime": "Set Time",
+  "subTasks": "Sub Tasks",
+  "taskly": "Taskly",
+  "title": "Title",
+  "pleaseEnterCategoryName": "Please enter a category name",
+  "titleRequired": "Title is required"
+}

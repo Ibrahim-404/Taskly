@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task_composition.dart';
-import 'package:tasks_manager/core/const/strings.dart';
+import 'package:tasks_manager/core/utils/app_validators.dart';
+import 'package:tasks_manager/core/const/app_colors.dart';
+import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class AddNewCategoryWidget extends StatelessWidget {
   const AddNewCategoryWidget({
@@ -31,25 +33,24 @@ class AddNewCategoryWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return Strings.pleaseEnterCategoryName;
-                          }
-                          return null;
-                        },
+                        validator: (value) => AppValidators.requiredField(
+                          context,
+                          value,
+                          AppLocalizations.of(context)!.pleaseEnterCategoryName,
+                        ),
                         controller: widget.controller,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue),
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.blue),
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
-                          hintText: Strings.categoryName,
+                          hintText: AppLocalizations.of(context)!.categoryName,
                         ),
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
+                          backgroundColor: AppColors.blueAccent,
                         ),
                         onPressed: () {
                           if (widget.formKey.currentState!.validate()) {
@@ -60,7 +61,7 @@ class AddNewCategoryWidget extends StatelessWidget {
                             widget.controller.clear();
                           }
                         },
-                        child: const Text(Strings.add),
+                        child: Text(AppLocalizations.of(context)!.add),
                       ),
                     ],
                   ),
@@ -73,8 +74,8 @@ class AddNewCategoryWidget extends StatelessWidget {
       child: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
         child: CircleAvatar(
-          backgroundColor: Colors.blue,
-          child: Icon(Icons.add, color: Colors.white),
+          backgroundColor: AppColors.blue,
+          child: Icon(Icons.add, color: AppColors.white),
         ),
       ),
     );

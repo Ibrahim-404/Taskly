@@ -41,7 +41,6 @@ class CustomRowForSubTask extends StatelessWidget {
             ],
           ),
 
-          // 👇 Description
           if (isExpanded.value)
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
