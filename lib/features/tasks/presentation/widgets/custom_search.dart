@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/core/const/app_strings.dart';
-import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class CustomSearch extends StatefulWidget {
   final TextEditingController searchController;

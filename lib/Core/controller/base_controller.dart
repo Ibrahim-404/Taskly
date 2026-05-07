@@ -8,7 +8,7 @@ class BaseController extends GetxController {
   ViewState get state => _state.value;
   String get errorMessage => _errorMessage.value;
   setState(ViewState viewState, {String errorMessage = ''}) {
-    this._errorMessage.value = errorMessage;
+    _errorMessage.value = errorMessage;
     _state.value = viewState;
   }
 }

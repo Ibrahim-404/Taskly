@@ -14,7 +14,7 @@ class MainScreenController extends BaseController {
     Text(AppStrings.analyticsScreen),
   ];
 
-  var _selectedIndex = 0.obs;
+  final _selectedIndex = 0.obs;
   int get selectedIndex => _selectedIndex.value;
   void updateSelectedIndex(int index) {
     _selectedIndex.value = index;

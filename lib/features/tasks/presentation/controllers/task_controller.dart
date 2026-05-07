@@ -42,6 +42,7 @@ class TaskController extends BaseController {
   final isShowTaskData = false.obs;
   final Rx<TaskPriority> priorityStatus = TaskPriority.low.obs;
 
+  @override
   onInit() async {
     super.onInit();
     await fetchTasks();

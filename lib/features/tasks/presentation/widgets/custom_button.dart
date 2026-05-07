@@ -122,13 +122,15 @@ class CustomButton extends StatelessWidget {
               }
             }
           },
-          child: Text(
-            AppLocalizations.of(context)!.addTask,
-            style: const TextStyle(
-              color: AppColors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.5,
+          child: Center(
+            child: Text(
+              AppLocalizations.of(context)!.addTask,
+              style: const TextStyle(
+                color: AppColors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.5,
+              ),
             ),
           ),
         ),

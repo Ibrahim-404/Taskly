@@ -42,7 +42,7 @@ class AddtaskCategoryController extends BaseController {
         loadingState.value = false;
       },
       (categories) {
-        this.taskCategory.value = categories;
+        taskCategory.value = categories;
         loadingState.value = false;
       },
     );

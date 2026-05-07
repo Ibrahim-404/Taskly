@@ -30,7 +30,7 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
       ),
       child: Obx(
         () => DropdownButtonFormField<String>(
-          value: addtaskCategoryController.selectedCategory.value == 0
+          initialValue: addtaskCategoryController.selectedCategory.value == 0
               ? null
               : addtaskCategoryController.selectedCategory.value.toString(),
           decoration: InputDecoration(
