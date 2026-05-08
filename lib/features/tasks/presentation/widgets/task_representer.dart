@@ -92,7 +92,11 @@ class TaskRepresenter extends StatelessWidget {
           ),
 
           const SizedBox(height: 16),
-          TaskTags(date: task.date),
+          TaskTags(
+            date: task.date,
+            categoryName: task.categoryName ?? 'Life',
+            priority: task.priorityStatus.name,
+          ),
           const SizedBox(height: 24),
           TaskProgressIndicator(
             progressPercentage: progressPercentage,

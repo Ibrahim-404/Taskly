@@ -20,7 +20,11 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
   Future<List<TaskModel>> getTasks() async {
     final db = await databaseHelper.database;
     print("Executing getTasks...");
-    final maps = await db.query('tasks');
+    final maps = await db.rawQuery('''
+      SELECT tasks.*, category_of_task.category_name 
+      FROM tasks 
+      LEFT JOIN category_of_task ON tasks.category_id = category_of_task.id
+    ''');
     print("getTasks returned ${maps.length} rows: $maps");
     final tasksList = maps.map((task) {
       try {
@@ -93,7 +97,7 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
     final db = await databaseHelper.database;
     final maps = await db.rawQuery(
       '''
-      SELECT tasks.* FROM tasks
+      SELECT tasks.*, category_of_task.category_name FROM tasks
       INNER JOIN category_of_task ON tasks.category_id = category_of_task.id
       WHERE category_of_task.category_name = ?
     ''',
@@ -113,16 +117,17 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
   }
 
   @override
-  Future<void> completeSubTask(String taskId) async {
+  Future<void> completeSubTask(String subTaskId) async {
     final db = await databaseHelper.database;
     await db.update(
       'sub_tasks',
       {'is_completed': 1},
-      where: 'task_id = ?',
-      whereArgs: [taskId],
+      where: 'id = ?',
+      whereArgs: [subTaskId],
     );
   }
 
+  //TODO: we need to add complete sub task by sub task id, not by task id, because we can have multiple sub tasks for one task, and we want to complete only one of them, not all of them.
   @override
   Future<void> completeTask(String taskId) async {
     final db = await databaseHelper.database;
@@ -132,5 +137,24 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
       where: 'id = ?',
       whereArgs: [taskId],
     );
+  }
+
+  @override
+  Future<String> getCategoryNameById(String id) async {
+    try {
+      final db = await databaseHelper.database;
+      final res = await db.query(
+        'category_of_task',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      if (res.isNotEmpty) {
+        return res.first['category_name'] as String;
+      }
+      return 'Unknown';
+    } on Exception catch (e) {
+      log("error when get category name by id ${e.toString()}");
+      return 'Unknown';
+    }
   }
 }

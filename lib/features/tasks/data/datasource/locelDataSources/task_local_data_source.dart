@@ -13,4 +13,5 @@ abstract class TaskLocalDataSource {
 
   Future<void> completeTask(String taskId);
   Future<void> completeSubTask(String taskId);
+  Future<String> getCategoryNameById(String id);
 }

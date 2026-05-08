@@ -12,6 +12,7 @@ extension TaskModelMapper on TaskModel {
       date: date,
       isDone: isDone,
       categoryId: categoryId,
+      categoryName: categoryName,
       subTasks: subTask?.map((e) => e.toEntity()).toList() ?? [],
       priorityStatus: priorityStatus,
     );

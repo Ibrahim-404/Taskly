@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
+import 'package:tasks_manager/features/tasks/presentation/widgets/add_task/task_priority_selector.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task/task_tag.dart';
 
 class TaskTags extends StatelessWidget {
+  final String categoryName;
+  final String priority;
   final DateTime date;
 
-  const TaskTags({super.key, required this.date});
+  const TaskTags({
+    super.key,
+    required this.date,
+    required this.categoryName,
+    required this.priority,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +23,12 @@ class TaskTags extends StatelessWidget {
       runSpacing: 8,
       children: [
         TaskTag(
-          text: 'HIGH',
-          bgColor: AppColors.error,
+          text: priority,
+          bgColor: getColorMatchpriority(priority),
           textColor: AppColors.white,
         ),
         TaskTag(
-          text: 'IN PROGRESS',
+          text: getTaskState(date).name,
           bgColor: AppColors.blue100,
           textColor: AppColors.blue700,
         ),
@@ -31,16 +40,42 @@ class TaskTags extends StatelessWidget {
           icon: Icons.calendar_today,
         ),
         TaskTag(
-          text: '#Work',
+          text: categoryName,
           bgColor: AppColors.blue50,
           textColor: AppColors.blue700,
         ),
-        TaskTag(
-          text: '#Important',
-          bgColor: AppColors.orange50,
-          textColor: AppColors.orange700,
-        ),
+        // TaskTag(
+        //   text: '#Important',
+        //   bgColor: AppColors.orange50,
+        //   textColor: AppColors.orange700,
+        // ),
       ],
     );
+  }
+}
+
+enum TaskState { ended, today, inProgress }
+
+TaskState getTaskState(DateTime deadline) {
+  final now = DateTime.now();
+  if (deadline.isBefore(now)) {
+    return TaskState.ended;
+  }
+  if (deadline.year == now.year &&
+      deadline.month == now.month &&
+      deadline.day == now.day) {
+    return TaskState.today;
+  } else {
+    return TaskState.inProgress;
+  }
+}
+
+Color getColorMatchpriority(String priority) {
+  if (priority == "low") {
+    return AppColors.success;
+  } else if (priority == "medium") {
+    return AppColors.warning;
+  } else {
+    return AppColors.error;
   }
 }

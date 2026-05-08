@@ -12,6 +12,7 @@ extension TaskModelExtension on TaskEntity {
       date: date,
       isDone: isDone,
       categoryId: categoryId,
+      categoryName: categoryName,
       subTask: subTasks.map((e) => e.toModel()).toList(),
       priorityStatus: priorityStatus,
     );

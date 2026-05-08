@@ -101,4 +101,10 @@ class TaskRepoImp implements TaskRepo {
     await taskLocalDataSource.completeTask(taskId);
     return Right(unit);
   }
+
+  @override
+  Future<Either<Failure, String>> getCategoryNameById(String id) async {
+    final String res = await taskLocalDataSource.getCategoryNameById(id);
+    return Right(res);
+  }
 }

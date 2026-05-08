@@ -8,6 +8,7 @@ class TaskEntity {
   final DateTime date;
   final bool isDone;
   final int categoryId;
+  final String? categoryName;
   final List<SubTaskEntity> subTasks;
   final TaskPriority priorityStatus;
 
@@ -18,7 +19,22 @@ class TaskEntity {
     required this.date,
     required this.isDone,
     required this.categoryId,
+    this.categoryName,
     this.subTasks = const [],
     this.priorityStatus = TaskPriority.low,
   });
+
+  factory TaskEntity.skeleton() {
+    return TaskEntity(
+      id: 0,
+      title: 'Task Title Placeholder',
+      description: 'This is a description placeholder for skeleton loading',
+      date: DateTime.now(),
+      isDone: false,
+      categoryId: 0,
+      categoryName: 'Category',
+      priorityStatus: TaskPriority.low,
+      subTasks: [],
+    );
+  }
 }

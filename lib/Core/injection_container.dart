@@ -7,6 +7,7 @@ import 'package:tasks_manager/features/tasks/data/repo/task_repo_imp.dart';
 import 'package:tasks_manager/features/tasks/domain/repo/task_repo.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/complete_sub_task.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/complete_task.dart';
+import 'package:tasks_manager/features/tasks/domain/usecases/get_category_name_By_Id.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/sub_task_text_edit_controller_model.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
@@ -54,6 +55,10 @@ class InjectionContainer extends Bindings {
     );
     Get.lazyPut<GetTasks>(() => GetTasks(Get.find()), fenix: true);
     Get.lazyPut<UpdateTask>(() => UpdateTask(Get.find()), fenix: true);
+    Get.lazyPut<GetCategoryNameById>(
+      () => GetCategoryNameById(Get.find()),
+      fenix: true,
+    );
 
     // controllers
     Get.lazyPut<TaskController>(

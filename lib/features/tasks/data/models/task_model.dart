@@ -8,6 +8,7 @@ class TaskModel {
   final String description;
   final bool isDone;
   final int categoryId;
+  final String? categoryName;
   final DateTime date;
   final TaskPriority priorityStatus;
   TaskModel({
@@ -17,6 +18,7 @@ class TaskModel {
     required this.description,
     required this.isDone,
     required this.categoryId,
+    this.categoryName,
     required this.date,
     required this.priorityStatus,
   });
@@ -34,6 +36,7 @@ class TaskModel {
       isDone: json['isDone'] == 1 || json['isDone'] == true,
       date: DateTime.parse(json['date']),
       categoryId: json['category_id'] ?? 0,
+      categoryName: json['category_name'],
       priorityStatus: TaskPriority.fromValue(json['priority']),
     );
   }
