@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:sqflite/sql.dart';
 import 'package:tasks_manager/core/database/base_locel_data_sources.dart';
 import 'package:tasks_manager/features/tasks/data/datasource/locelDataSources/task_local_data_source.dart';
@@ -41,13 +43,13 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
 
   @override
   Future<void> insertTask(TaskModel task) async {
-    print("Attempting to insert task: ${task.toMap()}");
+    log("Attempting to insert task: ${task.toMap()}");
     try {
       final db = await databaseHelper.database;
       final taskId = await db.insert('tasks', task.toMap());
-      print("Successfully inserted task with assigned ID: $taskId");
+      log("Successfully inserted task with assigned ID: $taskId");
       if (task.subTask != null && task.subTask!.isNotEmpty) {
-        print("Inserting ${task.subTask!.length} subtasks for task ID $taskId");
+        log("Inserting ${task.subTask!.length} subtasks for task ID $taskId");
         for (var sub in task.subTask!) {
           var subMap = sub.toMap();
           subMap['task_id'] = taskId;

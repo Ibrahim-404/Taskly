@@ -6,7 +6,6 @@ import 'package:tasks_manager/features/tasks/presentation/widgets/choice_deadlin
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_button.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_text_form_field.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/dynamic_sub_task_section.dart';
-import 'package:tasks_manager/features/tasks/presentation/widgets/category_widget.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/show_category_list_as_drop_down.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/add_task/task_priority_selector.dart';
@@ -26,32 +25,32 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 60,
-            child: Obx(
-              () => ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: taskController.categories.length,
-                itemBuilder: (context, index) {
-                  final category = taskController.categories[index];
-                  final categoryId = category['id'] as int;
-                  return Obx(
-                    () => CategoryWidget(
-                      categoryName: category['category_name'] as String,
-                      isSelected:
-                          addtaskCategoryController.selectedCategory.value ==
-                          categoryId,
-                      onTap: () {
-                        addtaskCategoryController.setSelectedCategory(
-                          categoryId,
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
+          // SizedBox(
+          //   height: 60,
+          //   child: Obx(
+          //     () => ListView.builder(
+          //       scrollDirection: Axis.horizontal,
+          //       itemCount: taskController.categories.length,
+          //       itemBuilder: (context, index) {
+          //         final category = taskController.categories[index];
+          //         final categoryId = category['id'] as int;
+          //         return Obx(
+          //           () => CategoryWidget(
+          //             categoryName: category['category_name'] as String,
+          //             isSelected:
+          //                 addtaskCategoryController.selectedCategory.value ==
+          //                 categoryId,
+          //             onTap: () {
+          //               addtaskCategoryController.setSelectedCategory(
+          //                 categoryId,
+          //               );
+          //             },
+          //           ),
+          //         );
+          //       },
+          //     ),
+          //   ),
+          // ),
           const SizedBox(height: 8),
           Center(
             child: Text(
