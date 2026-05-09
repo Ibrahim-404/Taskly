@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
+import 'package:tasks_manager/features/tasks/presentation/widgets/sub_task_repreenter.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task/task_tags.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task/task_progress_indicator.dart';
 
@@ -56,7 +59,7 @@ class TaskRepresenter extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   onChanged: (value) {
-                    controller.completeTaskFun(task.id.toString());
+                    //TODO: complete task UI task
                   },
                 ),
               ),
@@ -83,10 +86,14 @@ class TaskRepresenter extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  //TODO: show subtasks in a bottom sheet
-                  // controller.showSubTasks(task.id.toString());
+                  SubTaskRepresenter(
+                    //TODO: Make subtasks list
+                    subTaskEntity: task.subTasks[0],
+                    taskController: controller,
+                  );
+                  log("first subtask ${task.subTasks}");
                 },
-                icon: const Icon(Icons.keyboard_arrow_down),
+                icon:task.subTasks.isEmpty ? Icon(Icons.task) : const Icon(Icons.keyboard_arrow_left_outlined),
               ),
             ],
           ),
@@ -124,7 +131,7 @@ class TaskRepresenter extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     onChanged: (value) {
-                      controller.completeSubTaskFun(subTask.id.toString());
+                      // controller.completeSubTaskFun(subTask.id.toString() , subTask.isDone);
                     },
                   ),
                   Expanded(

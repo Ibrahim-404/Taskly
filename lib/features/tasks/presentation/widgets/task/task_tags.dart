@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
-import 'package:tasks_manager/features/tasks/presentation/widgets/add_task/task_priority_selector.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task/task_tag.dart';
 
 class TaskTags extends StatelessWidget {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_form_controller.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/picker_button.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class ChoiceDeadline extends StatelessWidget {
-  const ChoiceDeadline({super.key, required this.addtaskCategoryController});
-  final AddtaskCategoryController addtaskCategoryController;
+  const ChoiceDeadline({super.key, required this.taskFormController});
+  final TaskFormController taskFormController;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -16,8 +16,8 @@ class ChoiceDeadline extends StatelessWidget {
             icon: Icons.calendar_today_rounded,
             label: Obx(
               () => Text(
-                addtaskCategoryController.isDatePicked.value
-                    ? "${addtaskCategoryController.selectedDeadline.value!.day}/${addtaskCategoryController.selectedDeadline.value!.month}/${addtaskCategoryController.selectedDeadline.value!.year}"
+                taskFormController.isDatePicked.value
+                    ? "${taskFormController.selectedDeadline.value!.day}/${taskFormController.selectedDeadline.value!.month}/${taskFormController.selectedDeadline.value!.year}"
                     : AppLocalizations.of(context)!.setDate,
               ),
             ),
@@ -25,13 +25,12 @@ class ChoiceDeadline extends StatelessWidget {
               final date = await showDatePicker(
                 context: context,
                 initialDate:
-                    addtaskCategoryController.selectedDeadline.value ??
-                    DateTime.now(),
+                    taskFormController.selectedDeadline.value ?? DateTime.now(),
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2030),
               );
               if (date != null) {
-                addtaskCategoryController.setSelectedDeadline(date);
+                taskFormController.setSelectedDeadline(date);
               }
             },
           ),
@@ -42,8 +41,8 @@ class ChoiceDeadline extends StatelessWidget {
             icon: Icons.access_time_rounded,
             label: Obx(
               () => Text(
-                addtaskCategoryController.isTimePicked.value
-                    ? "${addtaskCategoryController.selectedTime.value!.hour}:${addtaskCategoryController.selectedTime.value!.minute.toString().padLeft(2, '0')}"
+                taskFormController.isTimePicked.value
+                    ? "${taskFormController.selectedTime.value!.hour}:${taskFormController.selectedTime.value!.minute.toString().padLeft(2, '0')}"
                     : AppLocalizations.of(context)!.setTime,
               ),
             ),
@@ -51,11 +50,10 @@ class ChoiceDeadline extends StatelessWidget {
               final time = await showTimePicker(
                 context: context,
                 initialTime:
-                    addtaskCategoryController.selectedTime.value ??
-                    TimeOfDay.now(),
+                    taskFormController.selectedTime.value ?? TimeOfDay.now(),
               );
               if (time != null) {
-                addtaskCategoryController.setSelectedTime(time);
+                taskFormController.setSelectedTime(time);
               }
             },
           ),

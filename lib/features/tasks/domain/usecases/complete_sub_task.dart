@@ -5,6 +5,6 @@ import 'package:tasks_manager/features/tasks/domain/repo/task_repo.dart';
 class CompleteSubTask {
   final TaskRepo taskRepo;
   const CompleteSubTask(this.taskRepo);
-  Future<Either<Failure, Unit>> call(String taskId) =>
-      taskRepo.completeSubTask(taskId);
+  Future<Either<Failure, Unit>> call(String taskId, bool taskState) =>
+      taskRepo.completeSubTask(taskId, taskState);
 }

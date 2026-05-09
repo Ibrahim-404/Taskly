@@ -19,32 +19,36 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
   @override
   Future<List<TaskModel>> getTasks() async {
     final db = await databaseHelper.database;
-    print("Executing getTasks...");
     final maps = await db.rawQuery('''
       SELECT tasks.*, category_of_task.category_name 
       FROM tasks 
       LEFT JOIN category_of_task ON tasks.category_id = category_of_task.id
     ''');
-    print("getTasks returned ${maps.length} rows: $maps");
-    final tasksList = maps.map((task) {
-      try {
-        return TaskModel.fromMap(task);
-      } catch (e) {
-        print("Error parsing task fromMap: $e");
-        rethrow;
-      }
-    }).toList();
-    for (var task in tasksList) {
-      final subMaps = await db.query(
-        'sub_tasks',
-        where: 'task_id = ?',
-        whereArgs: [task.id],
-      );
-      task.subTask = subMaps.map((e) => SubTaskModel.fromMap(e)).toList();
+
+    final tasksList = maps.map((task) => TaskModel.fromMap(task)).toList();
+    if (tasksList.isEmpty) return [];
+
+    final taskIds = tasksList.map((t) => t.id).toList();
+    final placeholders = List.filled(taskIds.length, '?').join(',');
+    final subMaps = await db.query(
+      'sub_tasks',
+      where: 'task_id IN ($placeholders)',
+      whereArgs: taskIds,
+    );
+
+    final subTasksMap = <int, List<SubTaskModel>>{};
+    for (var subMap in subMaps) {
+      final subModel = SubTaskModel.fromMap(subMap);
+      subTasksMap.putIfAbsent(subModel.taskId, () => []).add(subModel);
     }
+
+    for (var task in tasksList) {
+      task.subTasks = subTasksMap[task.id] ?? [];
+    }
+
     return tasksList;
   }
-
+//ToDo Solve error in insertTask and database table relationship
   @override
   Future<void> insertTask(TaskModel task) async {
     log("Attempting to insert task: ${task.toMap()}");
@@ -52,9 +56,9 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
       final db = await databaseHelper.database;
       final taskId = await db.insert('tasks', task.toMap());
       log("Successfully inserted task with assigned ID: $taskId");
-      if (task.subTask != null && task.subTask!.isNotEmpty) {
-        log("Inserting ${task.subTask!.length} subtasks for task ID $taskId");
-        for (var sub in task.subTask!) {
+      if (task.subTasks != null && task.subTasks!.isNotEmpty) {
+        log("Inserting ${task.subTasks!.length} subtasks for task ID $taskId");
+        for (var sub in task.subTasks!) {
           var subMap = sub.toMap();
           subMap['task_id'] = taskId;
           await db.insert('sub_tasks', subMap);
@@ -105,29 +109,41 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
     );
 
     final tasksList = maps.map((task) => TaskModel.fromMap(task)).toList();
-    for (var task in tasksList) {
-      final subMaps = await db.query(
-        'sub_tasks',
-        where: 'task_id = ?',
-        whereArgs: [task.id],
-      );
-      task.subTask = subMaps.map((e) => SubTaskModel.fromMap(e)).toList();
+    if (tasksList.isEmpty) return [];
+
+    final taskIds = tasksList.map((t) => t.id).toList();
+    final placeholders = List.filled(taskIds.length, '?').join(',');
+    final subMaps = await db.query(
+      'sub_tasks',
+      where: 'task_id IN ($placeholders)',
+      whereArgs: taskIds,
+    );
+
+    final subTasksMap = <int, List<SubTaskModel>>{};
+    for (var subMap in subMaps) {
+      final subModel = SubTaskModel.fromMap(subMap);
+      subTasksMap.putIfAbsent(subModel.taskId, () => []).add(subModel);
     }
+
+    for (var task in tasksList) {
+      task.subTasks = subTasksMap[task.id] ?? [];
+    }
+
     return tasksList;
   }
 
   @override
-  Future<void> completeSubTask(String subTaskId) async {
+  Future<void> completeSubTask(String subTaskId, bool taskState) async {
     final db = await databaseHelper.database;
+
     await db.update(
       'sub_tasks',
-      {'is_completed': 1},
+      {'is_completed': taskState == true ? 1 : 0},
       where: 'id = ?',
       whereArgs: [subTaskId],
     );
   }
 
-  //TODO: we need to add complete sub task by sub task id, not by task id, because we can have multiple sub tasks for one task, and we want to complete only one of them, not all of them.
   @override
   Future<void> completeTask(String taskId) async {
     final db = await databaseHelper.database;

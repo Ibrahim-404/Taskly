@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
-import 'package:tasks_manager/features/tasks/presentation/widgets/custom_row_for_sub_Task.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_form_controller.dart';
+import 'package:tasks_manager/features/tasks/presentation/widgets/custom_row_for_sub_task.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class DynamicSubTaskSection extends StatelessWidget {
-  final TaskController taskController;
-  const DynamicSubTaskSection({super.key, required this.taskController});
+  final TaskFormController taskFormController;
+  const DynamicSubTaskSection({super.key, required this.taskFormController});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class DynamicSubTaskSection extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             IconButton(
-              onPressed: () => taskController.addSubTask(),
+              onPressed: () => taskFormController.addSubTask(),
               icon: const Icon(Icons.add_circle, color: AppColors.blue),
             ),
           ],
@@ -30,9 +30,9 @@ class DynamicSubTaskSection extends StatelessWidget {
           () => ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: taskController.subTasksList.length,
+            itemCount: taskFormController.subTasksList.length,
             itemBuilder: (context, index) {
-              final subTask = taskController.subTasksList[index];
+              final subTask = taskFormController.subTasksList[index];
               return Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Row(
@@ -50,7 +50,7 @@ class DynamicSubTaskSection extends StatelessWidget {
                         Icons.remove_circle_outline,
                         color: AppColors.error,
                       ),
-                      onPressed: () => taskController.removeSubTask(index),
+                      onPressed: () => taskFormController.removeSubTask(index),
                     ),
                   ],
                 ),

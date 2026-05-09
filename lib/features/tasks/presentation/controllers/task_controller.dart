@@ -1,52 +1,64 @@
-import 'package:flutter/widgets.dart';
-import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get.dart';
 import 'package:tasks_manager/core/controller/base_controller.dart';
-import 'package:tasks_manager/core/enums/priority_enum.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
-import 'package:tasks_manager/features/tasks/domain/usecases/add_category.dart';
-import 'package:tasks_manager/features/tasks/domain/usecases/add_task.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/complete_sub_task.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/complete_task.dart';
-import 'package:tasks_manager/features/tasks/domain/usecases/get_categories.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/get_task_by_category.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/get_tasks.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/sub_task_text_edit_controller_model.dart';
+import 'package:tasks_manager/features/tasks/domain/usecases/delete_task.dart';
+import 'package:tasks_manager/features/tasks/domain/usecases/add_category.dart';
+import 'package:tasks_manager/features/tasks/domain/usecases/get_categories.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_form_controller.dart';
 
 class TaskController extends BaseController {
-  GetCategories getCategories;
-  GetTasksByCategoryUseCase getTasksByCategoryUseCase;
-  GetTasks getTasks;
-  AddTask addTask;
-  AddCategory addCategory;
-  CompleteSubTask completeSubTask;
-  CompleteTask completeTask;
+  final GetTasks getTasks;
+  final GetTasksByCategoryUseCase getTasksByCategoryUseCase;
+  final CompleteSubTask completeSubTask;
+  final CompleteTask completeTask;
+  final DeleteTask deleteTask;
+  final GetCategories getCategories;
+  final AddCategory addCategory;
 
   TaskController({
-    required this.getCategories, //Done
+    required this.getTasks,
     required this.getTasksByCategoryUseCase,
-    required this.getTasks, //Done
-    required this.addTask, //Done
-    required this.addCategory, //Done
     required this.completeSubTask,
     required this.completeTask,
+    required this.deleteTask,
+    required this.getCategories,
+    required this.addCategory,
   });
-  // tasks
+
+  // Global state
+  final tasks = <TaskEntity>[].obs;
+  final categories = <Map<String, dynamic>>[].obs;
   final isTasksLoading = false.obs;
   final taskErrorMessage = ''.obs;
-  final tasks = <TaskEntity>[].obs;
-  // categories
-  final categories = <Map<String, dynamic>>[].obs;
-  final isCategoriesLoading = false.obs;
-  final categoryErrorMessage = ''.obs;
-  // Show task data
-  final isShowTaskData = false.obs;
-  final Rx<TaskPriority> priorityStatus = TaskPriority.low.obs;
 
   @override
-  onInit() async {
+  void onInit() {
     super.onInit();
-    await fetchTasks();
-    await fetchCategories();
+    fetchTasks();
+    fetchCategories();
+  }
+
+  Future<void> fetchCategories() async {
+    final result = await getCategories();
+    result.fold(
+      (failure) => taskErrorMessage.value = failure.toString(),
+      (cats) => categories.value = cats,
+    );
+  }
+
+  void addANewCategory(String categoryName) async {
+    final result = await addCategory(categoryName);
+    result.fold((failure) => taskErrorMessage.value = failure.toString(), (_) {
+      fetchCategories();
+      // Also refresh the task form categories if it's currently initialized
+      if (Get.isRegistered<TaskFormController>()) {
+        Get.find<TaskFormController>().fetchCategories();
+      }
+    });
   }
 
   Future<void> fetchTasks() async {
@@ -54,102 +66,43 @@ class TaskController extends BaseController {
     taskErrorMessage.value = '';
     final result = await getTasks();
     result.fold(
-      (failure) {
-        taskErrorMessage.value = failure.toString();
-      },
-      (tasks) {
-        this.tasks.value = tasks;
-        taskErrorMessage.value = '';
-      },
+      (failure) => taskErrorMessage.value = failure.toString(),
+      (tasksList) => tasks.value = tasksList,
     );
     isTasksLoading.value = false;
   }
 
-  Future<void> fetchCategories() async {
-    isCategoriesLoading.value = true;
-    final result = await getCategories();
-    result.fold(
-      (failure) {
-        categoryErrorMessage.value = failure.toString();
-        isCategoriesLoading.value = false;
-      },
-      (categories) {
-        this.categories.value = categories;
-        isCategoriesLoading.value = false;
-      },
-    );
-  }
-
-  Future<void> addANewTask(TaskEntity task) async {
-    isTasksLoading.value = true;
-    taskErrorMessage.value = '';
-    final result = await addTask(task);
-    await result.fold(
-      (failure) async {
-        taskErrorMessage.value = failure.toString();
-        isTasksLoading.value = false;
-      },
-      (_) async {
-        await fetchTasks();
-      },
-    );
-  }
-
-  Future<void> addANewCategory(String category) async {
-    isCategoriesLoading.value = true;
-    final result = await addCategory(category);
-    result.fold(
-      (failure) => categoryErrorMessage.value = failure.toString(),
-      (_) => fetchCategories(),
-    );
-  }
-
   Future<void> fetchTasksByCategory(String category) async {
+    isTasksLoading.value = true;
     final result = await getTasksByCategoryUseCase(category);
     result.fold(
       (failure) => taskErrorMessage.value = failure.toString(),
-      (tasks) => this.tasks.value = tasks,
+      (tasksList) => tasks.value = tasksList,
     );
+    isTasksLoading.value = false;
   }
 
-  // --- Sub Tasks Management ---
-  final subTasksList = <SubTaskTextEditControllerModel>[].obs;
-
-  void addSubTask() {
-    subTasksList.add(
-      SubTaskTextEditControllerModel(
-        subTaskTextEditingController: TextEditingController(),
-        subTaskDescriptionTextEditingController: TextEditingController(),
-      ),
-    );
-  }
-
-  void removeSubTask(int index) {
-    if (index >= 0 && index < subTasksList.length) {
-      subTasksList[index].subTaskTextEditingController.dispose();
-      subTasksList[index].subTaskDescriptionTextEditingController.dispose();
-      subTasksList.removeAt(index);
-    }
-  }
-
-  void clearSubTasks() {
-    for (var subTask in subTasksList) {
-      subTask.subTaskTextEditingController.dispose();
-      subTask.subTaskDescriptionTextEditingController.dispose();
-    }
-    subTasksList.clear();
-  }
-
-  void completeSubTaskFun(String taskId) async {
-    final result = await completeSubTask(taskId);
+  void completeSubTaskFun({
+    required String subTaskId,
+    required bool taskState,
+  }) async {
+    final result = await completeSubTask(subTaskId, taskState);
     result.fold(
       (failure) => taskErrorMessage.value = failure.toString(),
       (_) => fetchTasks(),
     );
   }
 
-  void completeTaskFun(String taskId) async {
+  void completeTaskFun({required String taskId}) async {
     final result = await completeTask(taskId);
+    result.fold(
+      (failure) => taskErrorMessage.value = failure.toString(),
+      (_) => fetchTasks(),
+    );
+  }
+
+  void deleteTaskFun(int taskId) async {
+    final result = await deleteTask(taskId);
     result.fold(
       (failure) => taskErrorMessage.value = failure.toString(),
       (_) => fetchTasks(),

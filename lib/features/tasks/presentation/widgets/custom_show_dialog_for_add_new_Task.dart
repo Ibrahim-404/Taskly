@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_form_controller.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/choice_deadline.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_button.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_text_form_field.dart';
@@ -18,39 +17,12 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AddtaskCategoryController addtaskCategoryController = Get.find();
-    final TaskController taskController = Get.find();
+    final TaskFormController taskFormController = Get.find();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // SizedBox(
-          //   height: 60,
-          //   child: Obx(
-          //     () => ListView.builder(
-          //       scrollDirection: Axis.horizontal,
-          //       itemCount: taskController.categories.length,
-          //       itemBuilder: (context, index) {
-          //         final category = taskController.categories[index];
-          //         final categoryId = category['id'] as int;
-          //         return Obx(
-          //           () => CategoryWidget(
-          //             categoryName: category['category_name'] as String,
-          //             isSelected:
-          //                 addtaskCategoryController.selectedCategory.value ==
-          //                 categoryId,
-          //             onTap: () {
-          //               addtaskCategoryController.setSelectedCategory(
-          //                 categoryId,
-          //               );
-          //             },
-          //           ),
-          //         );
-          //       },
-          //     ),
-          //   ),
-          // ),
           const SizedBox(height: 8),
           Center(
             child: Text(
@@ -68,7 +40,7 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Form(
-                key: addtaskCategoryController.formKey,
+                key: taskFormController.formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -78,7 +50,7 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     CustomTextFormField(
-                      controller: addtaskCategoryController.taskName,
+                      controller: taskFormController.taskName,
                       hintText: AppLocalizations.of(context)!.title,
                       validator: (value) => AppValidators.requiredField(
                         context,
@@ -93,7 +65,7 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     CustomTextFormField(
-                      controller: addtaskCategoryController.taskDescription,
+                      controller: taskFormController.taskDescription,
                       maxLines: 3,
                       hintText: AppLocalizations.of(context)!.description,
                       validator: (value) => AppValidators.requiredField(
@@ -108,9 +80,7 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                       title: "Deadline",
                     ),
                     const SizedBox(height: 8),
-                    ChoiceDeadline(
-                      addtaskCategoryController: addtaskCategoryController,
-                    ),
+                    ChoiceDeadline(taskFormController: taskFormController),
                     const SizedBox(height: 24),
                     const TaskSectionTitle(
                       icon: Icons.category_rounded,
@@ -118,8 +88,7 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     ShowCategoryListAsDropDown(
-                      addtaskCategoryController: addtaskCategoryController,
-                      taskController: taskController,
+                      taskFormController: taskFormController,
                     ),
 
                     const SizedBox(height: 24),
@@ -130,7 +99,7 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     TaskPrioritySelector(
-                      addtaskCategoryController: addtaskCategoryController,
+                      taskFormController: taskFormController,
                     ),
                     const SizedBox(height: 24),
                     const TaskSectionTitle(
@@ -138,13 +107,11 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                       title: "Sub Tasks",
                     ),
                     const SizedBox(height: 8),
-                    DynamicSubTaskSection(taskController: taskController),
-                    const SizedBox(height: 40),
-                    CustomButton(
-                      formKey: addtaskCategoryController.formKey,
-                      taskController: taskController,
-                      addtaskCategoryController: addtaskCategoryController,
+                    DynamicSubTaskSection(
+                      taskFormController: taskFormController,
                     ),
+                    const SizedBox(height: 40),
+                    CustomButton(taskFormController: taskFormController),
                     const SizedBox(height: 40),
                   ],
                 ),

@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_form_controller.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class ShowCategoryListAsDropDown extends StatelessWidget {
-  final TaskController taskController;
-  final AddtaskCategoryController addtaskCategoryController;
+  final TaskFormController taskFormController;
   const ShowCategoryListAsDropDown({
     super.key,
-    required this.taskController,
-    required this.addtaskCategoryController,
+    required this.taskFormController,
   });
 
   @override
@@ -30,9 +27,9 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
       ),
       child: Obx(
         () => DropdownButtonFormField<String>(
-          initialValue: addtaskCategoryController.selectedCategory.value == 0
+          value: taskFormController.selectedCategory.value == 0
               ? null
-              : addtaskCategoryController.selectedCategory.value.toString(),
+              : taskFormController.selectedCategory.value.toString(),
           decoration: InputDecoration(
             filled: true,
             fillColor: AppColors.transparent,
@@ -65,7 +62,7 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
             Icons.keyboard_arrow_down_rounded,
             color: AppColors.primary,
           ),
-          items: taskController.categories.map((cat) {
+          items: taskFormController.categories.map((cat) {
             return DropdownMenuItem<String>(
               value: cat['id'].toString(),
               child: Text(
@@ -80,7 +77,7 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
           onChanged: (value) {
             if (value != null) {
               final categoryId = int.parse(value);
-              addtaskCategoryController.setSelectedCategory(categoryId);
+              taskFormController.setSelectedCategory(categoryId);
             }
           },
         ),

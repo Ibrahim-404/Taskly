@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
-import 'package:tasks_manager/features/tasks/presentation/widgets/custom_show_dialog_for_add_new_Task.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_form_controller.dart';
+import 'package:tasks_manager/features/tasks/presentation/widgets/custom_show_dialog_for_add_new_task.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task_composition.dart';
 
 class TaskMainScreen extends StatefulWidget {
@@ -18,8 +18,7 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          final TaskController taskController = Get.find();
-          taskController.fetchCategories();
+          Get.find<TaskFormController>().clearAll(); // Ensure a clean state
           Navigator.push(
             context,
             MaterialPageRoute(

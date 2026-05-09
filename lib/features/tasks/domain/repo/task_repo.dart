@@ -11,6 +11,6 @@ abstract class TaskRepo {
   Future<Either<Failure, Unit>> addCategory(String category);
   Future<Either<Failure, List<Map<String, dynamic>>>> getCategories();
   Future<Either<Failure, Unit>> completeTask(String taskId);
-  Future<Either<Failure, Unit>> completeSubTask(String taskId);
+  Future<Either<Failure, Unit>> completeSubTask(String taskId, bool taskState);
   Future<Either<Failure, String>> getCategoryNameById(String id);
 }

@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasks_manager/core/enums/priority_enum.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_form_controller.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/core/const/app_strings.dart';
 
 class TaskPrioritySelector extends StatelessWidget {
-  final AddtaskCategoryController addtaskCategoryController;
+  final TaskFormController taskFormController;
 
-  const TaskPrioritySelector({
-    super.key,
-    required this.addtaskCategoryController,
-  });
+  const TaskPrioritySelector({super.key, required this.taskFormController});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +19,11 @@ class TaskPrioritySelector extends StatelessWidget {
           final label = priorityLevels[index]['label'] as String;
           final color = priorityLevels[index]['color'] as Color;
           final isSelected =
-              addtaskCategoryController.priorityStatus.value == priority;
+              taskFormController.priorityStatus.value == priority;
           return Expanded(
             child: GestureDetector(
               onTap: () {
-                addtaskCategoryController.priorityStatus.value = priority;
+                taskFormController.priorityStatus.value = priority;
               },
               behavior: HitTestBehavior.opaque,
               child: Container(

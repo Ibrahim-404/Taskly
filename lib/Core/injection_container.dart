@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:tasks_manager/core/database/database_helper.dart';
@@ -8,9 +7,8 @@ import 'package:tasks_manager/features/tasks/domain/repo/task_repo.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/complete_sub_task.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/complete_task.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/get_category_name_By_Id.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/sub_task_text_edit_controller_model.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_form_controller.dart';
 
 import '../features/tasks/data/datasource/locelDataSources/task_local_data_source_imp.dart';
 import '../features/tasks/domain/usecases/add_category.dart';
@@ -63,24 +61,21 @@ class InjectionContainer extends Bindings {
     // controllers
     Get.lazyPut<TaskController>(
       () => TaskController(
-        completeTask: Get.find(),
-        completeSubTask: Get.find(),
-        getCategories: Get.find(),
-        getTasksByCategoryUseCase: Get.find(),
-        getTasks: Get.find(),
-        addTask: Get.find(),
-        addCategory: Get.find(),
+        getTasks: Get.find<GetTasks>(),
+        getTasksByCategoryUseCase: Get.find<GetTasksByCategoryUseCase>(),
+        completeSubTask: Get.find<CompleteSubTask>(),
+        completeTask: Get.find<CompleteTask>(),
+        deleteTask: Get.find<DeleteTask>(),
+        getCategories: Get.find<GetCategories>(),
+        addCategory: Get.find<AddCategory>(),
       ),
       fenix: true,
     );
-    Get.lazyPut<AddtaskCategoryController>(
-      () => AddtaskCategoryController(
-        SubTaskTextEditControllerModel(
-          subTaskTextEditingController: TextEditingController(),
-          subTaskDescriptionTextEditingController: TextEditingController(),
-        ),
-        getCategories: Get.find(),
-        addTask: Get.find(),
+
+    Get.lazyPut<TaskFormController>(
+      () => TaskFormController(
+        addTask: Get.find<AddTask>(),
+        getCategories: Get.find<GetCategories>(),
       ),
       fenix: true,
     );

@@ -1,25 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/features/tasks/domain/entities/sub_task_entity.dart';
-import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/category_management.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
+import 'package:tasks_manager/features/tasks/presentation/controllers/task_form_controller.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
-import 'package:tasks_manager/core/const/app_strings.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class CustomButton extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  final TaskController taskController;
-  final AddtaskCategoryController addtaskCategoryController;
+  final TaskFormController taskFormController;
 
-  const CustomButton({
-    super.key,
-    required this.formKey,
-    required this.taskController,
-    required this.addtaskCategoryController,
-  });
+  const CustomButton({super.key, required this.taskFormController});
 
   @override
   Widget build(BuildContext context) {
@@ -45,83 +32,7 @@ class CustomButton extends StatelessWidget {
         color: AppColors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: () async {
-            if (formKey.currentState?.validate() ?? false) {
-              if (addtaskCategoryController.selectedCategory.value == 0) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text(AppStrings.selectCategory)),
-                );
-                return;
-              }
-
-              final date =
-                  addtaskCategoryController.selectedDeadline.value ??
-                  DateTime.now();
-              final time =
-                  addtaskCategoryController.selectedTime.value ??
-                  TimeOfDay.now();
-              final taskDateTime = DateTime(
-                date.year,
-                date.month,
-                date.day,
-                time.hour,
-                time.minute,
-              );
-
-              final subTasks = taskController.subTasksList
-                  .where(
-                    (sub) =>
-                        sub.subTaskTextEditingController.text.trim().isNotEmpty,
-                  )
-                  .map(
-                    (sub) => SubTaskEntity(
-                      id: 0,
-                      title: sub.subTaskTextEditingController.text.trim(),
-                      description: sub
-                          .subTaskDescriptionTextEditingController
-                          .text
-                          .trim(),
-                      isDone: false,
-                      taskId: 0,
-                    ),
-                  )
-                  .toList();
-
-              final newTask = TaskEntity(
-                id: 0,
-                title: addtaskCategoryController.taskName.text.trim(),
-                description: addtaskCategoryController.taskDescription.text
-                    .trim(),
-                date: taskDateTime,
-                categoryId: addtaskCategoryController.pickCategoryId.value,
-                isDone: false,
-                subTasks: subTasks,
-                priorityStatus: addtaskCategoryController.priorityStatus.value,
-              );
-
-              await taskController.addANewTask(newTask);
-              await taskController.fetchTasks();
-              taskController.clearSubTasks();
-              addtaskCategoryController.clearAll();
-
-              if (taskController.taskErrorMessage.value.isNotEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(taskController.taskErrorMessage.value),
-                  ),
-                );
-              } else {
-                log(
-                  name: 'Task',
-                  "CategoryID:${newTask.categoryId}\n Task title${newTask.title} \n Task description:${newTask.description} \n Task date:${newTask.date} \n Task deadline:${newTask.isDone} \n Sub Tasks:${newTask.subTasks}",
-                );
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text(AppStrings.taskAdded)),
-                );
-                Navigator.of(context).pop();
-              }
-            }
-          },
+          onTap: () => taskFormController.submitTask(),
           child: Center(
             child: Text(
               AppLocalizations.of(context)!.addTask,

@@ -2,7 +2,7 @@ import 'package:tasks_manager/features/tasks/data/models/sub_task_model.dart';
 import 'package:tasks_manager/core/enums/priority_enum.dart';
 
 class TaskModel {
-  List<SubTaskModel>? subTask;
+  List<SubTaskModel>? subTasks;
   final int id;
   final String title;
   final String description;
@@ -12,7 +12,7 @@ class TaskModel {
   final DateTime date;
   final TaskPriority priorityStatus;
   TaskModel({
-    this.subTask = const [],
+    this.subTasks = const [],
     required this.id,
     required this.title,
     required this.description,
@@ -25,8 +25,8 @@ class TaskModel {
 
   factory TaskModel.fromMap(Map<String, dynamic> json) {
     return TaskModel(
-      subTask:
-          (json['sub_task'] as List?)
+      subTasks:
+          (json['sub_tasks'] as List?)
               ?.map((x) => SubTaskModel.fromMap(x))
               .toList() ??
           [],

@@ -1,3 +1,1 @@
-class LoadingTask {
-
-}
+class LoadingTask {}
