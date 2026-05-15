@@ -24,6 +24,10 @@ class TaskEntity {
     this.priorityStatus = TaskPriority.low,
   });
 
+  bool get isMissed => !isDone && date.isBefore(DateTime.now());
+  bool get isUpcoming => !isDone && !date.isBefore(DateTime.now());
+
+
   factory TaskEntity.skeleton() {
     return TaskEntity(
       id: 0,

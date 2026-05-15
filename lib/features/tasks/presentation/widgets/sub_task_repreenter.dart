@@ -49,14 +49,16 @@ class _SubTaskRepresenterState extends State<SubTaskRepresenter> {
 
             GestureDetector(
               onTap: () {
+                if (widget.subTaskEntity.description.isEmpty) return;
                 setState(() {
                   selectedShowTask = !selectedShowTask;
                 });
               },
+
               child: AnimatedRotation(
                 turns: selectedShowTask ? 0.5 : 0,
                 duration: const Duration(milliseconds: 300),
-                child: const Icon(Icons.expand_more),
+                child: const Icon(Icons.arrow_forward_ios_outlined),
               ),
             ),
           ],

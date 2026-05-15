@@ -10,19 +10,27 @@ import 'package:tasks_manager/features/tasks/presentation/widgets/sub_task_repre
 import 'package:tasks_manager/features/tasks/presentation/widgets/task/task_tags.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task/task_progress_indicator.dart';
 
-class TaskRepresenter extends StatelessWidget {
+class TaskRepresenter extends StatefulWidget {
   final TaskEntity task;
 
   const TaskRepresenter({super.key, required this.task});
 
   @override
+  State<TaskRepresenter> createState() => _TaskRepresenterState();
+}
+
+class _TaskRepresenterState extends State<TaskRepresenter> {
+  @override
   Widget build(BuildContext context) {
     final TaskController controller = Get.find<TaskController>();
 
-    int completedSubTasks = task.subTasks.where((st) => st.isDone).length;
-    int totalSubTasks = task.subTasks.length;
+    bool selectedShowTask = false;
+    int completedSubTasks = widget.task.subTasks
+        .where((st) => st.isDone)
+        .length;
+    int totalSubTasks = widget.task.subTasks.length;
     double progress = totalSubTasks == 0
-        ? (task.isDone ? 1.0 : 0.0)
+        ? (widget.task.isDone ? 1.0 : 0.0)
         : (completedSubTasks / totalSubTasks);
     int progressPercentage = (progress * 100).toInt();
 
@@ -34,7 +42,7 @@ class TaskRepresenter extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         border: Border(
           left: BorderSide(
-            color: task.isDone ? AppColors.success : AppColors.error,
+            color: widget.task.isDone ? AppColors.success : AppColors.error,
             width: 4,
           ),
         ),
@@ -55,7 +63,7 @@ class TaskRepresenter extends StatelessWidget {
               Transform.scale(
                 scale: 1.3,
                 child: Checkbox(
-                  value: task.isDone,
+                  value: widget.task.isDone,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4),
                   ),
@@ -70,7 +78,7 @@ class TaskRepresenter extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      task.title,
+                      widget.task.title,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -79,33 +87,34 @@ class TaskRepresenter extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      task.description,
+                      widget.task.description,
                       style: TextStyle(fontSize: 14, color: AppColors.grey600),
                     ),
                   ],
                 ),
-              ),
+              ),  
               IconButton(
                 onPressed: () {
-                  SubTaskRepresenter(
-                    //TODO: Make subtasks list
-                    subTaskEntity: task.subTasks[0],
+                  BuildListOfSubTasks(
+                    subTasks: widget.task.subTasks,
                     taskController: controller,
                   );
-                  log("first subtask ${task.subTasks}");
+                  log("first subtask ${widget.task.subTasks}");
                 },
-                icon: task.subTasks.isEmpty
-                    ? Icon(Icons.task)
-                    : const Icon(Icons.keyboard_arrow_left_outlined),
+                icon: AnimatedRotation(
+                  turns: selectedShowTask ? 0.5 : 0,
+                  duration: const Duration(milliseconds: 300),
+                  child: const Icon(Icons.arrow_forward_ios_outlined),
+                ),
               ),
             ],
           ),
 
           const SizedBox(height: 16),
           TaskTags(
-            date: task.date,
-            categoryName: task.categoryName ?? 'Life',
-            priority: task.priorityStatus.name,
+            date: widget.task.date,
+            categoryName: widget.task.categoryName ?? 'Life',
+            priority: widget.task.priorityStatus.name,
           ),
           const SizedBox(height: 24),
           TaskProgressIndicator(
@@ -113,7 +122,7 @@ class TaskRepresenter extends StatelessWidget {
             progress: progress,
           ),
 
-          if (task.subTasks.isNotEmpty) ...[
+          if (widget.task.subTasks.isNotEmpty) ...[
             const SizedBox(height: 24),
 
             Text(
@@ -125,7 +134,7 @@ class TaskRepresenter extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            ...task.subTasks.map((subTask) {
+            ...widget.task.subTasks.map((subTask) {
               return Row(
                 children: [
                   Checkbox(
@@ -175,6 +184,9 @@ class BuildListOfSubTasks extends StatelessWidget {
     return ListView.builder(
       itemCount: subTasks.length,
       itemBuilder: (context, index) {
+        taskController.isTasksLoading.value
+            ? SubTaskEntity.skeleton()
+            : subTasks[index];
         return SubTaskRepresenter(
           subTaskEntity: subTasks[index],
           taskController: taskController,

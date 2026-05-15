@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:tasks_manager/core/controller/base_controller.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
@@ -42,6 +44,19 @@ class TaskController extends BaseController {
     fetchCategories();
   }
 
+  // Computed properties for filtering tasks
+  List<TaskEntity> get missedTasks {
+    return tasks.where((task) => task.isMissed).toList();
+  }
+
+  List<TaskEntity> get completedTasks {
+    return tasks.where((task) => task.isDone).toList();
+  }
+
+  List<TaskEntity> get upcomingTasks {
+    return tasks.where((task) => task.isUpcoming).toList();
+  }
+
   Future<void> fetchCategories() async {
     final result = await getCategories();
     result.fold(
@@ -69,16 +84,10 @@ class TaskController extends BaseController {
       (failure) => taskErrorMessage.value = failure.toString(),
       (tasksList) => tasks.value = tasksList,
     );
-    isTasksLoading.value = false;
-  }
-
-  Future<void> fetchTasksByCategory(String category) async {
-    isTasksLoading.value = true;
-    final result = await getTasksByCategoryUseCase(category);
-    result.fold(
-      (failure) => taskErrorMessage.value = failure.toString(),
-      (tasksList) => tasks.value = tasksList,
-    );
+    if (tasks.isEmpty) {
+      taskErrorMessage.value = 'No tasks found. Please add some tasks.';
+      log("No tasks found. Please add some tasks.");
+    }
     isTasksLoading.value = false;
   }
 
