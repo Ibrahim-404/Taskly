@@ -48,7 +48,8 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
 
     return tasksList;
   }
-//ToDo Solve error in insertTask and database table relationship
+
+  //ToDo Solve error in insertTask and database table relationship
   @override
   Future<void> insertTask(TaskModel task) async {
     log("Attempting to insert task: ${task.toMap()}");

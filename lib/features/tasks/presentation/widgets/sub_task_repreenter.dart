@@ -53,14 +53,10 @@ class _SubTaskRepresenterState extends State<SubTaskRepresenter> {
                   selectedShowTask = !selectedShowTask;
                 });
               },
-              child: AnimatedSwitcher(
+              child: AnimatedRotation(
+                turns: selectedShowTask ? 0.5 : 0,
                 duration: const Duration(milliseconds: 300),
-                child: selectedShowTask
-                    ? const Icon(
-                        Icons.keyboard_arrow_down,
-                        key: ValueKey('down'),
-                      )
-                    : const Icon(Icons.keyboard_arrow_up, key: ValueKey('up')),
+                child: const Icon(Icons.expand_more),
               ),
             ),
           ],

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tasks_manager/features/tasks/domain/entities/sub_task_entity.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
@@ -93,7 +94,9 @@ class TaskRepresenter extends StatelessWidget {
                   );
                   log("first subtask ${task.subTasks}");
                 },
-                icon:task.subTasks.isEmpty ? Icon(Icons.task) : const Icon(Icons.keyboard_arrow_left_outlined),
+                icon: task.subTasks.isEmpty
+                    ? Icon(Icons.task)
+                    : const Icon(Icons.keyboard_arrow_left_outlined),
               ),
             ],
           ),
@@ -154,6 +157,29 @@ class TaskRepresenter extends StatelessWidget {
           ],
         ],
       ),
+    );
+  }
+}
+
+class BuildListOfSubTasks extends StatelessWidget {
+  final List<SubTaskEntity> subTasks;
+  final TaskController taskController;
+  const BuildListOfSubTasks({
+    super.key,
+    required this.subTasks,
+    required this.taskController,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: subTasks.length,
+      itemBuilder: (context, index) {
+        return SubTaskRepresenter(
+          subTaskEntity: subTasks[index],
+          taskController: taskController,
+        );
+      },
     );
   }
 }
