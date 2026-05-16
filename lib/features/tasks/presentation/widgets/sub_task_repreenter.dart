@@ -29,10 +29,12 @@ class _SubTaskRepresenterState extends State<SubTaskRepresenter> {
             Checkbox(
               value: widget.subTaskEntity.isDone,
               onChanged: (bool? value) {
-                widget.taskController.completeSubTaskFun(
-                  subTaskId: widget.subTaskEntity.id.toString(),
-                  taskState: widget.subTaskEntity.isDone,
-                );
+                if (value != null) {
+                  widget.taskController.completeSubTaskFun(
+                    subTaskId: widget.subTaskEntity.id.toString(),
+                    taskState: value,
+                  );
+                }
               },
             ),
 
@@ -56,7 +58,7 @@ class _SubTaskRepresenterState extends State<SubTaskRepresenter> {
               },
 
               child: AnimatedRotation(
-                turns: selectedShowTask ? 0.5 : 0,
+                turns: selectedShowTask ? 0.25 : 0,
                 duration: const Duration(milliseconds: 300),
                 child: const Icon(Icons.arrow_forward_ios_outlined),
               ),

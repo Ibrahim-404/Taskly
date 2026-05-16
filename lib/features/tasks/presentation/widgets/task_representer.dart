@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,14 +19,13 @@ class TaskRepresenter extends StatefulWidget {
 }
 
 class _TaskRepresenterState extends State<TaskRepresenter> {
+  bool selectedShowTask = false;
+
   @override
   Widget build(BuildContext context) {
     final TaskController controller = Get.find<TaskController>();
 
-    bool selectedShowTask = false;
-    int completedSubTasks = widget.task.subTasks
-        .where((st) => st.isDone)
-        .length;
+    int completedSubTasks = widget.task.subTasks.where((st) => st.isDone).length;
     int totalSubTasks = widget.task.subTasks.length;
     double progress = totalSubTasks == 0
         ? (widget.task.isDone ? 1.0 : 0.0)
@@ -60,16 +58,18 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              widget.task.isMissed? const Icon(Icons.warning_amber_outlined, color: AppColors.error) : 
               Transform.scale(
                 scale: 1.3,
-                child: Checkbox(
+                child:
+                 Checkbox(
                   value: widget.task.isDone,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  onChanged: (value) {
-                    //TODO: complete task UI task
-                  },
+                    onChanged: (value) {
+                      controller.completeTaskFun(taskId: widget.task.id.toString());
+                    },
                 ),
               ),
               const SizedBox(width: 8),
@@ -95,14 +95,12 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
               ),  
               IconButton(
                 onPressed: () {
-                  BuildListOfSubTasks(
-                    subTasks: widget.task.subTasks,
-                    taskController: controller,
-                  );
-                  log("first subtask ${widget.task.subTasks}");
+                  setState(() {
+                    selectedShowTask = !selectedShowTask;
+                  });
                 },
                 icon: AnimatedRotation(
-                  turns: selectedShowTask ? 0.5 : 0,
+                  turns: selectedShowTask ? 0.25 : 0,
                   duration: const Duration(milliseconds: 300),
                   child: const Icon(Icons.arrow_forward_ios_outlined),
                 ),
@@ -122,7 +120,7 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
             progress: progress,
           ),
 
-          if (widget.task.subTasks.isNotEmpty) ...[
+          if (selectedShowTask && widget.task.subTasks.isNotEmpty) ...[
             const SizedBox(height: 24),
 
             Text(
@@ -135,32 +133,9 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
             ),
             const SizedBox(height: 10),
             ...widget.task.subTasks.map((subTask) {
-              return Row(
-                children: [
-                  Checkbox(
-                    value: subTask.isDone,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    onChanged: (value) {
-                      // controller.completeSubTaskFun(subTask.id.toString() , subTask.isDone);
-                    },
-                  ),
-                  Expanded(
-                    child: Text(
-                      subTask.title,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: subTask.isDone
-                            ? AppColors.grey
-                            : AppColors.black87,
-                        decoration: subTask.isDone
-                            ? TextDecoration.lineThrough
-                            : null,
-                      ),
-                    ),
-                  ),
-                ],
+              return SubTaskRepresenter(
+                subTaskEntity: subTask,
+                taskController: controller,
               );
             }),
           ],
