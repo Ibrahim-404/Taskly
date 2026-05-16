@@ -30,8 +30,9 @@ class BuildAllTasks extends StatelessWidget {
       return Skeletonizer(
         enabled: controller.isTasksLoading.value,
         child: ListView.builder(
-          itemCount:
-              controller.isTasksLoading.value ? 5 : controller.tasks.length,
+          itemCount: controller.isTasksLoading.value
+              ? 5
+              : controller.tasks.length,
           itemBuilder: (context, index) {
             final task = controller.isTasksLoading.value
                 ? TaskEntity.skeleton()
