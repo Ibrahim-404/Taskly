@@ -6,12 +6,14 @@ class TaskTags extends StatelessWidget {
   final String categoryName;
   final String priority;
   final DateTime date;
+  final bool isDone;
 
   const TaskTags({
     super.key,
     required this.date,
     required this.categoryName,
     required this.priority,
+    required this.isDone,
   });
 
   @override
@@ -26,7 +28,7 @@ class TaskTags extends StatelessWidget {
           textColor: AppColors.white,
         ),
         TaskTag(
-          text: getTaskState(date).name,
+          text: getTaskState(date, isDone).name,
           bgColor: AppColors.blue100,
           textColor: AppColors.blue700,
         ),
@@ -52,9 +54,9 @@ class TaskTags extends StatelessWidget {
   }
 }
 
-enum TaskState { ended, today, inProgress }
+enum TaskState { ended, today, inProgress, done }
 
-TaskState getTaskState(DateTime deadline) {
+TaskState getTaskState(DateTime deadline, bool isDone) {
   final now = DateTime.now();
   if (deadline.isBefore(now)) {
     return TaskState.ended;
@@ -63,8 +65,10 @@ TaskState getTaskState(DateTime deadline) {
       deadline.month == now.month &&
       deadline.day == now.day) {
     return TaskState.today;
+  } else if (isDone == true) {
+    return TaskState.done;
   } else {
-    return TaskState.inProgress;
+    return TaskState.done;
   }
 }
 

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/sub_task_entity.dart';
@@ -25,7 +24,9 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
   Widget build(BuildContext context) {
     final TaskController controller = Get.find<TaskController>();
 
-    int completedSubTasks = widget.task.subTasks.where((st) => st.isDone).length;
+    int completedSubTasks = widget.task.subTasks
+        .where((st) => st.isDone)
+        .length;
     int totalSubTasks = widget.task.subTasks.length;
     double progress = totalSubTasks == 0
         ? (widget.task.isDone ? 1.0 : 0.0)
@@ -58,20 +59,25 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              widget.task.isMissed? const Icon(Icons.warning_amber_outlined, color: AppColors.error) : 
-              Transform.scale(
-                scale: 1.3,
-                child:
-                 Checkbox(
-                  value: widget.task.isDone,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                    onChanged: (value) {
-                      controller.completeTaskFun(taskId: widget.task.id.toString());
-                    },
-                ),
-              ),
+              widget.task.isMissed
+                  ? const Icon(
+                      Icons.warning_amber_outlined,
+                      color: AppColors.error,
+                    )
+                  : Transform.scale(
+                      scale: 1.3,
+                      child: Checkbox(
+                        value: widget.task.isDone,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        onChanged: (value) {
+                          controller.completeTaskFun(
+                            taskId: widget.task.id.toString(),
+                          );
+                        },
+                      ),
+                    ),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(
@@ -92,7 +98,7 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
                     ),
                   ],
                 ),
-              ),  
+              ),
               IconButton(
                 onPressed: () {
                   setState(() {
@@ -110,6 +116,7 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
 
           const SizedBox(height: 16),
           TaskTags(
+            isDone: widget.task.isDone,
             date: widget.task.date,
             categoryName: widget.task.categoryName ?? 'Life',
             priority: widget.task.priorityStatus.name,

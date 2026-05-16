@@ -150,7 +150,7 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
     final db = await databaseHelper.database;
     await db.update(
       'tasks',
-      {'is_completed': 1},
+      {'isDone': 1},
       where: 'id = ?',
       whereArgs: [taskId],
     );
