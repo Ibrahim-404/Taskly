@@ -151,29 +151,3 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
     );
   }
 }
-
-class BuildListOfSubTasks extends StatelessWidget {
-  final List<SubTaskEntity> subTasks;
-  final TaskController taskController;
-  const BuildListOfSubTasks({
-    super.key,
-    required this.subTasks,
-    required this.taskController,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: subTasks.length,
-      itemBuilder: (context, index) {
-        taskController.isTasksLoading.value
-            ? SubTaskEntity.skeleton()
-            : subTasks[index];
-        return SubTaskRepresenter(
-          subTaskEntity: subTasks[index],
-          taskController: taskController,
-        );
-      },
-    );
-  }
-}
