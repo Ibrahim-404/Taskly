@@ -37,7 +37,8 @@ class BuildAllTasks extends StatelessWidget {
             final task = controller.isTasksLoading.value
                 ? TaskEntity.skeleton()
                 : controller.tasks[index];
-            if (task.isDone == true) {
+            if (task.isDone == true ||
+                task.date.isBefore(DateTime.now()) == true) {
               return const SizedBox.shrink();
             }
             return TaskRepresenter(task: task);
