@@ -3,9 +3,6 @@ import 'package:get/get.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/add_new_category_widget.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/category_widget.dart';
-import 'package:tasks_manager/features/tasks/presentation/widgets/custom_search.dart';
-import 'package:tasks_manager/features/tasks/presentation/widgets/task_representer.dart';
-import 'package:tasks_manager/core/const/app_strings.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class TaskComposition extends StatefulWidget {
@@ -22,7 +19,6 @@ class _TaskCompositionState extends State<TaskComposition> {
   @override
   void initState() {
     taskController.fetchCategories();
-    taskController.fetchTasks();
     super.initState();
   }
 
@@ -31,71 +27,38 @@ class _TaskCompositionState extends State<TaskComposition> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-        child: Column(
-          children: [
-            CustomSearch(searchController: widget.searchController),
-            SizedBox(
-              height: 65,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Obx(
-                      () => ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: taskController.categories.length + 1,
-                        itemBuilder: (context, index) {
-                          final categories = taskController.categories;
-                          if (index == categories.length) {
-                            return AddNewCategoryWidget(
-                              widget: widget,
-                              taskController: taskController,
-                            );
-                          } else {
-                            return CategoryWidget(
-                              categoryName:
-                                  categories[index]['category_name']
-                                      as String? ??
-                                  '${AppLocalizations.of(context)!.category} $index',
-                            );
-                          }
-                        },
-                      ),
-                    ),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: SizedBox(
+          height: 56,
+          child: Row(
+            children: [
+              Expanded(
+                child: Obx(
+                  () => ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: taskController.categories.length + 1,
+                    itemBuilder: (context, index) {
+                      final categories = taskController.categories;
+                      if (index == categories.length) {
+                        return AddNewCategoryWidget(
+                          widget: widget,
+                          taskController: taskController,
+                        );
+                      } else {
+                        return CategoryWidget(
+                          categoryName:
+                              categories[index]['category_name'] as String? ??
+                              '${AppLocalizations.of(context)!.category} $index',
+                        );
+                      }
+                    },
                   ),
-                ],
+                ),
               ),
-            ),
-
-            const SizedBox(height: 16),
-
-            Expanded(
-              child: Obx(() {
-                if (taskController.isTasksLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (taskController.taskErrorMessage.value.isNotEmpty) {
-                  return Center(
-                    child: Text(taskController.taskErrorMessage.value),
-                  );
-                }
-
-                if (taskController.tasks.isEmpty) {
-                  return const Center(child: Text(AppStrings.noTasks));
-                }
-
-                return ListView.builder(
-                  itemCount: taskController.tasks.length,
-                  itemBuilder: (context, index) {
-                    final task = taskController.tasks[index];
-                    return TaskRepresenter(task: task);
-                  },
-                );
-              }),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

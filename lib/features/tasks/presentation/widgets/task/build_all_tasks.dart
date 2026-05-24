@@ -4,6 +4,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
+import 'package:tasks_manager/features/tasks/presentation/widgets/task_composition.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task_representer.dart';
 
 class BuildAllTasks extends StatelessWidget {
@@ -27,23 +28,31 @@ class BuildAllTasks extends StatelessWidget {
         );
       }
 
-      return Skeletonizer(
-        enabled: controller.isTasksLoading.value,
-        child: ListView.builder(
-          itemCount: controller.isTasksLoading.value
-              ? 5
-              : controller.tasks.length,
-          itemBuilder: (context, index) {
-            final task = controller.isTasksLoading.value
-                ? TaskEntity.skeleton()
-                : controller.tasks[index];
-            if (task.isDone == true ||
-                task.date.isBefore(DateTime.now()) == true) {
-              return const SizedBox.shrink();
-            }
-            return TaskRepresenter(task: task);
-          },
-        ),
+      return Column(
+        children: [
+          TaskComposition(),
+          // const SizedBox(height: 16),
+          Expanded(
+            child: Skeletonizer(
+              enabled: controller.isTasksLoading.value,
+              child: ListView.builder(
+                itemCount: controller.isTasksLoading.value
+                    ? 5
+                    : controller.tasks.length,
+                itemBuilder: (context, index) {
+                  final task = controller.isTasksLoading.value
+                      ? TaskEntity.skeleton()
+                      : controller.tasks[index];
+                  if (task.isDone == true ||
+                      task.date.isBefore(DateTime.now()) == true) {
+                    return const SizedBox.shrink();
+                  }
+                  return TaskRepresenter(task: task);
+                },
+              ),
+            ),
+          ),
+        ],
       );
     });
   }
