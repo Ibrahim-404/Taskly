@@ -21,4 +21,7 @@ class MainScreenController extends BaseController {
     _selectedIndex.value = index;
     update();
   }
+  goToAddTaskScreen() {
+    updateSelectedIndex(0);
+  }
 }

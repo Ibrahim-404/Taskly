@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tasks_manager/core/controller/main_screen_controller.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_form_controller.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/choice_deadline.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_button.dart';
@@ -18,6 +19,7 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TaskFormController taskFormController = Get.find();
+    final MainScreenController mainScreenController = Get.find();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -114,7 +116,7 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                     CustomButton( 
                     onTap: (){
                       taskFormController.submitTask();
-                      Get.back();
+                      mainScreenController.goToAddTaskScreen();
                     },
                     ),
                     const SizedBox(height: 40),

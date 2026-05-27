@@ -31,7 +31,6 @@ class BuildAllTasks extends StatelessWidget {
       return Column(
         children: [
           TaskComposition(),
-          // const SizedBox(height: 16),
           Expanded(
             child: Skeletonizer(
               enabled: controller.isTasksLoading.value,
