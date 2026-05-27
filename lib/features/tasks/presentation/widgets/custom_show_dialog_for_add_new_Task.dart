@@ -111,7 +111,12 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
                       taskFormController: taskFormController,
                     ),
                     const SizedBox(height: 40),
-                    CustomButton(taskFormController: taskFormController),
+                    CustomButton( 
+                    onTap: (){
+                      taskFormController.submitTask();
+                      Get.back();
+                    },
+                    ),
                     const SizedBox(height: 40),
                   ],
                 ),

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/features/tasks/presentation/controllers/task_form_controller.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class CustomButton extends StatelessWidget {
-  final TaskFormController taskFormController;
-
-  const CustomButton({super.key, required this.taskFormController});
+  // final TaskFormController taskFormController;
+  final void Function()? onTap;
+  const CustomButton({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,8 @@ class CustomButton extends StatelessWidget {
         color: AppColors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: () => taskFormController.submitTask(),
+          onTap: onTap,
+
           child: Center(
             child: Text(
               AppLocalizations.of(context)!.addTask,

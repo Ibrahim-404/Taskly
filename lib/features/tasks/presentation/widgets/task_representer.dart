@@ -33,7 +33,7 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
     int progressPercentage = (progress * 100).toInt();
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppColors.white,
