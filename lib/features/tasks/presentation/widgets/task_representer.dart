@@ -98,18 +98,20 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
                   ],
                 ),
               ),
-              widget.task.subTasks.isNotEmpty ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    selectedShowTask = !selectedShowTask;
-                  });
-                },
-                icon: AnimatedRotation(
-                  turns: selectedShowTask ? 0.25 : 0,
-                  duration: const Duration(milliseconds: 300),
-                  child: const Icon(Icons.arrow_forward_ios_outlined),
-                ),
-              ):const SizedBox.shrink(),
+              widget.task.subTasks.isNotEmpty
+                  ? IconButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedShowTask = !selectedShowTask;
+                        });
+                      },
+                      icon: AnimatedRotation(
+                        turns: selectedShowTask ? 0.25 : 0,
+                        duration: const Duration(milliseconds: 300),
+                        child: const Icon(Icons.arrow_forward_ios_outlined),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
             ],
           ),
 

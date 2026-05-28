@@ -47,10 +47,13 @@ class _SubTaskRepresenterState extends State<SubTaskRepresenter> {
                         decoration: TextDecoration.lineThrough,
                       ),
                     )
-                  : Text(widget.subTaskEntity.title , style: const TextStyle(
+                  : Text(
+                      widget.subTaskEntity.title,
+                      style: const TextStyle(
                         overflow: TextOverflow.ellipsis,
                         decoration: TextDecoration.lineThrough,
-                      ),),
+                      ),
+                    ),
 
               const Spacer(),
 
