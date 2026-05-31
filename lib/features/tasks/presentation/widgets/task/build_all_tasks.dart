@@ -63,7 +63,6 @@ class _BuildAllTasksState extends State<BuildAllTasks> {
     );
 
     if (index != -1) {
-      // Small delay to ensure the framework has initialized and rendered the list
       await Future.delayed(const Duration(milliseconds: 300));
       if (_itemScrollController.isAttached) {
         _itemScrollController.scrollTo(
