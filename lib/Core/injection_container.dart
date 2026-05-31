@@ -18,12 +18,28 @@ import '../features/tasks/domain/usecases/get_categories.dart';
 import '../features/tasks/domain/usecases/get_task_by_category.dart';
 import '../features/tasks/domain/usecases/get_tasks.dart';
 import '../features/tasks/domain/usecases/update_task.dart';
+import '../features/tasks/domain/usecases/get_upcoming_tasks.dart';
+import 'notification/notfication.dart';
+import 'notification/notification_services_imp.dart';
+import 'notification/task_notification_scheduler.dart';
 
 class InjectionContainer extends Bindings {
   @override
+
   void dependencies() {
     // external dependencies
     Get.lazyPut<DatabaseHelper>(() => DatabaseHelper(), fenix: true);
+    // Get.lazyPut<NotificationService>(
+    //   () => NotificationForRemindersDeadline(),
+    //   fenix: true,
+    // );
+    Get.lazyPut<TaskNotificationScheduler>(
+      () => TaskNotificationScheduler(
+        notificationService: Get.find<NotificationService>(),
+        getUpcomingTasks: Get.find<GetUpcomingTasks>(),
+      ),
+      fenix: true,
+    );
 
     // data sources
     Get.lazyPut<TaskLocalDataSource>(
@@ -52,6 +68,10 @@ class InjectionContainer extends Bindings {
       fenix: true,
     );
     Get.lazyPut<GetTasks>(() => GetTasks(Get.find()), fenix: true);
+    Get.lazyPut<GetUpcomingTasks>(
+      () => GetUpcomingTasks(Get.find()),
+      fenix: true,
+    );
     Get.lazyPut<UpdateTask>(() => UpdateTask(Get.find()), fenix: true);
     Get.lazyPut<GetCategoryNameById>(
       () => GetCategoryNameById(Get.find()),
