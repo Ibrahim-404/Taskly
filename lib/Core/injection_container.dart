@@ -29,10 +29,10 @@ class InjectionContainer extends Bindings {
   void dependencies() {
     // external dependencies
     Get.lazyPut<DatabaseHelper>(() => DatabaseHelper(), fenix: true);
-    // Get.lazyPut<NotificationService>(
-    //   () => NotificationForRemindersDeadline(),
-    //   fenix: true,
-    // );
+    Get.lazyPut<NotificationService>(
+      () => NotificationService(),
+      fenix: true,
+    );
     Get.lazyPut<TaskNotificationScheduler>(
       () => TaskNotificationScheduler(
         notificationService: Get.find<NotificationService>(),

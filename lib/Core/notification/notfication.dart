@@ -7,7 +7,6 @@ class NotificationService {
 
   Future<void> init({
     required void Function(NotificationResponse) onNotificationTap,
-    required void Function(NotificationResponse) onNotificationResponse,
   }) async {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -16,7 +15,6 @@ class NotificationService {
 
     await flutterLocalNotificationsPlugin.initialize(
       settings: initializationSettings,
-      onDidReceiveBackgroundNotificationResponse: onNotificationTap,
       onDidReceiveNotificationResponse: onNotificationTap,
     );
   }

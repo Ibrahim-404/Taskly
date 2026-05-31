@@ -36,6 +36,11 @@ class TaskController extends BaseController {
   final categories = <Map<String, dynamic>>[].obs;
   final isTasksLoading = false.obs;
   final taskErrorMessage = ''.obs;
+  final rxScrollToTaskId = RxnString();
+
+  void scrollToTask(String taskId) {
+    rxScrollToTaskId.value = taskId;
+  }
 
   @override
   void onInit() {
