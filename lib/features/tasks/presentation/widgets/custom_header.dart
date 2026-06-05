@@ -59,7 +59,7 @@ class _CustomHeaderState extends State<CustomHeader>
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.white.withOpacity(0.4),
+                        color: AppColors.white.withValues(alpha: 0.4),
                         blurRadius: 10,
                         spreadRadius: 1,
                       ),
@@ -77,7 +77,7 @@ class _CustomHeaderState extends State<CustomHeader>
                     Text(
                       AppStrings.welcomeBack,
                       style: TextStyle(
-                        color: AppColors.white.withOpacity(0.8),
+                        color: AppColors.white.withValues(alpha: 0.8),
                         fontSize: 14,
                       ),
                     ),

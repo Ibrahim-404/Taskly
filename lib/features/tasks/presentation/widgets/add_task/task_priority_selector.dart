@@ -33,7 +33,7 @@ class TaskPrioritySelector extends StatelessWidget {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.2),
+                  color: color.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20),
                   border: isSelected
                       ? Border.all(color: color, width: 1.5)

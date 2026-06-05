@@ -20,7 +20,6 @@ import '../features/tasks/domain/usecases/get_tasks.dart';
 import '../features/tasks/domain/usecases/update_task.dart';
 import '../features/tasks/domain/usecases/get_upcoming_tasks.dart';
 import 'notification/notfication.dart';
-import 'notification/notification_services_imp.dart';
 import 'notification/task_notification_scheduler.dart';
 
 class InjectionContainer extends Bindings {

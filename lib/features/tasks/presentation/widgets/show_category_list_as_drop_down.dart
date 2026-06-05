@@ -19,7 +19,7 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withOpacity(0.04),
+            color: AppColors.black.withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -27,7 +27,7 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
       ),
       child: Obx(
         () => DropdownButtonFormField<String>(
-          value: taskFormController.selectedCategory.value == 0
+          initialValue: taskFormController.selectedCategory.value == 0
               ? null
               : taskFormController.selectedCategory.value.toString(),
           decoration: InputDecoration(
@@ -48,7 +48,7 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide(
-                color: AppColors.primary.withOpacity(0.5),
+                color: AppColors.primary.withValues(alpha: 0.5),
                 width: 1.5,
               ),
             ),

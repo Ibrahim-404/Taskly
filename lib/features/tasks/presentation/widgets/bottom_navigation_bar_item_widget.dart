@@ -52,7 +52,7 @@ class BottomNavigationBarItemWidget extends StatelessWidget {
                               boxShadow: isSelected
                                   ? [
                                       BoxShadow(
-                                        color: AppColors.white.withOpacity(0.6),
+                                        color: AppColors.white.withValues(alpha: 0.6),
                                         blurRadius: 12 * value,
                                         offset: const Offset(0, 4),
                                         spreadRadius: 1,
