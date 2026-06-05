@@ -12,7 +12,6 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
         isCoreLibraryDesugaringEnabled = true
@@ -23,7 +22,7 @@ android {
     }
  
     defaultConfig {
-        multiDexEnabled true
+        multiDexEnabled = true
         applicationId = "com.example.tasks_manager"
 
         minSdk = flutter.minSdkVersion

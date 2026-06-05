@@ -47,7 +47,7 @@ dependencies:
   skeletonizer: ^2.1.3
   flutter_local_notifications: ^21.0.0
   permission_handler: ^12.0.2  # should be add configuration for android and ios
-  workmanager: ^0.5.2
+  workmanager: ^0.9.0+3
   scrollable_positioned_list: ^0.3.8
 
 
