@@ -11,7 +11,6 @@ class GetUpcomingTasks {
   Future<Either<Failure, List<TaskEntity>>> call() async {
     final result = await taskRepo.getTasks();
     return result.fold((failure) => Left(failure), (tasks) {
-
       final now = DateTime.now();
       final oneDayFromNow = now.add(const Duration(hours: 24));
 

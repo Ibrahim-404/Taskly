@@ -6,12 +6,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 import 'core/injection_container.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(const Taskly());
-
-
 }
 
 class Taskly extends StatelessWidget {

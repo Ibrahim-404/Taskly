@@ -22,7 +22,6 @@ class _BuildAllTasksState extends State<BuildAllTasks> {
   Worker? _loadingWorker;
 
   @override
-
   void initState() {
     super.initState();
     _itemScrollController = ItemScrollController();
@@ -53,7 +52,7 @@ class _BuildAllTasksState extends State<BuildAllTasks> {
 
   void _attemptScroll(String taskId) async {
     final taskController = Get.find<TaskController>();
-    
+
     if (taskController.isTasksLoading.value) {
       return;
     }
@@ -84,7 +83,8 @@ class _BuildAllTasksState extends State<BuildAllTasks> {
         return Center(child: Text(controller.taskErrorMessage.value));
       }
 
-      final showEmpty = !controller.isTasksLoading.value && controller.upcomingTasks.isEmpty;
+      final showEmpty =
+          !controller.isTasksLoading.value && controller.upcomingTasks.isEmpty;
       if (showEmpty) {
         return const Center(
           child: Text(
@@ -110,10 +110,7 @@ class _BuildAllTasksState extends State<BuildAllTasks> {
                   final task = controller.isTasksLoading.value
                       ? TaskEntity.skeleton()
                       : controller.upcomingTasks[index];
-                  return TaskRepresenter(
-                    key: ValueKey(task.id),
-                    task: task,
-                  );
+                  return TaskRepresenter(key: ValueKey(task.id), task: task);
                 },
               ),
             ),

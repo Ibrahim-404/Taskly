@@ -6,23 +6,30 @@ import 'package:tasks_manager/features/tasks/presentation/widgets/category_widge
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class TaskComposition extends StatefulWidget {
-  TaskComposition({super.key});
-  final TextEditingController controller = TextEditingController();
-  final SearchController searchController = SearchController();
-  final FocusNode focusNode = FocusNode();
+  final bool onlyForSearch;
+
+  const TaskComposition({super.key, this.onlyForSearch = false});
+
   @override
   State<TaskComposition> createState() => _TaskCompositionState();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 }
 
 class _TaskCompositionState extends State<TaskComposition> {
+  final TaskController taskController = Get.find();
+  final TextEditingController controller = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  int? selectedCategoryIndex;
+
   @override
-  void initState() {
-    taskController.fetchCategories();
-    super.initState();
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
-  final TaskController taskController = Get.find();
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +50,32 @@ class _TaskCompositionState extends State<TaskComposition> {
                       final categories = taskController.categories;
                       if (index == categories.length) {
                         return AddNewCategoryWidget(
-                          widget: widget,
+                          controller: controller,
+                          formKey: formKey,
                           taskController: taskController,
                         );
                       } else {
+                        final categoryName =
+                            categories[index]['category_name'] as String? ??
+                            '${AppLocalizations.of(context)!.category} $index';
                         return CategoryWidget(
-                          categoryName:
-                              categories[index]['category_name'] as String? ??
-                              '${AppLocalizations.of(context)!.category} $index',
+                          categoryName: categoryName,
+                          isSelected: selectedCategoryIndex == index,
+                          onTap: () {
+                            final isAlreadySelected =
+                                selectedCategoryIndex == index;
+                            setState(() {
+                              selectedCategoryIndex = isAlreadySelected
+                                  ? null
+                                  : index;
+                            });
+
+                            if (isAlreadySelected) {
+                              taskController.fetchTasks();
+                            } else {
+                              taskController.fetchTasksByCategory(categoryName);
+                            }
+                          },
                         );
                       }
                     },

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
-import 'package:tasks_manager/features/tasks/presentation/widgets/task_composition.dart';
 import 'package:tasks_manager/core/utils/app_validators.dart';
 import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
@@ -8,11 +7,13 @@ import 'package:tasks_manager/l10n/app_localizations.dart';
 class AddNewCategoryWidget extends StatelessWidget {
   const AddNewCategoryWidget({
     super.key,
-    required this.widget,
+    required this.controller,
+    required this.formKey,
     required this.taskController,
   });
 
-  final TaskComposition widget;
+  final TextEditingController controller;
+  final GlobalKey<FormState> formKey;
   final TaskController taskController;
 
   @override
@@ -28,7 +29,7 @@ class AddNewCategoryWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Form(
-                  key: widget.formKey,
+                  key: formKey,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -38,7 +39,7 @@ class AddNewCategoryWidget extends StatelessWidget {
                           value,
                           AppLocalizations.of(context)!.pleaseEnterCategoryName,
                         ),
-                        controller: widget.controller,
+                        controller: controller,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(
                             borderSide: BorderSide(color: AppColors.blue),
@@ -53,12 +54,10 @@ class AddNewCategoryWidget extends StatelessWidget {
                           backgroundColor: AppColors.blueAccent,
                         ),
                         onPressed: () {
-                          if (widget.formKey.currentState!.validate()) {
-                            taskController.addANewCategory(
-                              widget.controller.text,
-                            );
+                          if (formKey.currentState!.validate()) {
+                            taskController.addANewCategory(controller.text);
                             Navigator.pop(context);
-                            widget.controller.clear();
+                            controller.clear();
                           }
                         },
                         child: Text(AppLocalizations.of(context)!.add),

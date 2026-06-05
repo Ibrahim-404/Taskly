@@ -35,7 +35,7 @@ class MainScreenController extends BaseController {
           final payload = response.payload;
           if (payload != null && payload.isNotEmpty) {
             updateSelectedIndex(0);
-            
+
             // Allow tab change to finish, then trigger scroll
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (Get.isRegistered<TaskController>()) {
@@ -45,7 +45,7 @@ class MainScreenController extends BaseController {
           }
         },
       );
-      
+
       // Start the task scheduler to fetch upcoming tasks and schedule periodic background tasks
       final scheduler = Get.find<TaskNotificationScheduler>();
       await scheduler.initScheduler();

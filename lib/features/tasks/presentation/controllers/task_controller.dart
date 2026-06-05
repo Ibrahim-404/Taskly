@@ -122,4 +122,19 @@ class TaskController extends BaseController {
       (_) => fetchTasks(),
     );
   }
+
+  void fetchTasksByCategory(String category) async {
+    isTasksLoading.value = true;
+    taskErrorMessage.value = '';
+    final result = await getTasksByCategoryUseCase(category);
+    result.fold(
+      (failure) => taskErrorMessage.value = failure.toString(),
+      (tasksList) => tasks.value = tasksList,
+    );
+    if (tasks.isEmpty) {
+      taskErrorMessage.value = 'No tasks found for this category.';
+      log("No tasks found for this category.");
+    }
+    isTasksLoading.value = false;
+  }
 }

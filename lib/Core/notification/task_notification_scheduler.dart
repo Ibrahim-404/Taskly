@@ -33,7 +33,6 @@ class TaskNotificationScheduler {
     }
   }
 
-
   Future<void> cancelScheduler() async {
     try {
       await Workmanager().cancelByTag(taskNotificationWorkTag);
