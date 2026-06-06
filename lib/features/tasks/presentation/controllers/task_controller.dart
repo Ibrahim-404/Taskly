@@ -37,6 +37,7 @@ class TaskController extends BaseController {
   final isTasksLoading = false.obs;
   final taskErrorMessage = ''.obs;
   final rxScrollToTaskId = RxnString();
+  final selectedCategory = RxnString();
 
   void scrollToTask(String taskId) {
     rxScrollToTaskId.value = taskId;
@@ -123,18 +124,21 @@ class TaskController extends BaseController {
     );
   }
 
-  void fetchTasksByCategory(String category) async {
+  Future<List<TaskEntity>> fetchTasksByCategory(String category) async {
     isTasksLoading.value = true;
     taskErrorMessage.value = '';
+    List<TaskEntity> fetched = [];
     final result = await getTasksByCategoryUseCase(category);
     result.fold(
       (failure) => taskErrorMessage.value = failure.toString(),
-      (tasksList) => tasks.value = tasksList,
+      (tasksList) => fetched = tasksList,
     );
+    tasks.value = fetched;
     if (tasks.isEmpty) {
       taskErrorMessage.value = 'No tasks found for this category.';
       log("No tasks found for this category.");
     }
     isTasksLoading.value = false;
+    return fetched;
   }
 }

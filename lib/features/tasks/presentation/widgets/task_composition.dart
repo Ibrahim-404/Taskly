@@ -81,7 +81,12 @@ class _TaskCompositionState extends State<TaskComposition> {
                           setState(() {
                             selectedCategoryIndex = categoryIndex;
                           });
-                          taskController.fetchTasksByCategory(categoryName);
+                          if (categoryName == 'All') {
+                            selectedCategoryIndex == 0
+                                ? taskController.selectedCategory.value = "All"
+                                : null;
+                          }
+                          taskController.selectedCategory.value = categoryName;
                         },
                       );
                     },
