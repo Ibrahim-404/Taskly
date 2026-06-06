@@ -56,7 +56,9 @@ class _TaskCompositionState extends State<TaskComposition> {
                             setState(() {
                               selectedCategoryIndex = null;
                             });
-                            taskController.fetchTasks();
+                            if (widget.onlyForSearch == true) {
+                              taskController.fetchTasks();
+                            }
                           },
                         );
                       }
@@ -82,11 +84,14 @@ class _TaskCompositionState extends State<TaskComposition> {
                             selectedCategoryIndex = categoryIndex;
                           });
                           if (categoryName == 'All') {
-                            selectedCategoryIndex == 0
-                                ? taskController.selectedCategory.value = "All"
-                                : null;
+                            if (widget.onlyForSearch) {
+                              selectedCategoryIndex == 0
+                                  ? taskController.selectedCategory.value =
+                                        "All"
+                                  : taskController.selectedCategory.value =
+                                        categoryName;
+                            }
                           }
-                          taskController.selectedCategory.value = categoryName;
                         },
                       );
                     },

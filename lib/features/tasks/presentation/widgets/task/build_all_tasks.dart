@@ -87,9 +87,18 @@ class _BuildAllTasksState extends State<BuildAllTasks> {
           !controller.isTasksLoading.value && controller.upcomingTasks.isEmpty;
       if (showEmpty) {
         return const Center(
-          child: Text(
-            'No tasks available',
-            style: TextStyle(fontSize: 16, color: AppColors.grey),
+          child: Column(
+            children: [
+              TaskComposition(onlyForSearch: false),
+              Expanded(
+                child: Center(
+                  child: Text(
+                    'No tasks available',
+                    style: TextStyle(fontSize: 16, color: AppColors.grey),
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       }
