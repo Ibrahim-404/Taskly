@@ -56,8 +56,8 @@ class _TaskCompositionState extends State<TaskComposition> {
                             setState(() {
                               selectedCategoryIndex = null;
                             });
-                            if (widget.onlyForSearch == true) {
-                              taskController.fetchTasks();
+                            if (widget.onlyForSearch) {
+                              taskController.selectedCategory.value = 'All';
                             }
                           },
                         );
@@ -83,14 +83,9 @@ class _TaskCompositionState extends State<TaskComposition> {
                           setState(() {
                             selectedCategoryIndex = categoryIndex;
                           });
-                          if (categoryName == 'All') {
-                            if (widget.onlyForSearch) {
-                              selectedCategoryIndex == 0
-                                  ? taskController.selectedCategory.value =
-                                        "All"
-                                  : taskController.selectedCategory.value =
-                                        categoryName;
-                            }
+                          if (widget.onlyForSearch) {
+                            taskController.selectedCategory.value =
+                                categoryName;
                           }
                         },
                       );

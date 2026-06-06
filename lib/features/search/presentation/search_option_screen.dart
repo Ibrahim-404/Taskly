@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_search.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task_composition.dart';
@@ -48,19 +50,25 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             TaskComposition(onlyForSearch: true),
             Obx(() {
-              if (taskController.isTasksLoading.value) {
-                return const Center(child: CupertinoActivityIndicator());
-              }
+              // if (taskController.isTasksLoading.value) {
+              //   return const Center(child: CupertinoActivityIndicator());
+              // }
 
-              final list = taskController.tasks;
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: list.length,
-                itemBuilder: (context, index) {
-                  final task = list[index];
-                  return TaskRepresenter(task: task);
-                },
+              return Skeletonizer(
+                enabled: taskController.isTasksLoading.value,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: taskController.isTasksLoading.value
+                      ? 10
+                      : taskController.tasks.length,
+                  itemBuilder: (context, index) {
+                    final task = taskController.isTasksLoading.value
+                        ? TaskEntity.skeleton()
+                        : taskController.tasks[index];
+                    return TaskRepresenter(task: task);
+                  },
+                ),
               );
             }),
           ],
