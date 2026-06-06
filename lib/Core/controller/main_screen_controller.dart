@@ -4,7 +4,7 @@ import 'package:tasks_manager/core/const/app_strings.dart';
 import 'package:tasks_manager/core/controller/base_controller.dart';
 import 'package:tasks_manager/core/notification/notfication.dart';
 import 'package:tasks_manager/core/notification/task_notification_scheduler.dart';
-import 'package:tasks_manager/features/search/presentation/search_screen.dart';
+import 'package:tasks_manager/features/search/presentation/search_option_screen.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_show_dialog_for_add_new_task.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task/build_all_tasks.dart';

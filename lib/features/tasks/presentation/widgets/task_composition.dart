@@ -45,39 +45,45 @@ class _TaskCompositionState extends State<TaskComposition> {
                 child: Obx(
                   () => ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: taskController.categories.length + 1,
+                    itemCount: taskController.categories.length + 2,
                     itemBuilder: (context, index) {
                       final categories = taskController.categories;
-                      if (index == categories.length) {
+                      if (index == 0) {
+                        return CategoryWidget(
+                          categoryName: 'All',
+                          isSelected: selectedCategoryIndex == null,
+                          onTap: () {
+                            setState(() {
+                              selectedCategoryIndex = null;
+                            });
+                            taskController.fetchTasks();
+                          },
+                        );
+                      }
+
+                      if (index == categories.length + 1) {
                         return AddNewCategoryWidget(
                           controller: controller,
                           formKey: formKey,
                           taskController: taskController,
                         );
-                      } else {
-                        final categoryName =
-                            categories[index]['category_name'] as String? ??
-                            '${AppLocalizations.of(context)!.category} $index';
-                        return CategoryWidget(
-                          categoryName: categoryName,
-                          isSelected: selectedCategoryIndex == index,
-                          onTap: () {
-                            final isAlreadySelected =
-                                selectedCategoryIndex == index;
-                            setState(() {
-                              selectedCategoryIndex = isAlreadySelected
-                                  ? null
-                                  : index;
-                            });
-
-                            if (isAlreadySelected) {
-                              taskController.fetchTasks();
-                            } else {
-                              taskController.fetchTasksByCategory(categoryName);
-                            }
-                          },
-                        );
                       }
+
+                      final categoryIndex = index - 1;
+                      final categoryName =
+                          categories[categoryIndex]['category_name']
+                              as String? ??
+                          '${AppLocalizations.of(context)!.category} $categoryIndex';
+                      return CategoryWidget(
+                        categoryName: categoryName,
+                        isSelected: selectedCategoryIndex == categoryIndex,
+                        onTap: () {
+                          setState(() {
+                            selectedCategoryIndex = categoryIndex;
+                          });
+                          taskController.fetchTasksByCategory(categoryName);
+                        },
+                      );
                     },
                   ),
                 ),
