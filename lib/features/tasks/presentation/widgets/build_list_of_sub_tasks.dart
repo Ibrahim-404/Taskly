@@ -23,6 +23,7 @@ class BuildListOfSubTasks extends StatelessWidget {
         return SubTaskRepresenter(
           subTaskEntity: subTasks[index],
           taskController: taskController,
+          onlyRepresenter: false,
         );
       },
     );

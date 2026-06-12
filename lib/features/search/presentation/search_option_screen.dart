@@ -66,7 +66,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     final task = taskController.isTasksLoading.value
                         ? TaskEntity.skeleton()
                         : taskController.tasks[index];
-                    return TaskRepresenter(task: task);
+                    return TaskRepresenter(task: task, onlyRepresenter: true);
                   },
                 ),
               );

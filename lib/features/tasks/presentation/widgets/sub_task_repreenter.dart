@@ -5,11 +5,12 @@ import 'package:tasks_manager/features/tasks/presentation/controllers/task_contr
 class SubTaskRepresenter extends StatefulWidget {
   final SubTaskEntity subTaskEntity;
   final TaskController taskController;
-
+  final bool onlyRepresenter;
   const SubTaskRepresenter({
     super.key,
     required this.subTaskEntity,
     required this.taskController,
+    required this.onlyRepresenter,
   });
 
   @override
@@ -29,10 +30,12 @@ class _SubTaskRepresenterState extends State<SubTaskRepresenter> {
             Checkbox(
               value: widget.subTaskEntity.isDone,
               onChanged: (bool? value) {
-                if (value != null) {
+                if (widget.onlyRepresenter) {
+                  return;
+                } else {
                   widget.taskController.completeSubTaskFun(
                     subTaskId: widget.subTaskEntity.id.toString(),
-                    taskState: value,
+                    taskState: value ?? false,
                   );
                 }
               },
@@ -53,9 +56,11 @@ class _SubTaskRepresenterState extends State<SubTaskRepresenter> {
                 : GestureDetector(
                     onTap: () {
                       if (widget.subTaskEntity.description.isEmpty) return;
-                      setState(() {
-                        selectedShowTask = !selectedShowTask;
-                      });
+                      widget.onlyRepresenter == true
+                          ? null
+                          : setState(() {
+                              selectedShowTask = !selectedShowTask;
+                            });
                     },
                     child: AnimatedRotation(
                       turns: selectedShowTask ? 0.25 : 0,

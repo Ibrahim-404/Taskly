@@ -119,7 +119,11 @@ class _BuildAllTasksState extends State<BuildAllTasks> {
                   final task = controller.isTasksLoading.value
                       ? TaskEntity.skeleton()
                       : controller.upcomingTasks[index];
-                  return TaskRepresenter(key: ValueKey(task.id), task: task);
+                  return TaskRepresenter(
+                    key: ValueKey(task.id),
+                    task: task,
+                    onlyRepresenter: false,
+                  );
                 },
               ),
             ),

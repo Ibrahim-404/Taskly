@@ -9,8 +9,13 @@ import 'package:tasks_manager/features/tasks/presentation/widgets/task/task_prog
 
 class TaskRepresenter extends StatefulWidget {
   final TaskEntity task;
+  final bool onlyRepresenter;
 
-  const TaskRepresenter({super.key, required this.task});
+  const TaskRepresenter({
+    super.key,
+    required this.task,
+    required this.onlyRepresenter,
+  });
 
   @override
   State<TaskRepresenter> createState() => _TaskRepresenterState();
@@ -71,9 +76,13 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         onChanged: (value) {
-                          controller.completeTaskFun(
-                            taskId: widget.task.id.toString(),
-                          );
+                          if (widget.onlyRepresenter) {
+                            return;
+                          } else {
+                            controller.completeTaskFun(
+                              taskId: widget.task.id.toString(),
+                            );
+                          }
                         },
                       ),
                     ),
@@ -142,6 +151,7 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
             const SizedBox(height: 10),
             ...widget.task.subTasks.map((subTask) {
               return SubTaskRepresenter(
+                onlyRepresenter: widget.onlyRepresenter,
                 subTaskEntity: subTask,
                 taskController: controller,
               );
