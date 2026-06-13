@@ -62,10 +62,10 @@ class _SearchOptionScreenState extends State<SearchOptionScreen> {
                       ),
                     ),
                   ),
-                  // Obx(() => FilterChips(
-                  //   activeFilter: taskController.activeFilter.value,
-                  //   onFilterChanged: (filter) => taskController.setFilter(filter),
-                  // )),
+                  Obx(() => FilterChips(
+                    activeFilter: taskController.activeFilter.value,
+                    onFilterChanged: (filter) => taskController.setFilter(filter),
+                  )),
                   TaskComposition(onlyForSearch: true),
                 ],
               ),

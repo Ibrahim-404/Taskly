@@ -1,6 +1,7 @@
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:tasks_manager/core/database/database_helper.dart';
+import 'package:tasks_manager/features/analysis/presentation/controllers/analytics_controller.dart';
 import 'package:tasks_manager/features/tasks/data/datasource/locelDataSources/task_local_data_source.dart';
 import 'package:tasks_manager/features/tasks/data/repo/task_repo_imp.dart';
 import 'package:tasks_manager/features/tasks/domain/repo/task_repo.dart';
@@ -94,6 +95,8 @@ class InjectionContainer extends Bindings {
       ),
       fenix: true,
     );
+
+    Get.lazyPut<AnalyticsController>(() => AnalyticsController(), fenix: true);
   }
 }
 

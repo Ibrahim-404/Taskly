@@ -49,6 +49,7 @@ dependencies:
   permission_handler: ^12.0.2  # should be add configuration for android and ios
   workmanager: ^0.9.0+3
   scrollable_positioned_list: ^0.3.8
+  fl_chart: ^0.70.2
 
 
 
