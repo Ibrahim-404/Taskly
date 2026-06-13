@@ -25,15 +25,29 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Scaffold(
       body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
-            floating: true,
-            title: CustomSearch(
-              searchController: _searchController,
-              onChanged: (value) => _taskController.setSearchQuery(value),
-              enabled: true,
+            pinned: true,
+            expandedHeight: 100,
+            collapsedHeight: 90,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Padding(
+                padding: EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  top: MediaQuery.of(context).padding.top + 8,
+                  bottom: 8,
+                ),
+                child: CustomSearch(
+                  searchController: _searchController,
+                  onChanged: (value) => _taskController.setSearchQuery(value),
+                  enabled: true,
+                ),
+              ),
             ),
           ),
           SliverToBoxAdapter(
@@ -44,12 +58,15 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Obx(() {
                 final count = _taskController.displayedTasks.length;
                 return Text(
                   count == 1 ? '1 task found' : '$count tasks found',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: cs.onSurfaceVariant,
+                  ),
                 );
               }),
             ),
@@ -63,23 +80,48 @@ class _SearchScreenState extends State<SearchScreen> {
                     task: TaskEntity.skeleton(),
                     onlyRepresenter: true,
                   ),
-                  childCount: 10,
+                  childCount: 6,
                 ),
               );
             }
             if (tasks.isEmpty) {
               return SliverFillRemaining(
+                hasScrollBody: false,
                 child: Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.search_off, size: 64, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                      const SizedBox(height: 16),
+                      Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          color: cs.surfaceContainerHighest.withValues(alpha: 0.5),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.search_off_rounded,
+                          size: 36,
+                          color: cs.onSurfaceVariant,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       Text(
                         _taskController.searchQuery.value != null
                             ? 'No tasks match your search'
                             : 'No tasks found',
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: cs.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Try adjusting your search or filter',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: cs.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),

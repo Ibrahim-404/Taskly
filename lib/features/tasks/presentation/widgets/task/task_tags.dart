@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task/task_tag.dart';
 
 class TaskTags extends StatelessWidget {
@@ -20,60 +19,64 @@ class TaskTags extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     return Wrap(
-      spacing: 8,
-      runSpacing: 8,
+      spacing: 6,
+      runSpacing: 6,
       children: [
         TaskTag(
           text: priority,
-          bgColor: getColorMatchpriority(priority),
-          textColor: cs.onPrimary,
+          bgColor: getColorMatchpriority(priority, cs).withValues(alpha: 0.12),
+          textColor: getColorMatchpriority(priority, cs),
         ),
         TaskTag(
-          text: getTaskState(date, isDone).name,
-          bgColor: cs.primaryContainer,
+          text: getTaskStateString(date, isDone),
+          bgColor: cs.primaryContainer.withValues(alpha: 0.6),
           textColor: cs.onPrimaryContainer,
         ),
         TaskTag(
-          text:
-              "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
-          bgColor: cs.surfaceContainerHighest,
-          textColor: cs.onSurface,
-          icon: Icons.calendar_today,
+          text: _formatDate(date),
+          bgColor: cs.surfaceContainerHighest.withValues(alpha: 0.6),
+          textColor: cs.onSurfaceVariant,
+          prefix: Icons.calendar_today_rounded,
         ),
         TaskTag(
           text: categoryName,
-          bgColor: cs.secondaryContainer,
+          bgColor: cs.secondaryContainer.withValues(alpha: 0.6),
           textColor: cs.onSecondaryContainer,
+          prefix: Icons.folder_rounded,
         ),
       ],
     );
   }
+
+  String _formatDate(DateTime date) {
+    final now = DateTime.now();
+    final diff = date.difference(now).inDays;
+    if (diff == 0) return 'Today';
+    if (diff == 1) return 'Tomorrow';
+    if (diff == -1) return 'Yesterday';
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+  }
 }
 
-enum TaskState { ended, today, inProgress, done }
-
-TaskState getTaskState(DateTime deadline, bool isDone) {
+String getTaskStateString(DateTime deadline, bool isDone) {
+  if (isDone) return 'Done';
   final now = DateTime.now();
-  if (deadline.isBefore(now)) {
-    return TaskState.ended;
-  }
+  if (deadline.isBefore(now)) return 'Overdue';
   if (deadline.year == now.year &&
       deadline.month == now.month &&
       deadline.day == now.day) {
-    return TaskState.today;
-  } else if (isDone == true) {
-    return TaskState.done;
-  } else {
-    return TaskState.done;
+    return 'Today';
   }
+  return 'Upcoming';
 }
 
-Color getColorMatchpriority(String priority) {
-  if (priority == "low") {
-    return AppColors.success;
-  } else if (priority == "medium") {
-    return AppColors.warning;
-  } else {
-    return AppColors.error;
+Color getColorMatchpriority(String priority, ColorScheme cs) {
+  switch (priority) {
+    case 'high':
+      return cs.error;
+    case 'medium':
+      return Colors.orange;
+    default:
+      return Colors.green;
   }
 }

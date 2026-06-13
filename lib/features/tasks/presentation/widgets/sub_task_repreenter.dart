@@ -18,60 +18,66 @@ class SubTaskRepresenter extends StatefulWidget {
 }
 
 class _SubTaskRepresenterState extends State<SubTaskRepresenter> {
-  bool selectedShowTask = false;
+  bool _showDescription = false;
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Checkbox(
-              value: widget.subTaskEntity.isDone,
-              onChanged: (bool? value) {
-                if (widget.onlyRepresenter) {
-                  return;
-                } else {
-                  widget.taskController.completeSubTaskFun(
-                    subTaskId: widget.subTaskEntity.id.toString(),
-                    taskState: value ?? false,
-                  );
-                }
-              },
-            ),
-            Expanded(
-              child: Text(
-                widget.subTaskEntity.title,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  decoration: widget.subTaskEntity.isDone
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 22,
+                height: 22,
+                child: Checkbox(
+                  value: widget.subTaskEntity.isDone,
+                  onChanged: widget.onlyRepresenter
+                      ? null
+                      : (value) => widget.taskController.completeSubTaskFun(
+                            subTaskId: widget.subTaskEntity.id.toString(),
+                            taskState: value ?? false,
+                          ),
                 ),
               ),
-            ),
-            widget.subTaskEntity.description.isEmpty
-                ? const SizedBox()
-                : GestureDetector(
-                    onTap: () {
-                      if (widget.subTaskEntity.description.isEmpty) return;
-                      widget.onlyRepresenter == true
-                          ? null
-                          : setState(() {
-                              selectedShowTask = !selectedShowTask;
-                            });
-                    },
-                    child: AnimatedRotation(
-                      turns: selectedShowTask ? 0.25 : 0,
-                      duration: const Duration(milliseconds: 300),
-                      child: const Icon(Icons.arrow_forward_ios_outlined),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  widget.subTaskEntity.title,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 14,
+                    decoration: widget.subTaskEntity.isDone
+                        ? TextDecoration.lineThrough
+                        : null,
+                    color: widget.subTaskEntity.isDone
+                        ? cs.onSurfaceVariant
+                        : cs.onSurface,
+                  ),
+                ),
+              ),
+              if (widget.subTaskEntity.description.isNotEmpty)
+                GestureDetector(
+                  onTap: () => setState(
+                      () => _showDescription = !_showDescription),
+                  child: AnimatedRotation(
+                    turns: _showDescription ? 0.25 : 0,
+                    duration: const Duration(milliseconds: 250),
+                    child: Icon(
+                      Icons.chevron_right_rounded,
+                      size: 18,
+                      color: cs.onSurfaceVariant,
                     ),
                   ),
-          ],
+                ),
+            ],
+          ),
         ),
         AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 200),
           transitionBuilder: (child, animation) {
             return FadeTransition(
               opacity: animation,
@@ -84,13 +90,16 @@ class _SubTaskRepresenterState extends State<SubTaskRepresenter> {
               ),
             );
           },
-          child: selectedShowTask
+          child: _showDescription
               ? Padding(
                   key: const ValueKey('description'),
-                  padding: const EdgeInsets.only(left: 12, top: 4),
+                  padding: const EdgeInsets.only(left: 32, top: 4, bottom: 4),
                   child: Text(
                     widget.subTaskEntity.description,
-                    style: const TextStyle(overflow: TextOverflow.ellipsis),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: cs.onSurfaceVariant,
+                    ),
                   ),
                 )
               : const SizedBox.shrink(),

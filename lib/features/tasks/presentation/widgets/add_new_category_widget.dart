@@ -17,62 +17,78 @@ class AddNewCategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return GestureDetector(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (context) => Dialog(
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => FocusScope.of(context).unfocus(),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextFormField(
-                        validator: (value) => AppValidators.requiredField(
-                          context,
-                          value,
-                          AppLocalizations.of(context)!.pleaseEnterCategoryName,
-                        ),
-                        controller: controller,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          hintText: AppLocalizations.of(context)!.categoryName,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                        ),
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            taskController.addANewCategory(controller.text);
-                            Navigator.pop(context);
-                            controller.clear();
-                          }
-                        },
-                        child: Text(AppLocalizations.of(context)!.add),
-                      ),
-                    ],
+      onTap: () => _showDialog(context),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6),
+        child: Container(
+          width: 36,
+          height: 36,
+          decoration: BoxDecoration(
+            color: cs.primary.withValues(alpha: 0.1),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(Icons.add_rounded, color: cs.primary, size: 20),
+        ),
+      ),
+    );
+  }
+
+  void _showDialog(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'New Category',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: cs.onSurface,
                   ),
                 ),
-              ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  validator: (value) => AppValidators.requiredField(
+                    context,
+                    value,
+                    AppLocalizations.of(context)!.pleaseEnterCategoryName,
+                  ),
+                  controller: controller,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.categoryName,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        taskController.addANewCategory(controller.text);
+                        Navigator.pop(context);
+                        controller.clear();
+                      }
+                    },
+                    child: Text(AppLocalizations.of(context)!.add),
+                  ),
+                ),
+              ],
             ),
           ),
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
-        child: CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );

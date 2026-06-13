@@ -4,29 +4,29 @@ class TaskTag extends StatelessWidget {
   final String text;
   final Color bgColor;
   final Color textColor;
-  final IconData? icon;
+  final IconData? prefix;
 
   const TaskTag({
     super.key,
     required this.text,
     required this.bgColor,
     required this.textColor,
-    this.icon,
+    this.prefix,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null) ...[
-            Icon(icon, size: 14, color: textColor),
+          if (prefix != null) ...[
+            Icon(prefix, size: 12, color: textColor),
             const SizedBox(width: 4),
           ],
           Text(
@@ -34,7 +34,7 @@ class TaskTag extends StatelessWidget {
             style: TextStyle(
               color: textColor,
               fontSize: 11,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],

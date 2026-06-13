@@ -17,7 +17,11 @@ class DynamicSubTaskSection extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.subTasks,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 14,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
             IconButton(
               onPressed: () => taskFormController.addSubTask(),

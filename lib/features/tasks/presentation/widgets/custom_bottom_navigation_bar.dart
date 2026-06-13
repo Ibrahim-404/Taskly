@@ -2,66 +2,113 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasks_manager/core/controller/main_screen_controller.dart';
 import 'package:tasks_manager/core/const/app_strings.dart';
-import 'package:tasks_manager/core/theme/app_theme.dart';
-import 'package:tasks_manager/features/tasks/presentation/widgets/bottom_navigation_bar_item_widget.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   const CustomBottomNavigationBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final MainScreenController mainScreenController = Get.find();
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: AppTheme.navBarGradient(context),
+    final controller = Get.find<MainScreenController>();
+    final cs = Theme.of(context).colorScheme;
+
+    return Obx(() {
+      final selectedIndex = controller.selectedIndex;
+      return Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: cs.outlineVariant.withValues(alpha: 0.3),
+              width: 0.5,
+            ),
+          ),
         ),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: isDark
-                ? Colors.black.withValues(alpha: 0.3)
-                : Colors.black.withValues(alpha: 0.15),
-            blurRadius: 10,
-            offset: const Offset(0, -1),
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _NavItem(
+                  icon: Icons.home_rounded,
+                  label: AppStrings.home,
+                  isSelected: selectedIndex == 0,
+                  onTap: () => controller.updateSelectedIndex(0),
+                ),
+                _NavItem(
+                  icon: Icons.add_circle_rounded,
+                  label: AppStrings.add,
+                  isSelected: selectedIndex == 1,
+                  onTap: () => controller.updateSelectedIndex(1),
+                ),
+                _NavItem(
+                  icon: Icons.search_rounded,
+                  label: AppStrings.search,
+                  isSelected: selectedIndex == 2,
+                  onTap: () => controller.updateSelectedIndex(2),
+                ),
+                _NavItem(
+                  icon: Icons.bar_chart_rounded,
+                  label: AppStrings.analytics,
+                  isSelected: selectedIndex == 3,
+                  onTap: () => controller.updateSelectedIndex(3),
+                ),
+              ],
+            ),
           ),
-        ],
-      ),
-      margin: EdgeInsets.only(
-        left: 16,
-        right: 16,
-        bottom: 16 + MediaQuery.of(context).padding.bottom,
-      ),
-      height: MediaQuery.of(context).size.height * 0.08,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          BottomNavigationBarItemWidget(
-            index: 0,
-            icon: Icons.home,
-            label: AppStrings.home,
-            mainScreenController: mainScreenController,
-          ),
-          BottomNavigationBarItemWidget(
-            index: 1,
-            icon: Icons.add_outlined,
-            label: AppStrings.add,
-            mainScreenController: mainScreenController,
-          ),
-          BottomNavigationBarItemWidget(
-            index: 2,
-            icon: Icons.search,
-            label: AppStrings.search,
-            mainScreenController: mainScreenController,
-          ),
-          BottomNavigationBarItemWidget(
-            index: 3,
-            icon: Icons.analytics,
-            label: AppStrings.analytics,
-            mainScreenController: mainScreenController,
-          ),
-        ],
+        ),
+      );
+    });
+  }
+}
+
+class _NavItem extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _NavItem({
+    required this.icon,
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? cs.primary.withValues(alpha: 0.1)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: isSelected ? cs.primary : cs.onSurfaceVariant,
+              size: 26,
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                color: isSelected ? cs.primary : cs.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

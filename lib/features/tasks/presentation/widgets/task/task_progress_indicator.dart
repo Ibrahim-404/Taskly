@@ -25,18 +25,18 @@ class TaskProgressIndicator extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'PROGRESS',
+                  'Progress',
                   style: TextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     color: cs.onSurfaceVariant,
                   ),
                 ),
                 Text(
                   '$animatedPercentage%',
                   style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
                     color: cs.primary,
                   ),
                 ),
@@ -44,12 +44,12 @@ class TaskProgressIndicator extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(4),
               child: LinearProgressIndicator(
                 value: animatedProgress,
                 backgroundColor: cs.surfaceContainerHighest,
-                color: cs.primary,
-                minHeight: 6,
+                valueColor: AlwaysStoppedAnimation<Color>(cs.primary),
+                minHeight: 4,
               ),
             ),
           ],

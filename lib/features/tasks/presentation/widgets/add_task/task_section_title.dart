@@ -17,7 +17,7 @@ class TaskSectionTitle extends StatelessWidget {
           title,
           style: TextStyle(
             fontSize: 14,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w600,
             color: cs.onSurfaceVariant,
           ),
         ),

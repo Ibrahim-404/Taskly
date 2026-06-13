@@ -27,74 +27,52 @@ class _TaskCompositionState extends State<TaskComposition> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        child: SizedBox(
-          height: 56,
-          child: Row(
-            children: [
-              Expanded(
-                child: Obx(
-                  () => ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: taskController.categories.length + 2,
-                    itemBuilder: (context, index) {
-                      final categories = taskController.categories;
-                      if (index == 0) {
-                        return CategoryWidget(
-                          categoryName: 'All',
-                          isSelected: selectedCategoryIndex == null,
-                          onTap: () {
-                            setState(() {
-                              selectedCategoryIndex = null;
-                            });
-                            if (widget.onlyForSearch) {
-                              taskController.selectedCategory.value = 'All';
-                            }
-                          },
-                        );
-                      }
+    return SizedBox(
+      height: 52,
+      child: Obx(
+        () => ListView.builder(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          itemCount: taskController.categories.length + 2,
+          itemBuilder: (context, index) {
+            final categories = taskController.categories;
+            if (index == 0) {
+              return CategoryWidget(
+                categoryName: 'All',
+                isSelected: selectedCategoryIndex == null,
+                onTap: () {
+                  setState(() => selectedCategoryIndex = null);
+                  if (widget.onlyForSearch) {
+                    taskController.selectedCategory.value = 'All';
+                  }
+                },
+              );
+            }
 
-                      if (index == categories.length + 1) {
-                        return AddNewCategoryWidget(
-                          controller: controller,
-                          formKey: formKey,
-                          taskController: taskController,
-                        );
-                      }
+            if (index == categories.length + 1) {
+              return AddNewCategoryWidget(
+                controller: controller,
+                formKey: formKey,
+                taskController: taskController,
+              );
+            }
 
-                      final categoryIndex = index - 1;
-                      final categoryName =
-                          categories[categoryIndex]['category_name']
-                              as String? ??
-                          '${AppLocalizations.of(context)!.category} $categoryIndex';
-                      return CategoryWidget(
-                        categoryName: categoryName,
-                        isSelected: selectedCategoryIndex == categoryIndex,
-                        onTap: () {
-                          setState(() {
-                            selectedCategoryIndex = categoryIndex;
-                          });
-                          if (widget.onlyForSearch) {
-                            taskController.selectedCategory.value =
-                                categoryName;
-                          }
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
+            final categoryIndex = index - 1;
+            final categoryName =
+                categories[categoryIndex]['category_name'] as String? ??
+                '${AppLocalizations.of(context)!.category} $categoryIndex';
+            return CategoryWidget(
+              categoryName: categoryName,
+              isSelected: selectedCategoryIndex == categoryIndex,
+              onTap: () {
+                setState(() => selectedCategoryIndex = categoryIndex);
+                if (widget.onlyForSearch) {
+                  taskController.selectedCategory.value = categoryName;
+                }
+              },
+            );
+          },
         ),
       ),
     );

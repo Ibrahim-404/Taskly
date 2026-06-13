@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -20,57 +19,63 @@ class SearchOptionScreen extends StatefulWidget {
 
 class _SearchOptionScreenState extends State<SearchOptionScreen> {
   final TaskController taskController = Get.find();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    // Fetch tasks on initial load. The controller should internally check
-    // if data already exists to avoid redundant network/database requests.
     taskController.fetchTasks();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      // Wrapped in RefreshIndicator to pull-to-refresh and trigger new data updates manually
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: RefreshIndicator(
         onRefresh: () async {
-          // Force refresh to pull fresh data from the data source
           await taskController.fetchTasks(forceRefresh: true);
         },
         child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
           slivers: [
             SliverToBoxAdapter(
               child: Column(
                 children: [
+                  const SizedBox(height: 4),
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
                       Navigator.push(
                         context,
-                        CupertinoPageRoute(
+                        MaterialPageRoute(
                           builder: (context) =>
                               const search_screen.SearchScreen(),
                         ),
                       );
                     },
-                    child: IgnorePointer(
+                    child: AbsorbPointer(
                       child: CustomSearch(
-                        searchController: TextEditingController(),
+                        searchController: _searchController,
                         enabled: false,
                       ),
                     ),
                   ),
+                  const SizedBox(height: 4),
                   Obx(() => FilterChips(
                     activeFilter: taskController.activeFilter.value,
-                    onFilterChanged: (filter) => taskController.setFilter(filter),
+                    onFilterChanged: (filter) =>
+                        taskController.setFilter(filter),
                   )),
                   TaskComposition(onlyForSearch: true),
                 ],
               ),
             ),
-
             Obx(() {
               final displayed = taskController.isTasksLoading.value
                   ? <TaskEntity>[]
@@ -83,10 +88,13 @@ class _SearchOptionScreenState extends State<SearchOptionScreen> {
                       final task = taskController.isTasksLoading.value
                           ? TaskEntity.skeleton()
                           : displayed[index];
-                      return TaskRepresenter(task: task, onlyRepresenter: true);
+                      return TaskRepresenter(
+                        task: task,
+                        onlyRepresenter: true,
+                      );
                     },
                     childCount: taskController.isTasksLoading.value
-                        ? 10
+                        ? 6
                         : displayed.length,
                   ),
                 ),

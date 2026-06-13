@@ -30,16 +30,12 @@ class _BuildAllTasksState extends State<BuildAllTasks> {
     final taskController = Get.find<TaskController>();
 
     _scrollWorker = ever(taskController.rxScrollToTaskId, (String? taskId) {
-      if (taskId != null) {
-        _attemptScroll(taskId);
-      }
+      if (taskId != null) _attemptScroll(taskId);
     });
 
     _loadingWorker = ever(taskController.isTasksLoading, (bool isLoading) {
       final taskId = taskController.rxScrollToTaskId.value;
-      if (!isLoading && taskId != null) {
-        _attemptScroll(taskId);
-      }
+      if (!isLoading && taskId != null) _attemptScroll(taskId);
     });
   }
 
@@ -52,10 +48,7 @@ class _BuildAllTasksState extends State<BuildAllTasks> {
 
   void _attemptScroll(String taskId) async {
     final taskController = Get.find<TaskController>();
-
-    if (taskController.isTasksLoading.value) {
-      return;
-    }
+    if (taskController.isTasksLoading.value) return;
 
     final index = taskController.upcomingTasks.indexWhere(
       (task) => task.id.toString() == taskId,
@@ -76,11 +69,28 @@ class _BuildAllTasksState extends State<BuildAllTasks> {
 
   @override
   Widget build(BuildContext context) {
-    final TaskController controller = Get.find<TaskController>();
+    final controller = Get.find<TaskController>();
+    final cs = Theme.of(context).colorScheme;
 
     return Obx(() {
       if (controller.taskErrorMessage.value.isNotEmpty) {
-        return Center(child: Text(controller.taskErrorMessage.value));
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.error_outline_rounded, size: 48, color: cs.error),
+                const SizedBox(height: 16),
+                Text(
+                  controller.taskErrorMessage.value,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 15, color: cs.onSurfaceVariant),
+                ),
+              ],
+            ),
+          ),
+        );
       }
 
       final showEmpty =
@@ -88,19 +98,40 @@ class _BuildAllTasksState extends State<BuildAllTasks> {
       if (showEmpty) {
         return Center(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              const TaskComposition(onlyForSearch: false),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    'No tasks available',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                  ),
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: cs.surfaceContainerHighest.withValues(alpha: 0.5),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.task_alt_rounded,
+                  size: 36,
+                  color: cs.onSurfaceVariant,
                 ),
               ),
+              const SizedBox(height: 20),
+              Text(
+                'No tasks yet',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: cs.onSurface,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Tap + to create your first task',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: cs.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 24),
+              TaskComposition(onlyForSearch: false),
             ],
           ),
         );
@@ -110,24 +141,28 @@ class _BuildAllTasksState extends State<BuildAllTasks> {
         children: [
           TaskComposition(),
           Expanded(
-            child: Skeletonizer(
-              enabled: controller.isTasksLoading.value,
-              child: ScrollablePositionedList.builder(
-                itemScrollController: _itemScrollController,
-                itemPositionsListener: _itemPositionsListener,
-                itemCount: controller.isTasksLoading.value
-                    ? 5
-                    : controller.upcomingTasks.length,
-                itemBuilder: (context, index) {
-                  final task = controller.isTasksLoading.value
-                      ? TaskEntity.skeleton()
-                      : controller.upcomingTasks[index];
-                  return TaskRepresenter(
-                    key: ValueKey(task.id),
-                    task: task,
-                    onlyRepresenter: false,
-                  );
-                },
+            child: RefreshIndicator(
+              onRefresh: () => controller.fetchTasks(forceRefresh: true),
+              child: Skeletonizer(
+                enabled: controller.isTasksLoading.value,
+                child: ScrollablePositionedList.builder(
+                  itemScrollController: _itemScrollController,
+                  itemPositionsListener: _itemPositionsListener,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: controller.isTasksLoading.value
+                      ? 5
+                      : controller.upcomingTasks.length,
+                  itemBuilder: (context, index) {
+                    final task = controller.isTasksLoading.value
+                        ? TaskEntity.skeleton()
+                        : controller.upcomingTasks[index];
+                    return TaskRepresenter(
+                      key: ValueKey(task.id),
+                      task: task,
+                      onlyRepresenter: false,
+                    );
+                  },
+                ),
               ),
             ),
           ),
