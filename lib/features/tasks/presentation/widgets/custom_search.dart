@@ -4,8 +4,14 @@ import 'package:tasks_manager/core/const/app_strings.dart';
 
 class CustomSearch extends StatefulWidget {
   final TextEditingController searchController;
-
-  const CustomSearch({super.key, required this.searchController});
+  final Function(String)? onChanged;
+  final bool enabled;
+  const CustomSearch({
+    super.key,
+    required this.searchController,
+    this.onChanged,
+    required this.enabled,
+  });
 
   @override
   State<CustomSearch> createState() => _CustomSearchState();
@@ -15,7 +21,10 @@ class _CustomSearchState extends State<CustomSearch> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged: (value) {},
+      readOnly: !widget.enabled,
+      onChanged: (value) {
+        widget.onChanged?.call(value);
+      },
       controller: widget.searchController,
       decoration: InputDecoration(
         hintText: AppStrings.searchTasks,

@@ -3,18 +3,20 @@ import 'package:get/get.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
+import 'package:tasks_manager/features/search/presentation/search_screen.dart'
+    as search_screen;
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_search.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task_composition.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task_representer.dart';
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+class SearchOptionScreen extends StatefulWidget {
+  const SearchOptionScreen({super.key});
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<SearchOptionScreen> createState() => _SearchOptionScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchOptionScreenState extends State<SearchOptionScreen> {
   final TaskController taskController = Get.find();
 
   @override
@@ -38,12 +40,18 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           children: [
             GestureDetector(
-              child: CustomSearch(searchController: TextEditingController()),
+              behavior: HitTestBehavior.opaque,
+              child: IgnorePointer(
+                child: CustomSearch(
+                  searchController: TextEditingController(),
+                  enabled: false,
+                ),
+              ),
               onTap: () {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => const SearchScreen(),
+                    builder: (context) => const search_screen.SearchScreen(),
                   ),
                 );
               },

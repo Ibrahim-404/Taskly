@@ -11,10 +11,9 @@ import 'package:tasks_manager/features/tasks/presentation/widgets/task/build_all
 
 class MainScreenController extends BaseController {
   final List<Widget> widgetOptions = <Widget>[
-    // TaskMainScreen(),
     BuildAllTasks(),
     CustomShowDialogForAddNewTask(),
-    SearchScreen(),
+    SearchOptionScreen(),
     Text(AppStrings.analyticsScreen),
   ];
 
@@ -46,7 +45,6 @@ class MainScreenController extends BaseController {
         },
       );
 
-      // Start the task scheduler to fetch upcoming tasks and schedule periodic background tasks
       final scheduler = Get.find<TaskNotificationScheduler>();
       await scheduler.initScheduler();
     } catch (e) {
