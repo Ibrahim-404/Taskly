@@ -73,24 +73,16 @@ class ThemeModeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSelected = current.isDarkMode
-        ? mode == ThemeMode.dark
-        : mode == ThemeMode.light;
-    return Obx(() => ListTile(
-      leading: Icon(icon, color: isSelected ? context.theme.colorScheme.primary : null),
-      title: Text(label),
-      trailing: isSelected
-          ? Icon(Icons.check, color: context.theme.colorScheme.primary)
-          : null,
-      onTap: () {
-        if (mode == ThemeMode.dark) {
-          Get.changeThemeMode(ThemeMode.dark);
-        } else if (mode == ThemeMode.light) {
-          Get.changeThemeMode(ThemeMode.light);
-        } else {
-          Get.changeThemeMode(ThemeMode.system);
-        }
-      },
-    ));
+    return Obx(() {
+      final isSelected = current.selectedMode == mode;
+      return ListTile(
+        leading: Icon(icon, color: isSelected ? context.theme.colorScheme.primary : null),
+        title: Text(label),
+        trailing: isSelected
+            ? Icon(Icons.check, color: context.theme.colorScheme.primary)
+            : null,
+        onTap: () => current.setMode(mode),
+      );
+    });
   }
 }

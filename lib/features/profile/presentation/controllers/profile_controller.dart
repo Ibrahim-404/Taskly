@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasks_manager/core/controller/base_controller.dart';
 import 'package:tasks_manager/core/enums/view_state.dart';
 import 'package:tasks_manager/features/profile/domain/entities/user_profile_entity.dart';
@@ -25,6 +26,7 @@ class ProfileController extends BaseController {
   final isEditingName = false.obs;
   final nameController = TextEditingController();
   final tasks = <TaskEntity>[].obs;
+  final notificationsEnabled = true.obs;
 
   @override
   void onInit() {
@@ -44,6 +46,8 @@ class ProfileController extends BaseController {
       final result = await getProfile();
       profile.value = result;
       nameController.text = result.name;
+      final prefs = await SharedPreferences.getInstance();
+      notificationsEnabled.value = prefs.getBool('notifications_enabled') ?? true;
       setState(ViewState.idle);
     } catch (e) {
       setState(ViewState.error, errorMessage: e.toString());
@@ -90,6 +94,12 @@ class ProfileController extends BaseController {
     } catch (e) {
       setState(ViewState.error, errorMessage: e.toString());
     }
+  }
+
+  Future<void> toggleNotifications(bool v) async {
+    notificationsEnabled.value = v;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('notifications_enabled', v);
   }
 
   int get totalActiveTasks {
