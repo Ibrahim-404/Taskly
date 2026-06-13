@@ -28,6 +28,4 @@ class AppStrings {
   // Task Details
   static const String taskName = 'Task Name: ';
 
-  // Images
-  static const String profileImageUrl = 'https://i.pravatar.cc/300';
 }
