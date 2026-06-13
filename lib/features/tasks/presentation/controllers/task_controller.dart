@@ -82,20 +82,26 @@ class TaskController extends BaseController {
     });
   }
 
-  Future<void> fetchTasks() async {
-    isTasksLoading.value = true;
-    taskErrorMessage.value = '';
-    final result = await getTasks();
-    result.fold(
-      (failure) => taskErrorMessage.value = failure.toString(),
-      (tasksList) => tasks.value = tasksList,
-    );
-    if (tasks.isEmpty) {
-      taskErrorMessage.value = 'No tasks found. Please add some tasks.';
-      log("No tasks found. Please add some tasks.");
-    }
-    isTasksLoading.value = false;
+  Future<void> fetchTasks({bool forceRefresh = false}) async {
+  if (tasks.isNotEmpty && !forceRefresh) return;
+
+  isTasksLoading.value = true;
+  taskErrorMessage.value = '';
+  
+  final result = await getTasks();
+  
+  result.fold(
+    (failure) => taskErrorMessage.value = failure.toString(),
+    (tasksList) => tasks.value = tasksList,
+  );
+  
+  if (tasks.isEmpty) {
+    taskErrorMessage.value = 'No tasks found. Please add some tasks.';
+    log("No tasks found. Please add some tasks.");
   }
+  
+  isTasksLoading.value = false;
+}
 
   void completeSubTaskFun({
     required String subTaskId,
