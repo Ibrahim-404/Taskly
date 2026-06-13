@@ -3,6 +3,12 @@ import 'package:get/get_instance/get_instance.dart';
 import 'package:tasks_manager/core/controller/theme_controller.dart';
 import 'package:tasks_manager/core/database/database_helper.dart';
 import 'package:tasks_manager/features/analysis/presentation/controllers/analytics_controller.dart';
+import 'package:tasks_manager/features/profile/data/repo/profile_repo_imp.dart';
+import 'package:tasks_manager/features/profile/domain/repo/profile_repo.dart';
+import 'package:tasks_manager/features/profile/domain/usecases/get_profile.dart';
+import 'package:tasks_manager/features/profile/domain/usecases/update_profile_name.dart';
+import 'package:tasks_manager/features/profile/domain/usecases/update_profile_picture.dart';
+import 'package:tasks_manager/features/profile/presentation/controllers/profile_controller.dart';
 import 'package:tasks_manager/features/tasks/data/datasource/locelDataSources/task_local_data_source.dart';
 import 'package:tasks_manager/features/tasks/data/repo/task_repo_imp.dart';
 import 'package:tasks_manager/features/tasks/domain/repo/task_repo.dart';
@@ -96,6 +102,29 @@ class InjectionContainer extends Bindings {
       () => TaskFormController(
         addTask: Get.find<AddTask>(),
         getCategories: Get.find<GetCategories>(),
+      ),
+      fenix: true,
+    );
+
+    // profile
+    Get.lazyPut<ProfileRepo>(
+      () => ProfileRepoImp(),
+      fenix: true,
+    );
+    Get.lazyPut<GetProfile>(() => GetProfile(Get.find()), fenix: true);
+    Get.lazyPut<UpdateProfileName>(
+      () => UpdateProfileName(Get.find()),
+      fenix: true,
+    );
+    Get.lazyPut<UpdateProfilePicture>(
+      () => UpdateProfilePicture(Get.find()),
+      fenix: true,
+    );
+    Get.lazyPut<ProfileController>(
+      () => ProfileController(
+        getProfile: Get.find<GetProfile>(),
+        updateProfileName: Get.find<UpdateProfileName>(),
+        updateProfilePicture: Get.find<UpdateProfilePicture>(),
       ),
       fenix: true,
     );

@@ -7,7 +7,7 @@ plugins {
 android {
 
     namespace = "com.example.tasks_manager"
-    compileSdk = 35
+    compileSdk = 36
 
     ndkVersion = flutter.ndkVersion
 
@@ -26,7 +26,7 @@ android {
         applicationId = "com.example.tasks_manager"
 
         minSdk = flutter.minSdkVersion
-        targetSdk = 35
+        targetSdk = 36
 
         versionCode = flutter.versionCode
         versionName = flutter.versionName
