@@ -1,7 +1,8 @@
 import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:tasks_manager/core/controller/base_controller.dart';
+import 'package:tasks_manager/core/enums/task_filter.dart';
+import 'package:tasks_manager/core/enums/priority_enum.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/complete_sub_task.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/complete_task.dart';
@@ -39,6 +40,11 @@ class TaskController extends BaseController {
   final rxScrollToTaskId = RxnString();
   final selectedCategory = RxnString();
 
+  // Search & filter state
+  final searchQuery = RxnString();
+  final activeFilter = TaskFilter.all.obs;
+  final displayedTasks = <TaskEntity>[].obs;
+
   void scrollToTask(String taskId) {
     rxScrollToTaskId.value = taskId;
   }
@@ -48,6 +54,67 @@ class TaskController extends BaseController {
     super.onInit();
     fetchTasks();
     fetchCategories();
+
+    debounce<String?>(
+      searchQuery,
+      (_) => _applyFilters(),
+      time: const Duration(milliseconds: 600),
+    );
+  }
+
+  void setSearchQuery(String query) {
+    if (query.isEmpty) {
+      searchQuery.value = null;
+      _applyFilters();
+    } else {
+      searchQuery.value = query;
+    }
+  }
+
+  void setFilter(TaskFilter filter) {
+    activeFilter.value = filter;
+    _applyFilters();
+  }
+
+  void _applyFilters() {
+    var result = List<TaskEntity>.from(tasks);
+
+    final query = searchQuery.value;
+    if (query != null && query.isNotEmpty) {
+      final lowerQuery = query.toLowerCase();
+      result = result.where((t) =>
+        t.title.toLowerCase().contains(lowerQuery) ||
+        t.description.toLowerCase().contains(lowerQuery)
+      ).toList();
+    }
+
+    switch (activeFilter.value) {
+      case TaskFilter.all:
+        break;
+      case TaskFilter.completed:
+        result = result.where((t) => t.isDone).toList();
+        break;
+      case TaskFilter.inProgress:
+        result = result.where((t) => !t.isDone).toList();
+        break;
+      case TaskFilter.highPriority:
+        result = result.where((t) => t.priorityStatus == TaskPriority.high).toList();
+        break;
+      case TaskFilter.dueSoon:
+        result = result.where((t) => !t.isDone && _isDueSoon(t.date)).toList();
+        break;
+      case TaskFilter.overdue:
+        result = result.where((t) => t.isMissed).toList();
+        break;
+    }
+
+    displayedTasks.value = result;
+  }
+
+  bool _isDueSoon(DateTime date) {
+    final now = DateTime.now();
+    final threeDays = now.add(const Duration(days: 3));
+    return date.isAfter(now) && date.isBefore(threeDays);
   }
 
   // Computed properties for filtering tasks
@@ -101,6 +168,7 @@ class TaskController extends BaseController {
   }
   
   isTasksLoading.value = false;
+  _applyFilters();
 }
 
   void completeSubTaskFun({
@@ -145,6 +213,7 @@ class TaskController extends BaseController {
       log("No tasks found for this category.");
     }
     isTasksLoading.value = false;
+    _applyFilters();
     return fetched;
   }
 }

@@ -5,6 +5,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:tasks_manager/features/search/presentation/search_screen.dart' as search_screen;
+import 'package:tasks_manager/features/search/presentation/widgets/filter_chips.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_search.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task_composition.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task_representer.dart';
@@ -59,12 +60,19 @@ class _SearchOptionScreenState extends State<SearchOptionScreen> {
                       ),
                     ),
                   ),
+                  Obx(() => FilterChips(
+                    activeFilter: taskController.activeFilter.value,
+                    onFilterChanged: (filter) => taskController.setFilter(filter),
+                  )),
                   TaskComposition(onlyForSearch: true),
                 ],
               ),
             ),
             
             Obx(() {
+              final displayed = taskController.isTasksLoading.value
+                  ? <TaskEntity>[]
+                  : taskController.displayedTasks;
               return Skeletonizer.sliver(
                 enabled: taskController.isTasksLoading.value,
                 child: SliverList(
@@ -72,12 +80,12 @@ class _SearchOptionScreenState extends State<SearchOptionScreen> {
                     (context, index) {
                       final task = taskController.isTasksLoading.value
                           ? TaskEntity.skeleton()
-                          : taskController.tasks[index];
+                          : displayed[index];
                       return TaskRepresenter(task: task, onlyRepresenter: true);
                     },
                     childCount: taskController.isTasksLoading.value
                         ? 10
-                        : taskController.tasks.length,
+                        : displayed.length,
                   ),
                 ),
               );
