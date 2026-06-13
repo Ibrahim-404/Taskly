@@ -62,6 +62,7 @@ class TaskController extends BaseController {
     );
   }
 
+
   void setSearchQuery(String query) {
     if (query.isEmpty) {
       searchQuery.value = null;
