@@ -50,13 +50,9 @@ class ProfileHeaderCard extends StatelessWidget {
                 ? _buildNameField(context, ctrl)
                 : _buildNameDisplay(context, ctrl, cs),
             const SizedBox(height: 4),
-            Text(
-              p.email,
-              style: TextStyle(
-                color: cs.onSurfaceVariant,
-                fontSize: 14,
-              ),
-            ),
+            ctrl.isEditingEmail.value
+                ? _buildEmailField(context, ctrl)
+                : _buildEmailDisplay(context, ctrl, cs),
             const SizedBox(height: 4),
             Text(
               'Member for ${ctrl.accountAge}',
@@ -126,6 +122,70 @@ class ProfileHeaderCard extends StatelessWidget {
           onPressed: () {
             ctrl.nameController.text = ctrl.profile.value?.name ?? '';
             ctrl.isEditingName.value = false;
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmailDisplay(
+      BuildContext context, ProfileController ctrl, ColorScheme cs) {
+    return GestureDetector(
+      onTap: () => ctrl.isEditingEmail.value = true,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            ctrl.profile.value!.email,
+            style: TextStyle(
+              color: cs.onSurfaceVariant,
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(width: 6),
+          Icon(Icons.edit, size: 14, color: cs.onSurfaceVariant),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmailField(BuildContext context, ProfileController ctrl) {
+    final cs = Theme.of(context).colorScheme;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: 200,
+          child: TextField(
+            controller: ctrl.emailController,
+            autofocus: true,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+              color: cs.onSurfaceVariant,
+            ),
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            onSubmitted: (v) => ctrl.updateEmail(v),
+          ),
+        ),
+        const SizedBox(width: 6),
+        IconButton(
+          icon: Icon(Icons.check, color: cs.primary),
+          onPressed: () => ctrl.updateEmail(ctrl.emailController.text),
+        ),
+        IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () {
+            ctrl.emailController.text = ctrl.profile.value?.email ?? '';
+            ctrl.isEditingEmail.value = false;
           },
         ),
       ],

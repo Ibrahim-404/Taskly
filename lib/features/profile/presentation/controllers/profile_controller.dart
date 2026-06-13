@@ -6,6 +6,7 @@ import 'package:tasks_manager/core/controller/base_controller.dart';
 import 'package:tasks_manager/core/enums/view_state.dart';
 import 'package:tasks_manager/features/profile/domain/entities/user_profile_entity.dart';
 import 'package:tasks_manager/features/profile/domain/usecases/get_profile.dart';
+import 'package:tasks_manager/features/profile/domain/usecases/update_profile_email.dart';
 import 'package:tasks_manager/features/profile/domain/usecases/update_profile_name.dart';
 import 'package:tasks_manager/features/profile/domain/usecases/update_profile_picture.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
@@ -14,17 +15,21 @@ import 'package:tasks_manager/features/tasks/presentation/controllers/task_contr
 class ProfileController extends BaseController {
   final GetProfile getProfile;
   final UpdateProfileName updateProfileName;
+  final UpdateProfileEmail updateProfileEmail;
   final UpdateProfilePicture updateProfilePicture;
 
   ProfileController({
     required this.getProfile,
     required this.updateProfileName,
+    required this.updateProfileEmail,
     required this.updateProfilePicture,
   });
 
   final profile = Rxn<UserProfileEntity>();
   final isEditingName = false.obs;
+  final isEditingEmail = false.obs;
   final nameController = TextEditingController();
+  final emailController = TextEditingController();
   final tasks = <TaskEntity>[].obs;
   final notificationsEnabled = true.obs;
 
@@ -37,6 +42,7 @@ class ProfileController extends BaseController {
   @override
   void onClose() {
     nameController.dispose();
+    emailController.dispose();
     super.onClose();
   }
 
@@ -46,6 +52,7 @@ class ProfileController extends BaseController {
       final result = await getProfile();
       profile.value = result;
       nameController.text = result.name;
+      emailController.text = result.email;
       final prefs = await SharedPreferences.getInstance();
       notificationsEnabled.value = prefs.getBool('notifications_enabled') ?? true;
       setState(ViewState.idle);
@@ -64,6 +71,20 @@ class ProfileController extends BaseController {
       profile.value = profile.value?.copyWith(name: trimmed);
       nameController.text = trimmed;
       isEditingName.value = false;
+    } catch (e) {
+      setState(ViewState.error, errorMessage: e.toString());
+    }
+  }
+
+  Future<void> updateEmail(String newEmail) async {
+    final trimmed = newEmail.trim();
+    if (trimmed.isEmpty) return;
+
+    try {
+      await updateProfileEmail(trimmed);
+      profile.value = profile.value?.copyWith(email: trimmed);
+      emailController.text = trimmed;
+      isEditingEmail.value = false;
     } catch (e) {
       setState(ViewState.error, errorMessage: e.toString());
     }

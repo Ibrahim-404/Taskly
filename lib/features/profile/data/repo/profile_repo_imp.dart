@@ -39,6 +39,12 @@ class ProfileRepoImp implements ProfileRepo {
   }
 
   @override
+  Future<void> updateEmail(String email) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyEmail, email);
+  }
+
+  @override
   Future<void> updateImagePath(String? imagePath) async {
     final prefs = await SharedPreferences.getInstance();
     if (imagePath != null) {

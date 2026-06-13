@@ -34,12 +34,6 @@ class AboutSection extends StatelessWidget {
                 subtitle: const Text('1.0.0'),
               ),
               Divider(height: 1, indent: 56, color: context.theme.colorScheme.outlineVariant),
-              ListTile(
-                leading: const Icon(Icons.code),
-                title: const Text('Built With'),
-                subtitle: const Text('Flutter & GetX'),
-              ),
-              Divider(height: 1, indent: 56, color: context.theme.colorScheme.outlineVariant),
               const ListTile(
                 leading: Icon(Icons.favorite_outline),
                 title: Text('AppName'),

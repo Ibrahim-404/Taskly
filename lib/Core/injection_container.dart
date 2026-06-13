@@ -6,6 +6,7 @@ import 'package:tasks_manager/features/analysis/presentation/controllers/analyti
 import 'package:tasks_manager/features/profile/data/repo/profile_repo_imp.dart';
 import 'package:tasks_manager/features/profile/domain/repo/profile_repo.dart';
 import 'package:tasks_manager/features/profile/domain/usecases/get_profile.dart';
+import 'package:tasks_manager/features/profile/domain/usecases/update_profile_email.dart';
 import 'package:tasks_manager/features/profile/domain/usecases/update_profile_name.dart';
 import 'package:tasks_manager/features/profile/domain/usecases/update_profile_picture.dart';
 import 'package:tasks_manager/features/profile/presentation/controllers/profile_controller.dart';
@@ -116,6 +117,10 @@ class InjectionContainer extends Bindings {
       () => UpdateProfileName(Get.find()),
       fenix: true,
     );
+    Get.lazyPut<UpdateProfileEmail>(
+      () => UpdateProfileEmail(Get.find()),
+      fenix: true,
+    );
     Get.lazyPut<UpdateProfilePicture>(
       () => UpdateProfilePicture(Get.find()),
       fenix: true,
@@ -124,6 +129,7 @@ class InjectionContainer extends Bindings {
       () => ProfileController(
         getProfile: Get.find<GetProfile>(),
         updateProfileName: Get.find<UpdateProfileName>(),
+        updateProfileEmail: Get.find<UpdateProfileEmail>(),
         updateProfilePicture: Get.find<UpdateProfilePicture>(),
       ),
       fenix: true,
