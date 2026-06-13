@@ -13,5 +13,6 @@ abstract class TaskLocalDataSource {
 
   Future<void> completeTask(String taskId);
   Future<void> completeSubTask(String taskId, bool taskState);
+  Future<void> extendDeadline(int taskId, DateTime newDeadline);
   Future<String> getCategoryNameById(String id);
 }

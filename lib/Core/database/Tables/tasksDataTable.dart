@@ -10,6 +10,9 @@ class Tasksdatatable {
   static const String date = 'date';
   static const String priority = 'priority';
   static const String categoryId = 'category_id';
+  static const String deadlineExtended = 'deadline_extended';
+  static const String originalDeadline = 'original_deadline';
+  static const String extendedDeadline = 'extended_deadline';
 
   Future<void> createTasksTable(Database db) async {
     await db.execute(createTasksTableQuery());
@@ -24,11 +27,13 @@ class Tasksdatatable {
       $isDone INTEGER NOT NULL,
       $date TEXT NOT NULL,
       $priority INTEGER NOT NULL,
-      $categoryId INTEGER ,
+      $categoryId INTEGER,
+      $deadlineExtended INTEGER NOT NULL DEFAULT 0,
+      $originalDeadline TEXT,
+      $extendedDeadline TEXT,
       FOREIGN KEY ($categoryId)
       REFERENCES ${CategoryOfTask.tableName}(${CategoryOfTask.id}) 
       ON DELETE SET NULL
-
     )
   ''';
   }

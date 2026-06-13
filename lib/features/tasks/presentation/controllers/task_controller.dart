@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:tasks_manager/core/controller/base_controller.dart';
 import 'package:tasks_manager/core/enums/task_filter.dart';
 import 'package:tasks_manager/core/enums/priority_enum.dart';
+import 'package:tasks_manager/core/notification/notfication.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/complete_sub_task.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/complete_task.dart';
+import 'package:tasks_manager/features/tasks/domain/usecases/extend_deadline.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/get_task_by_category.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/get_tasks.dart';
 import 'package:tasks_manager/features/tasks/domain/usecases/delete_task.dart';
@@ -21,6 +23,7 @@ class TaskController extends BaseController {
   final DeleteTask deleteTask;
   final GetCategories getCategories;
   final AddCategory addCategory;
+  final ExtendDeadline extendDeadline;
 
   TaskController({
     required this.getTasks,
@@ -30,6 +33,7 @@ class TaskController extends BaseController {
     required this.deleteTask,
     required this.getCategories,
     required this.addCategory,
+    required this.extendDeadline,
   });
 
   // Global state
@@ -61,7 +65,6 @@ class TaskController extends BaseController {
       time: const Duration(milliseconds: 600),
     );
   }
-
 
   void setSearchQuery(String query) {
     if (query.isEmpty) {
@@ -143,7 +146,6 @@ class TaskController extends BaseController {
     final result = await addCategory(categoryName);
     result.fold((failure) => taskErrorMessage.value = failure.toString(), (_) {
       fetchCategories();
-      // Also refresh the task form categories if it's currently initialized
       if (Get.isRegistered<TaskFormController>()) {
         Get.find<TaskFormController>().fetchCategories();
       }
@@ -155,19 +157,19 @@ class TaskController extends BaseController {
 
   isTasksLoading.value = true;
   taskErrorMessage.value = '';
-  
+
   final result = await getTasks();
-  
+
   result.fold(
     (failure) => taskErrorMessage.value = failure.toString(),
     (tasksList) => tasks.value = tasksList,
   );
-  
+
   if (tasks.isEmpty) {
     taskErrorMessage.value = 'No tasks found. Please add some tasks.';
     log("No tasks found. Please add some tasks.");
   }
-  
+
   isTasksLoading.value = false;
   _applyFilters();
 }
@@ -187,7 +189,11 @@ class TaskController extends BaseController {
     final result = await completeTask(taskId);
     result.fold(
       (failure) => taskErrorMessage.value = failure.toString(),
-      (_) => fetchTasks(),
+      (_) {
+        // Cancel notification for completed task
+        _cancelNotification(int.parse(taskId));
+        fetchTasks();
+      },
     );
   }
 
@@ -195,8 +201,37 @@ class TaskController extends BaseController {
     final result = await deleteTask(taskId);
     result.fold(
       (failure) => taskErrorMessage.value = failure.toString(),
-      (_) => fetchTasks(),
+      (_) {
+        // Cancel notification for deleted task
+        _cancelNotification(taskId);
+        fetchTasks();
+      },
     );
+  }
+
+  void extendDeadlineFun({
+    required int taskId,
+    required DateTime newDeadline,
+  }) async {
+    final result = await extendDeadline(taskId, newDeadline);
+    result.fold(
+      (failure) => taskErrorMessage.value = failure.toString(),
+      (_) {
+        // Reschedule notification for extended deadline
+        _cancelNotification(taskId);
+        fetchTasks();
+      },
+    );
+  }
+
+  void _cancelNotification(int taskId) {
+    try {
+      if (Get.isRegistered<NotificationService>()) {
+        Get.find<NotificationService>().cancel(taskId);
+      }
+    } catch (e) {
+      log('Error canceling notification: $e');
+    }
   }
 
   Future<List<TaskEntity>> fetchTasksByCategory(String category) async {

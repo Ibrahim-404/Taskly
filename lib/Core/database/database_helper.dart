@@ -17,7 +17,7 @@ Future<Database> _initDatabase() async {
   String path = join(await getDatabasesPath(), 'tasks_manager.db');
   return await openDatabase(
     path,
-    version: 4, // Bumped version to trigger migration
+    version: 5,
     onCreate: _onCreate,
     onUpgrade: _onUpgrade,
   );
@@ -36,13 +36,37 @@ Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     final hasPriorityColumn = tableInfo.any(
       (column) => column['name'] == 'priority',
     );
-
     if (!hasPriorityColumn) {
       await db.execute(
         'ALTER TABLE tasks ADD COLUMN priority INTEGER NOT NULL DEFAULT 0',
       );
     }
   }
+  if (oldVersion < 5) {
+    final tableInfo = await db.rawQuery('PRAGMA table_info(tasks)');
+    final hasExtended = tableInfo.any(
+      (column) => column['name'] == 'deadline_extended',
+    );
+    if (!hasExtended) {
+      await db.execute(
+        'ALTER TABLE tasks ADD COLUMN deadline_extended INTEGER NOT NULL DEFAULT 0',
+      );
+    }
+    final hasOriginal = tableInfo.any(
+      (column) => column['name'] == 'original_deadline',
+    );
+    if (!hasOriginal) {
+      await db.execute(
+        'ALTER TABLE tasks ADD COLUMN original_deadline TEXT',
+      );
+    }
+    final hasExtendedDeadline = tableInfo.any(
+      (column) => column['name'] == 'extended_deadline',
+    );
+    if (!hasExtendedDeadline) {
+      await db.execute(
+        'ALTER TABLE tasks ADD COLUMN extended_deadline TEXT',
+      );
+    }
+  }
 }
-
-//curent version is 4 because we added priority column to tasks table and sub_tasks table, so we need to bump the version to trigger the migration and add the new column to the existing tables.

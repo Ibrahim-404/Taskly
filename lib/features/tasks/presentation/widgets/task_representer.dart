@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasks_manager/features/tasks/domain/entities/task_entity.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
+import 'package:tasks_manager/features/tasks/presentation/widgets/deadline_extension_dialog.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/sub_task_repreenter.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task/task_tags.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/task/task_progress_indicator.dart';
@@ -114,6 +115,10 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
                                 color: priorityColor,
                                 label: widget.task.priorityStatus.name,
                               ),
+                              if (widget.task.deadlineExtended) ...[
+                                const SizedBox(width: 4),
+                                _ExtendedBadge(cs: cs),
+                              ],
                             ],
                           ),
                           if (widget.task.description.isNotEmpty) ...[
@@ -139,6 +144,14 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
                   categoryName: widget.task.categoryName ?? 'Life',
                   priority: widget.task.priorityStatus.name,
                 ),
+                if (!widget.task.isDone && !widget.onlyRepresenter) ...[
+                  const SizedBox(height: 12),
+                  _DeadlineExtensionAction(
+                    task: widget.task,
+                    controller: controller,
+                    cs: cs,
+                  ),
+                ],
                 if (totalSubTasks > 0) ...[
                   const SizedBox(height: 16),
                   TaskProgressIndicator(
@@ -246,6 +259,117 @@ class _PriorityBadge extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: color,
         ),
+      ),
+    );
+  }
+}
+
+class _ExtendedBadge extends StatelessWidget {
+  final ColorScheme cs;
+  const _ExtendedBadge({required this.cs});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+      decoration: BoxDecoration(
+        color: Colors.orange.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.update_rounded, size: 10, color: Colors.orange),
+          const SizedBox(width: 2),
+          Text(
+            'Extended',
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+              color: Colors.orange,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DeadlineExtensionAction extends StatelessWidget {
+  final TaskEntity task;
+  final TaskController controller;
+  final ColorScheme cs;
+
+  const _DeadlineExtensionAction({
+    required this.task,
+    required this.controller,
+    required this.cs,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (task.deadlineExtended) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: cs.surfaceContainerHighest.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.update_rounded, size: 16, color: Colors.orange),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'Deadline already extended',
+                style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return GestureDetector(
+      onTap: () => _showExtensionDialog(context),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: cs.primary.withValues(alpha: 0.3),
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.update_rounded, size: 16, color: cs.primary),
+            const SizedBox(width: 6),
+            Text(
+              'Extend deadline',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: cs.primary,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showExtensionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => DeadlineExtensionDialog(
+        currentDeadline: task.date,
+        onExtended: (newDeadline) {
+          controller.extendDeadlineFun(
+            taskId: task.id,
+            newDeadline: newDeadline,
+          );
+        },
       ),
     );
   }

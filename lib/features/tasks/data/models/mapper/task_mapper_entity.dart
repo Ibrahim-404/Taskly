@@ -15,6 +15,9 @@ extension TaskModelMapper on TaskModel {
       categoryName: categoryName,
       subTasks: subTasks?.map((e) => e.toEntity()).toList() ?? [],
       priorityStatus: priorityStatus,
+      deadlineExtended: deadlineExtended,
+      originalDeadline: originalDeadline,
+      extendedDeadline: extendedDeadline,
     );
   }
 }

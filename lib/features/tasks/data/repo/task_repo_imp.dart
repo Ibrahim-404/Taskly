@@ -95,19 +95,52 @@ class TaskRepoImp implements TaskRepo {
     String taskId,
     bool taskState,
   ) async {
-    await taskLocalDataSource.completeSubTask(taskId, taskState);
-    return Right(unit);
+    try {
+      await taskLocalDataSource.completeSubTask(taskId, taskState);
+      return Right(unit);
+    } catch (e) {
+      return Left(
+        DatabaseFailure('Failed to complete sub-task: ${e.toString()}'),
+      );
+    }
   }
 
   @override
   Future<Either<Failure, Unit>> completeTask(String taskId) async {
-    await taskLocalDataSource.completeTask(taskId);
-    return Right(unit);
+    try {
+      await taskLocalDataSource.completeTask(taskId);
+      return Right(unit);
+    } catch (e) {
+      return Left(
+        DatabaseFailure('Failed to complete task: ${e.toString()}'),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> extendDeadline(
+    int taskId,
+    DateTime newDeadline,
+  ) async {
+    try {
+      await taskLocalDataSource.extendDeadline(taskId, newDeadline);
+      return Right(unit);
+    } catch (e) {
+      return Left(
+        DatabaseFailure('Failed to extend deadline: ${e.toString()}'),
+      );
+    }
   }
 
   @override
   Future<Either<Failure, String>> getCategoryNameById(String id) async {
-    final String res = await taskLocalDataSource.getCategoryNameById(id);
-    return Right(res);
+    try {
+      final String res = await taskLocalDataSource.getCategoryNameById(id);
+      return Right(res);
+    } catch (e) {
+      return Left(
+        DatabaseFailure('Failed to get category name: ${e.toString()}'),
+      );
+    }
   }
 }

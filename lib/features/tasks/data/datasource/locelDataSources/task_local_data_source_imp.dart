@@ -157,6 +157,31 @@ class TaskLocalDataSourceImp extends BaseLocalDataSource
   }
 
   @override
+  Future<void> extendDeadline(int taskId, DateTime newDeadline) async {
+    final db = await databaseHelper.database;
+    final existing = await db.query(
+      'tasks',
+      columns: ['date', 'deadline_extended', 'original_deadline'],
+      where: 'id = ?',
+      whereArgs: [taskId],
+    );
+    if (existing.isEmpty) return;
+    final row = existing.first;
+    final wasExtended = row['deadline_extended'] == 1;
+    await db.update(
+      'tasks',
+      {
+        'date': newDeadline.toIso8601String(),
+        'deadline_extended': 1,
+        if (!wasExtended) 'original_deadline': row['date'],
+        'extended_deadline': newDeadline.toIso8601String(),
+      },
+      where: 'id = ?',
+      whereArgs: [taskId],
+    );
+  }
+
+  @override
   Future<String> getCategoryNameById(String id) async {
     try {
       final db = await databaseHelper.database;

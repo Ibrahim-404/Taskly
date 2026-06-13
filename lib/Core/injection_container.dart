@@ -20,6 +20,7 @@ import '../features/tasks/domain/usecases/get_categories.dart';
 import '../features/tasks/domain/usecases/get_task_by_category.dart';
 import '../features/tasks/domain/usecases/get_tasks.dart';
 import '../features/tasks/domain/usecases/update_task.dart';
+import '../features/tasks/domain/usecases/extend_deadline.dart';
 import '../features/tasks/domain/usecases/get_upcoming_tasks.dart';
 import 'notification/notfication.dart';
 import 'notification/task_notification_scheduler.dart';
@@ -70,6 +71,7 @@ class InjectionContainer extends Bindings {
       fenix: true,
     );
     Get.lazyPut<UpdateTask>(() => UpdateTask(Get.find()), fenix: true);
+    Get.lazyPut<ExtendDeadline>(() => ExtendDeadline(Get.find()), fenix: true);
     Get.lazyPut<GetCategoryNameById>(
       () => GetCategoryNameById(Get.find()),
       fenix: true,
@@ -85,6 +87,7 @@ class InjectionContainer extends Bindings {
         deleteTask: Get.find<DeleteTask>(),
         getCategories: Get.find<GetCategories>(),
         addCategory: Get.find<AddCategory>(),
+        extendDeadline: Get.find<ExtendDeadline>(),
       ),
       fenix: true,
     );

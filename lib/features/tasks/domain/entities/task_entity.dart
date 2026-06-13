@@ -11,6 +11,9 @@ class TaskEntity {
   final String? categoryName;
   final List<SubTaskEntity> subTasks;
   final TaskPriority priorityStatus;
+  final bool deadlineExtended;
+  final DateTime? originalDeadline;
+  final DateTime? extendedDeadline;
 
   const TaskEntity({
     required this.id,
@@ -22,6 +25,9 @@ class TaskEntity {
     this.categoryName,
     this.subTasks = const [],
     this.priorityStatus = TaskPriority.low,
+    this.deadlineExtended = false,
+    this.originalDeadline,
+    this.extendedDeadline,
   });
 
   bool get isMissed => !isDone && date.isBefore(DateTime.now());
