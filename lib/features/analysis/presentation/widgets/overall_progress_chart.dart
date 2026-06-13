@@ -8,6 +8,7 @@ class OverallProgressChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
@@ -28,10 +29,8 @@ class OverallProgressChart extends StatelessWidget {
                       CircularProgressIndicator(
                         value: data.completionPercentage / 100,
                         strokeWidth: 10,
-                        backgroundColor: Colors.grey[200],
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).primaryColor,
-                        ),
+                        backgroundColor: cs.surfaceContainerHighest,
+                        valueColor: AlwaysStoppedAnimation<Color>(cs.primary),
                       ),
                       Center(
                         child: Text(
@@ -50,7 +49,7 @@ class OverallProgressChart extends StatelessWidget {
                       _StatRow(
                           label: 'Total',
                           value: data.totalTasks.toString(),
-                          color: Colors.blue),
+                          color: cs.primary),
                       const SizedBox(height: 8),
                       _StatRow(
                           label: 'Completed',

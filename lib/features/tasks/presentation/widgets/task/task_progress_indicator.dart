@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/core/const/app_colors.dart';
 
 class TaskProgressIndicator extends StatelessWidget {
   final int progressPercentage;
@@ -13,6 +12,7 @@ class TaskProgressIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0.0, end: progress),
       duration: const Duration(milliseconds: 800),
@@ -24,20 +24,20 @@ class TaskProgressIndicator extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'PROGRESS',
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.grey,
+                    color: cs.onSurfaceVariant,
                   ),
                 ),
                 Text(
                   '$animatedPercentage%',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.blue,
+                    color: cs.primary,
                   ),
                 ),
               ],
@@ -47,8 +47,8 @@ class TaskProgressIndicator extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: LinearProgressIndicator(
                 value: animatedProgress,
-                backgroundColor: AppColors.grey200,
-                color: AppColors.blue700,
+                backgroundColor: cs.surfaceContainerHighest,
+                color: cs.primary,
                 minHeight: 6,
               ),
             ),

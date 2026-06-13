@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_controller.dart';
 import 'package:tasks_manager/core/utils/app_validators.dart';
-import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class AddNewCategoryWidget extends StatelessWidget {
@@ -42,7 +41,6 @@ class AddNewCategoryWidget extends StatelessWidget {
                         controller: controller,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.blue),
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
                           hintText: AppLocalizations.of(context)!.categoryName,
@@ -51,7 +49,7 @@ class AddNewCategoryWidget extends StatelessWidget {
                       const SizedBox(height: 16),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.blueAccent,
+                          backgroundColor: Theme.of(context).colorScheme.primary,
                         ),
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
@@ -70,11 +68,11 @@ class AddNewCategoryWidget extends StatelessWidget {
           ),
         );
       },
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
         child: CircleAvatar(
-          backgroundColor: AppColors.blue,
-          child: Icon(Icons.add, color: AppColors.white),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );

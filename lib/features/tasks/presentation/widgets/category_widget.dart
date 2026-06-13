@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/core/const/app_colors.dart';
+import 'package:tasks_manager/core/theme/app_theme.dart';
 
 class CategoryWidget extends StatelessWidget {
   final String categoryName;
@@ -15,6 +15,7 @@ class CategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -24,28 +25,28 @@ class CategoryWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           gradient: isSelected
-              ? const LinearGradient(
-                  colors: [AppColors.primary, AppColors.secondary],
+              ? LinearGradient(
+                  colors: AppTheme.headerGradient(context),
                 )
               : null,
-          color: isSelected ? null : AppColors.white,
+          color: isSelected ? null : cs.surface,
           boxShadow: [
             BoxShadow(
               color: isSelected
-                  ? AppColors.secondary.withValues(alpha: 0.3)
-                  : AppColors.black.withValues(alpha: 0.05),
+                  ? cs.secondary.withValues(alpha: 0.3)
+                  : cs.shadow.withValues(alpha: 0.05),
               spreadRadius: 1,
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
           ],
-          border: isSelected ? null : Border.all(color: AppColors.grey200),
+          border: isSelected ? null : Border.all(color: cs.outlineVariant),
         ),
         child: Text(
           categoryName,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: isSelected ? AppColors.white : AppColors.textSecondary,
+            color: isSelected ? cs.onPrimary : cs.onSurfaceVariant,
             fontSize: 13,
           ),
         ),

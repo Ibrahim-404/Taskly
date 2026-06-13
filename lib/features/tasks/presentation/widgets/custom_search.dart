@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/core/const/app_strings.dart';
 
 class CustomSearch extends StatefulWidget {
@@ -34,7 +33,7 @@ class _CustomSearchState extends State<CustomSearch> {
           borderSide: BorderSide.none,
         ),
         filled: true,
-        fillColor: AppColors.grey200,
+        fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
     );
   }

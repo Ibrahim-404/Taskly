@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 import 'core/injection_container.dart';
+import 'core/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,8 @@ class Taskly extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: AppStrings.appName,
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -28,8 +31,6 @@ class Taskly extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('en'), Locale('ar')],
-      theme: ThemeData(useMaterial3: true),
-      darkTheme: ThemeData.dark(),
       home: MainScreen(),
       initialBinding: InjectionContainer(),
     );

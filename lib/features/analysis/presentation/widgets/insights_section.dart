@@ -8,6 +8,7 @@ class InsightsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
@@ -19,13 +20,13 @@ class InsightsSection extends StatelessWidget {
             const SizedBox(height: 16),
             _InsightRow(
               icon: Icons.star,
-              iconColor: Colors.amber,
+              iconColor: cs.tertiary,
               label: 'Most Productive',
               value: data.mostProductiveCategory,
             ),
             _InsightRow(
               icon: Icons.info_outline,
-              iconColor: Colors.grey,
+              iconColor: cs.onSurfaceVariant,
               label: 'Least Productive',
               value: data.leastProductiveCategory,
             ),
@@ -44,13 +45,13 @@ class InsightsSection extends StatelessWidget {
             const Divider(height: 24),
             _InsightRow(
               icon: Icons.warning,
-              iconColor: Colors.red,
+              iconColor: cs.error,
               label: 'Overdue Tasks',
               value: data.overdueTasks.toString(),
             ),
             _InsightRow(
               icon: Icons.speed,
-              iconColor: Colors.blue,
+              iconColor: cs.primary,
               label: 'This Week Rate',
               value: '${data.thisWeekCompletionRate.toStringAsFixed(1)}%',
             ),

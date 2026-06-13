@@ -13,6 +13,7 @@ class FilterChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return SizedBox(
       height: 44,
       child: ListView.separated(
@@ -26,10 +27,10 @@ class FilterChips extends StatelessWidget {
           return ChoiceChip(
             label: Text(filter.label, style: TextStyle(
               fontSize: 13,
-              color: isActive ? Colors.white : null,
+              color: isActive ? cs.onPrimary : null,
             )),
             selected: isActive,
-            selectedColor: Theme.of(context).primaryColor,
+            selectedColor: cs.primary,
             onSelected: (_) => onFilterChanged(filter),
             visualDensity: VisualDensity.compact,
           );

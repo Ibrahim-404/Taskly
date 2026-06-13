@@ -18,6 +18,7 @@ class TaskTags extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Wrap(
       spacing: 8,
       runSpacing: 8,
@@ -25,30 +26,25 @@ class TaskTags extends StatelessWidget {
         TaskTag(
           text: priority,
           bgColor: getColorMatchpriority(priority),
-          textColor: AppColors.white,
+          textColor: cs.onPrimary,
         ),
         TaskTag(
           text: getTaskState(date, isDone).name,
-          bgColor: AppColors.blue100,
-          textColor: AppColors.blue700,
+          bgColor: cs.primaryContainer,
+          textColor: cs.onPrimaryContainer,
         ),
         TaskTag(
           text:
               "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
-          bgColor: AppColors.grey200,
-          textColor: AppColors.black87,
+          bgColor: cs.surfaceContainerHighest,
+          textColor: cs.onSurface,
           icon: Icons.calendar_today,
         ),
         TaskTag(
           text: categoryName,
-          bgColor: AppColors.blue50,
-          textColor: AppColors.blue700,
+          bgColor: cs.secondaryContainer,
+          textColor: cs.onSecondaryContainer,
         ),
-        // TaskTag(
-        //   text: '#Important',
-        //   bgColor: AppColors.orange50,
-        //   textColor: AppColors.orange700,
-        // ),
       ],
     );
   }

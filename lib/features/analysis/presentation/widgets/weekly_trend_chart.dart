@@ -9,6 +9,7 @@ class WeeklyTrendChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
@@ -28,6 +29,12 @@ class WeeklyTrendChart extends StatelessWidget {
                     show: true,
                     drawVerticalLine: false,
                     horizontalInterval: 1,
+                    getDrawingHorizontalLine: (value) {
+                      return FlLine(
+                        color: cs.outlineVariant,
+                        strokeWidth: 0.5,
+                      );
+                    },
                   ),
                   titlesData: FlTitlesData(
                     bottomTitles: AxisTitles(
@@ -38,7 +45,7 @@ class WeeklyTrendChart extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 8),
                             child: Text(
                               value == 0 ? 'Last Week' : 'This Week',
-                              style: const TextStyle(fontSize: 11),
+                              style: TextStyle(fontSize: 11, color: cs.onSurfaceVariant),
                             ),
                           );
                         },
@@ -47,7 +54,16 @@ class WeeklyTrendChart extends StatelessWidget {
                       ),
                     ),
                     leftTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: true, reservedSize: 32),
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 32,
+                        getTitlesWidget: (value, meta) {
+                          return Text(
+                            value.toInt().toString(),
+                            style: TextStyle(fontSize: 10, color: cs.onSurfaceVariant),
+                          );
+                        },
+                      ),
                     ),
                     topTitles: AxisTitles(
                         sideTitles: SideTitles(showTitles: false)),
@@ -62,24 +78,22 @@ class WeeklyTrendChart extends StatelessWidget {
                         FlSpot(1, performance.thisWeekCompleted.toDouble()),
                       ],
                       isCurved: true,
-                      color: Theme.of(context).primaryColor,
+                      color: cs.primary,
                       barWidth: 3,
                       dotData: FlDotData(
                         show: true,
                         getDotPainter: (spot, percent, barData, index) {
                           return FlDotCirclePainter(
                             radius: 5,
-                            color: Theme.of(context).primaryColor,
+                            color: cs.primary,
                             strokeWidth: 2,
-                            strokeColor: Colors.white,
+                            strokeColor: cs.surface,
                           );
                         },
                       ),
                       belowBarData: BarAreaData(
                         show: true,
-                        color: Theme.of(context)
-                            .primaryColor
-                            .withValues(alpha: 0.1),
+                        color: cs.primary.withValues(alpha: 0.1),
                       ),
                     ),
                   ],

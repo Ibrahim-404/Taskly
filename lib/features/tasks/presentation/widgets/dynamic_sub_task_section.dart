@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_form_controller.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_row_for_sub_task.dart';
-import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class DynamicSubTaskSection extends StatelessWidget {
@@ -22,7 +21,7 @@ class DynamicSubTaskSection extends StatelessWidget {
             ),
             IconButton(
               onPressed: () => taskFormController.addSubTask(),
-              icon: const Icon(Icons.add_circle, color: AppColors.blue),
+              icon: Icon(Icons.add_circle, color: Theme.of(context).colorScheme.primary),
             ),
           ],
         ),
@@ -46,9 +45,9 @@ class DynamicSubTaskSection extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.remove_circle_outline,
-                        color: AppColors.error,
+                        color: Theme.of(context).colorScheme.error,
                       ),
                       onPressed: () => taskFormController.removeSubTask(index),
                     ),

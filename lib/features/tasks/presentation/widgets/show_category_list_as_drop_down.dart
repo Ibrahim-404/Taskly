@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:tasks_manager/features/tasks/presentation/controllers/task_form_controller.dart';
-import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class ShowCategoryListAsDropDown extends StatelessWidget {
@@ -13,13 +12,14 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.04),
+            color: cs.shadow.withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -32,7 +32,7 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
               : taskFormController.selectedCategory.value.toString(),
           decoration: InputDecoration(
             filled: true,
-            fillColor: AppColors.transparent,
+            fillColor: Colors.transparent,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 20,
               vertical: 14,
@@ -48,7 +48,7 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide(
-                color: AppColors.primary.withValues(alpha: 0.5),
+                color: cs.primary.withValues(alpha: 0.5),
                 width: 1.5,
               ),
             ),
@@ -56,20 +56,21 @@ class ShowCategoryListAsDropDown extends StatelessWidget {
           isExpanded: true,
           hint: Text(
             AppLocalizations.of(context)!.select,
-            style: const TextStyle(fontSize: 14, color: AppColors.grey),
+            style: TextStyle(fontSize: 14, color: cs.onSurfaceVariant),
           ),
-          icon: const Icon(
+          icon: Icon(
             Icons.keyboard_arrow_down_rounded,
-            color: AppColors.primary,
+            color: cs.primary,
           ),
           items: taskFormController.categories.map((cat) {
             return DropdownMenuItem<String>(
               value: cat['id'].toString(),
               child: Text(
                 cat['category_name'].toString(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
+                  color: cs.onSurface,
                 ),
               ),
             );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tasks_manager/core/controller/main_screen_controller.dart';
-import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/core/const/app_strings.dart';
+import 'package:tasks_manager/core/theme/app_theme.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/bottom_navigation_bar_item_widget.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -11,15 +11,20 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MainScreenController mainScreenController = Get.find();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(colors: [AppColors.blue, AppColors.purple]),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: AppTheme.navBarGradient(context),
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black26,
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.3)
+                : Colors.black.withValues(alpha: 0.15),
             blurRadius: 10,
-            offset: Offset(0, -1),
+            offset: const Offset(0, -1),
           ),
         ],
       ),

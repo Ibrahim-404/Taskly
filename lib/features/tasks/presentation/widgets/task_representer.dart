@@ -37,11 +37,12 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
         : (completedSubTasks / totalSubTasks);
     int progressPercentage = (progress * 100).toInt();
 
+    final cs = Theme.of(context).colorScheme;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: cs.surfaceContainerLow,
         borderRadius: BorderRadius.circular(24),
         border: Border(
           left: BorderSide(
@@ -51,7 +52,7 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.grey.withValues(alpha: 0.1),
+            color: cs.shadow.withValues(alpha: 0.08),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -93,16 +94,16 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
                   children: [
                     Text(
                       widget.task.title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.black87,
+                        color: cs.onSurface,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       widget.task.description,
-                      style: TextStyle(fontSize: 14, color: AppColors.grey600),
+                      style: TextStyle(fontSize: 14, color: cs.onSurfaceVariant),
                     ),
                   ],
                 ),
@@ -142,10 +143,10 @@ class _TaskRepresenterState extends State<TaskRepresenter> {
 
             Text(
               'SUBTASKS ($completedSubTasks/$totalSubTasks)',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
-                color: AppColors.black87,
+                color: cs.onSurface,
               ),
             ),
             const SizedBox(height: 10),

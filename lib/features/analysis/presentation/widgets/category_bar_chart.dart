@@ -10,6 +10,7 @@ class CategoryBarChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (categories.isEmpty) return const SizedBox.shrink();
+    final cs = Theme.of(context).colorScheme;
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -35,7 +36,7 @@ class CategoryBarChart extends StatelessWidget {
                         final cat = categories[groupIndex];
                         return BarTooltipItem(
                           '${cat.categoryName}\n${cat.completedTasks}/${cat.totalTasks}',
-                          const TextStyle(color: Colors.white, fontSize: 12),
+                          TextStyle(color: cs.surface, fontSize: 12),
                         );
                       },
                     ),
@@ -54,7 +55,7 @@ class CategoryBarChart extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 8),
                             child: Text(
                               categories[index].categoryName,
-                              style: const TextStyle(fontSize: 10),
+                              style: TextStyle(fontSize: 10, color: cs.onSurfaceVariant),
                               overflow: TextOverflow.ellipsis,
                             ),
                           );
@@ -63,7 +64,16 @@ class CategoryBarChart extends StatelessWidget {
                       ),
                     ),
                     leftTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: true, reservedSize: 28),
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 28,
+                        getTitlesWidget: (value, meta) {
+                          return Text(
+                            value.toInt().toString(),
+                            style: TextStyle(fontSize: 10, color: cs.onSurfaceVariant),
+                          );
+                        },
+                      ),
                     ),
                     topTitles: AxisTitles(
                         sideTitles: SideTitles(showTitles: false)),
@@ -74,6 +84,12 @@ class CategoryBarChart extends StatelessWidget {
                     show: true,
                     drawVerticalLine: false,
                     horizontalInterval: 1,
+                    getDrawingHorizontalLine: (value) {
+                      return FlLine(
+                        color: cs.outlineVariant,
+                        strokeWidth: 0.5,
+                      );
+                    },
                   ),
                   borderData: FlBorderData(show: false),
                   barGroups: categories.asMap().entries.map((e) {
@@ -84,7 +100,7 @@ class CategoryBarChart extends StatelessWidget {
                       barRods: [
                         BarChartRodData(
                           toY: cat.totalTasks.toDouble(),
-                          color: Colors.grey[300],
+                          color: cs.surfaceContainerHighest,
                           width: 16,
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(4),
@@ -93,7 +109,7 @@ class CategoryBarChart extends StatelessWidget {
                         ),
                         BarChartRodData(
                           toY: cat.completedTasks.toDouble(),
-                          color: Theme.of(context).primaryColor,
+                          color: cs.primary,
                           width: 16,
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(4),

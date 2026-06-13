@@ -73,7 +73,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.search_off, size: 64, color: Colors.grey[400]),
+                      Icon(Icons.search_off, size: 64, color: Theme.of(context).colorScheme.onSurfaceVariant),
                       const SizedBox(height: 16),
                       Text(
                         _taskController.searchQuery.value != null

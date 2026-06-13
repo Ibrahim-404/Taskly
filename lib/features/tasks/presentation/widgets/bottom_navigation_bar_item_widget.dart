@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/core/controller/main_screen_controller.dart';
 
 class BottomNavigationBarItemWidget extends StatelessWidget {
@@ -52,7 +51,7 @@ class BottomNavigationBarItemWidget extends StatelessWidget {
                               boxShadow: isSelected
                                   ? [
                                       BoxShadow(
-                                        color: AppColors.white.withValues(
+                                        color: Colors.white.withValues(
                                           alpha: 0.6,
                                         ),
                                         blurRadius: 12 * value,
@@ -65,8 +64,8 @@ class BottomNavigationBarItemWidget extends StatelessWidget {
                             child: Icon(
                               icon,
                               color: isSelected
-                                  ? AppColors.white
-                                  : AppColors.white70,
+                                  ? Colors.white
+                                  : Colors.white70,
                               size: 24,
                             ),
                           ),
@@ -76,10 +75,10 @@ class BottomNavigationBarItemWidget extends StatelessWidget {
                       AnimatedOpacity(
                         opacity: isSelected ? 1.0 : 0.0,
                         duration: const Duration(milliseconds: 200),
-                        child: Text(
-                          label,
-                          style: const TextStyle(
-                            color: AppColors.white,
+                          child: Text(
+                            label,
+                            style: const TextStyle(
+                              color: Colors.white,
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                           ),

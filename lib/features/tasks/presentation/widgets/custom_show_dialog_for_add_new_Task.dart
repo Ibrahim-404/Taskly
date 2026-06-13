@@ -7,7 +7,6 @@ import 'package:tasks_manager/features/tasks/presentation/widgets/custom_button.
 import 'package:tasks_manager/features/tasks/presentation/widgets/custom_text_form_field.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/dynamic_sub_task_section.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/show_category_list_as_drop_down.dart';
-import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/add_task/task_priority_selector.dart';
 import 'package:tasks_manager/features/tasks/presentation/widgets/add_task/task_section_title.dart';
 import 'package:tasks_manager/core/utils/app_validators.dart';
@@ -29,10 +28,10 @@ class CustomShowDialogForAddNewTask extends StatelessWidget {
           Center(
             child: Text(
               AppLocalizations.of(context)!.addNewTask,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w900,
-                color: AppColors.textDark,
+                color: Theme.of(context).colorScheme.onSurface,
                 letterSpacing: -0.5,
               ),
             ),

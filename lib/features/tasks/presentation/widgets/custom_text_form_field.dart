@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/l10n/app_localizations.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -18,13 +17,14 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.04),
+            color: cs.shadow.withValues(alpha: 0.04),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -34,12 +34,12 @@ class CustomTextFormField extends StatelessWidget {
         controller: controller,
         maxLines: maxLines,
         validator: validator,
-        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+        style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: cs.onSurface),
         decoration: InputDecoration(
           hintText: hintText ?? AppLocalizations.of(context)!.enterTaskName,
-          hintStyle: TextStyle(color: AppColors.grey400, fontSize: 13),
+          hintStyle: TextStyle(color: cs.onSurfaceVariant, fontSize: 13),
           filled: true,
-          fillColor: AppColors.transparent,
+          fillColor: Colors.transparent,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,
             vertical: 18,
@@ -54,7 +54,7 @@ class CustomTextFormField extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
-            borderSide: BorderSide(color: AppColors.blue300, width: 1.5),
+            borderSide: BorderSide(color: cs.primary, width: 1.5),
           ),
         ),
       ),

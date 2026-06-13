@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tasks_manager/core/theme/app_theme.dart';
 import 'custom_wave_paint.dart';
-import 'package:tasks_manager/core/const/app_colors.dart';
 import 'package:tasks_manager/core/const/app_strings.dart';
 
 class CustomHeader extends StatefulWidget {
@@ -42,7 +42,10 @@ class _CustomHeaderState extends State<CustomHeader>
             builder: (context, child) {
               return CustomPaint(
                 size: const Size(double.infinity, 160),
-                painter: CustomWavePaint(_controller.value),
+                painter: CustomWavePaint(
+                  _controller.value,
+                  gradientColors: AppTheme.headerGradient(context),
+                ),
               );
             },
           ),
@@ -59,7 +62,7 @@ class _CustomHeaderState extends State<CustomHeader>
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.white.withValues(alpha: 0.4),
+                        color: Colors.white.withValues(alpha: 0.4),
                         blurRadius: 10,
                         spreadRadius: 1,
                       ),
@@ -77,7 +80,7 @@ class _CustomHeaderState extends State<CustomHeader>
                     Text(
                       AppStrings.welcomeBack,
                       style: TextStyle(
-                        color: AppColors.white.withValues(alpha: 0.8),
+                        color: Colors.white.withValues(alpha: 0.8),
                         fontSize: 14,
                       ),
                     ),
@@ -85,7 +88,7 @@ class _CustomHeaderState extends State<CustomHeader>
                     const Text(
                       AppStrings.userName,
                       style: TextStyle(
-                        color: AppColors.white,
+                        color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),

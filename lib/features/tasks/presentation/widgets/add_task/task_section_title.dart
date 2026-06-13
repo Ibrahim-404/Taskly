@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_manager/core/const/app_colors.dart';
 
 class TaskSectionTitle extends StatelessWidget {
   final IconData icon;
@@ -9,16 +8,17 @@ class TaskSectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Row(
       children: [
-        Icon(icon, size: 18, color: AppColors.primary),
+        Icon(icon, size: 18, color: cs.primary),
         const SizedBox(width: 8),
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w700,
-            color: AppColors.textSecondary,
+            color: cs.onSurfaceVariant,
           ),
         ),
       ],
